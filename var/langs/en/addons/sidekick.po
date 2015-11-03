@@ -1,0 +1,21 @@
+msgid ""
+msgstr "Project-Id-Version: tygh"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: English\n"
+"Language: en_US"
+
+msgctxt "Addons::name::sidekick"
+msgid "Sidekick"
+msgstr "Sidekick"
+
+msgctxt "Addons::description::sidekick"
+msgid "HELOstore's sidekick add-on, used to keep all your other add-ons and themes up-to-date"
+msgstr "HELOstore's sidekick add-on, used to keep all your other add-ons and themes up-to-date"
+
+msgctxt "Languages::description::sidekick"
+msgid ""
+msgstr "HELOstore's sidekick add-on, used to keep all your other add-ons and themes up-to-date"
+
+msgctxt "Languages::sidekick_dependency_breakage_warning"
+msgid "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."
+msgstr "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."

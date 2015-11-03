@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+    <id>sidekick</id>
+    <version>0.1</version>
+    <priority>1010111</priority>
+    <position>0</position>
+    <status>active</status>
+    <has_icon>Y</has_icon>
+    <default_language>en</default_language>
+    <authors>
+        <author>
+            <name>HELOstore</name>
+            <email>contact@helostore.com</email>
+            <url>https://helostore.com</url>
+        </author>
+    </authors>
+</addon>

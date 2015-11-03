@@ -1,0 +1,20 @@
+{
+    "name": "helostore/sidekick",
+    "description": "ADLS Sidekick add-on by HELOstore.com",
+    "authors": [
+        {
+            "name": "HELOstore",
+            "email": "sales@helostore.com",
+            "homepage": "https://helostore.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "contact@helostore.com",
+        "irc": "irc://irc.freenode.org/helostore"
+    },
+    "autoload": {
+        "psr-0": { "HeloStore": "src/" }
+    },
+    "require": {}
+}
