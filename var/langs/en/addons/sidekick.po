@@ -19,3 +19,11 @@ msgstr "HELOstore's sidekick add-on, used to keep all your other add-ons and the
 msgctxt "Languages::sidekick_dependency_breakage_warning"
 msgid "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."
 msgstr "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."
+
+msgctxt "Languages::sidekick_app_setup_messaage"
+msgid "In order to configure the <b>[addon]</b> add-on, you have to configure it by <a href='[url]'>clicking here</a>. Thanks."
+msgstr "In order to configure the <b>[addon]</b> add-on, you have to configure it by <a href='[url]'>clicking here</a>. Thanks."
+
+msgctxt "Languages::sidekick_app_setup_title"
+msgid "Hello from HELOstore!"
+msgstr "Hello from HELOstore!"

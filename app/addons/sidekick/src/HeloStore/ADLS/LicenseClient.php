@@ -41,6 +41,8 @@ class LicenseClient
 	protected $maxTries = 3;
 	protected $data = array();
 	protected $settings = array();
+	protected $addonName = '';
+	protected $addonId = '';
 
 	public function __construct($context = '', $localRequest = array())
 	{
@@ -48,6 +50,12 @@ class LicenseClient
 		$this->caller = array_shift($trace);
 		$this->context = $context;
 		$this->setData();
+
+		if ($context == LicenseClient::CONTEXT_INSTALL) {
+			$url = fn_url('addons.update?addon=' . $this->addonId);
+			$message = __('sidekick_app_setup_messaage', array('[addon]' => $this->addonName, '[url]' => $url));
+			fn_set_notification('S', __('sidekick_app_setup_title'), $message);
+		}
 
 		if (!empty($localRequest)) {
 			$this->handleLocalRequest($localRequest);
@@ -137,8 +145,10 @@ class LicenseClient
 			if (method_exists($scheme, 'getVersion')) {
 				$settings['version'] = $scheme->getVersion();
 			}
+			$this->addonName = $scheme->getName();
+			$this->addonId = $addonName;
+			$this->settings = $settings;
 		}
-		$this->settings = $settings;
 
 		return $settings;
 	}
