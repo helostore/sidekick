@@ -122,7 +122,7 @@ class LicenseClient
 				'version' => isset($settings['version']) ? $settings['version'] : '',
 				'status' => isset($settings['status']) ? $settings['status'] : '',
 			);
-			$data['email'] = $settings['email'];
+			$data['email'] = isset($settings['email']) ? $settings['email'] : '';
 		}
 
 		return $data;

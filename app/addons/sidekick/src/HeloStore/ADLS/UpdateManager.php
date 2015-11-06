@@ -56,7 +56,7 @@ class UpdateManager
 		list($addons, ) = fn_get_addons(array());
 		$products = array();
 		foreach ($addons as $productCode => $addon) {
-			if (!$this->isOwnProduct($productCode)) {
+			if (!self::isOwnProduct($productCode)) {
 				continue;
 			}
 			if (!empty($params['codes'])) {
@@ -83,7 +83,7 @@ class UpdateManager
 
 		return $settings;
 	}
-	public function isOwnProduct($productCode)
+	public static function isOwnProduct($productCode)
 	{
 		$scheme = SchemesManager::getScheme($productCode);
 		if (empty($scheme)) {

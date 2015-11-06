@@ -24,7 +24,7 @@ if (!defined('BOOTSTRAP')) { die('Access denied'); }
  */
 function fn_sidekick_check($addon)
 {
-	if (!\HeloStore\ADLS\LicenseClient::isOwnProduct($addon)) {
+	if (!\HeloStore\ADLS\UpdateManager::isOwnProduct($addon)) {
 		return false;
 	}
 	if (\HeloStore\ADLS\LicenseClient::activate($addon)) {
