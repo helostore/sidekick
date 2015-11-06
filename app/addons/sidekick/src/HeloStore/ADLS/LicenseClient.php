@@ -16,6 +16,7 @@
 namespace HeloStore\ADLS;
 
 
+use ReflectionClass;
 use Tygh\Addons\SchemesManager;
 use Tygh\Http;
 use Tygh\Registry;
@@ -28,57 +29,54 @@ class LicenseClient
 	const CONTEXT_UNINSTALL = 'uninstall';
 	const CONTEXT_DEACTIVATE = 'deactivate';
 	const CONTEXT_AUTHENTICATION = 'authentication';
+
 	const API_ENDPOINT = 'helostore.com/index.php?dispatch=adls_api';
 
-	const ERROR_INVALID_TOKEN = 400;
-	const ERROR_MISSING_TOKEN = 401;
+	const LICENSE_STATUS_ACTIVE = 'A';
+	const LICENSE_STATUS_DISABLED = 'D';
+	const LICENSE_STATUS_INACTIVE = 'I';
 
-	public $caller;
-	protected $context;
-	protected $errors = array();
-	protected $messages = array();
+	const CODE_SUCCESS = 0;
+
+	const CODE_ERROR_INVALID_TOKEN = 400;
+	const CODE_ERROR_MISSING_TOKEN = 401;
+	const CODE_ERROR_ALIEN = 402;
+	const CODE_ERROR_MISSING_EMAIL = 403;
+	const CODE_ERROR_MISSING_PASSWORD = 404;
+	const CODE_ERROR_MISSING_LICENSE = 405;
+	const CODE_ERROR_MISSING_DOMAIN = 406;
+	const CODE_ERROR_COMMUNICATION_FAILURE = 407;
+	const CODE_ERROR_INVALID_LICENSE_OR_DOMAIN = 450;
+	const CODE_ERROR_INVALID_CUSTOMER_EMAIL = 451;
+	const CODE_ERROR_INVALID_CREDENTIALS_COMBINATION = 452;
+	const CODE_ERROR_MISMATCH_CREDENTIALS_COMBINATION = 453;
+
+	const CODE_NOTIFICATION_SETTINGS_UNCHANGED = 200;
+
+	const CODE_TYPE_ERROR = 'error';
+	const CODE_TYPE_UNKNOWN = 'alien';
+	const CODE_TYPE_SUCCESS = 'success';
+	const CODE_TYPE_NOTIFICATION = 'notification';
+
 	protected $tries = 0;
 	protected $maxTries = 3;
-	protected $data = array();
-	protected $settings = array();
-	protected $addonName = '';
-	protected $addonId = '';
 
-	public function __construct($context = '', $localRequest = array())
+	public function __construct()
 	{
-		$trace = debug_backtrace(false);
-		$this->caller = array_shift($trace);
-		$this->context = $context;
-		$this->setData();
-
-		if ($context == LicenseClient::CONTEXT_INSTALL) {
-			$url = fn_url('addons.update?addon=' . $this->addonId);
-			$message = __('sidekick_app_setup_messaage', array('[addon]' => $this->addonName, '[url]' => $url));
-			fn_set_notification('S', __('sidekick_app_setup_title'), $message);
-		}
-
-		if (!empty($localRequest)) {
-			$this->handleLocalRequest($localRequest);
-		} else if (!empty($context)) {
-			if ($context == LicenseClient::CONTEXT_ACTIVATE) {
-				$this->maybeActivateLicense($this->data['product']['name']);
-			} else {
-				$this->request($context, $this->data);
-			}
-		}
 	}
 
-	public function request($context, $data)
+	public function request($context, $data, $settings)
 	{
 		if ($context != LicenseClient::CONTEXT_AUTHENTICATION) {
-			if ($this->refreshToken()) {
+			$tokenResponse = $this->refreshToken($data, $settings);
+			if (!empty($tokenResponse) && isset($tokenResponse['code']) && $this->isSuccess($tokenResponse['code'])) {
 				$data['token'] = fn_get_storage_data('helostore_token');
 			} else {
-				return false;
+				return $tokenResponse;
 			}
 		}
 
-		$this->messages[] = 'Requesting: '.$context;
+//		$this->messages[] = 'Requesting: '.$context;
 		$protocol = (defined('WS_DEBUG') ? 'http' : 'https');
 		$url = $protocol . '://' . (defined('WS_DEBUG') ? 'local.' : '') . self::API_ENDPOINT . '.' . $context;
 		$data['context'] = $context;
@@ -87,25 +85,22 @@ class LicenseClient
 
 		$error = Http::getError();
 		if (!empty($error)) {
-			$this->errors[] = $error;
+			$response['code'] = LicenseClient::CODE_ERROR_COMMUNICATION_FAILURE;
+			$response['message'] = $error;
 		}
 
 		$_tmp = json_decode($response, true);
 		if (is_array($_tmp)) {
 			$response = $_tmp;
 		}
-		if (!empty($response) && !empty($response['code']) && $response['code'] == LicenseClient::ERROR_INVALID_TOKEN) {
+		if (!empty($response) && !empty($response['code']) && $response['code'] == LicenseClient::CODE_ERROR_INVALID_TOKEN) {
 			fn_set_storage_data('helostore_token', '');
 		}
 
 		return $response;
 	}
-	public function getData()
-	{
-		return $this->data;
-	}
 
-	public function setData($addonName = null)
+	public function gatherData($context, $settings)
 	{
 		$data = array();
 		$data['server'] = array(
@@ -118,139 +113,99 @@ class LicenseClient
 			'version' => PRODUCT_VERSION,
 			'edition' => PRODUCT_EDITION,
 		);
+		$data['language'] = CART_LANGUAGE;
 
-		if (empty($addonName)) {
-			$addonName = self::inferAddonName($this->caller);
-		}
-
-		if (!empty($addonName)) {
-			$settings = $this->setSettings($addonName);
-
+		if (!empty($settings)) {
 			$data['product'] = array(
-				'name' => $addonName,
+				'code' => $settings['code'],
 				'license' => isset($settings['license']) ? $settings['license'] : '',
 				'version' => isset($settings['version']) ? $settings['version'] : '',
 				'status' => isset($settings['status']) ? $settings['status'] : '',
 			);
 			$data['email'] = $settings['email'];
 		}
-		$this->data = $data;
+
+		return $data;
 	}
 
-	public function setSettings($addonName)
+	public function getSettings($productCode)
 	{
-		$settings = Settings::instance()->getValues($addonName, Settings::ADDON_SECTION, false);
-		$scheme = SchemesManager::getScheme($addonName);
+		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
+		$scheme = SchemesManager::getScheme($productCode);
 		if (!empty($scheme)) {
 			if (method_exists($scheme, 'getVersion')) {
 				$settings['version'] = $scheme->getVersion();
+				$settings['name'] = $scheme->getName();
+				$settings['code'] = $productCode;
 			}
-			$this->addonName = $scheme->getName();
-			$this->addonId = $addonName;
-			$this->settings = $settings;
 		}
 
 		return $settings;
 	}
 
-	public function getErrors()
-	{
-		return $this->errors;
-	}
-	private function refreshToken()
+	private function refreshToken($data, $settings)
 	{
 		if ($this->tries >= $this->maxTries) {
 			return false;
 		}
 		$this->tries++;
-		$this->messages[] = 'Refreshing token';
-		$data = $this->getData();
-		if (!empty($this->settings)) {
-			$data['password'] = $this->settings['password'];
+//		$this->messages[] = 'Refreshing token';
+		if (!empty($settings)) {
+			$data['password'] = $settings['password'];
 		}
 
-		$response = $this->request(LicenseClient::CONTEXT_AUTHENTICATION, $data);
+		$response = $this->request(LicenseClient::CONTEXT_AUTHENTICATION, $data, $settings);
 
 		if (!empty($response['token'])) {
 			fn_set_storage_data('helostore_token', $response['token']);
-			$this->messages[] = 'Received new token';
+//			$this->messages[] = 'Received new token';
 			$this->tries = 0;
-			return true;
+//			return true;
 		}
 
-		if (!empty($response['message'])) {
-			$this->errors[] = $response['message'];
-		}
 		if ($this->tries > 1) {
 			sleep(5);
 		}
 
-		return false;
+		return $response;
+
+//		return false;
 	}
 
-	public function handleLocalRequest($request)
-	{
-		$requestedAddon = !empty($request['addon']) ? $request['addon'] : '';
-		$addonName = !empty($this->data['product']['name']) ? $this->data['product']['name'] : '';
-
-		if (empty($addonName) || empty($requestedAddon)) {
-			return;
-		}
-
-		if ($addonName != $requestedAddon) {
-			return;
-		}
-		$this->maybeActivateLicense($addonName, true);
-	}
-
-	public function maybeActivateLicense($addonName, $conditioned = false)
-	{
-		$attempt = false;
-		$settings = Settings::instance()->getValues($addonName, Settings::ADDON_SECTION, false);
-		if ($conditioned) {
-			$previousSettings = Registry::get('addons.' . $addonName);
-			if ($previousSettings['license'] != $settings['license']
-				|| $previousSettings['email'] != $settings['email']
-				|| $previousSettings['password'] != $settings['password']
-			) {
-				$attempt = true;
-			}
-		} else {
-			$attempt = true;
-		}
-
-		if ($attempt) {
-			return $this->activateLicense($addonName, $settings);
-		}
-
-		return false;
-	}
-
-	public function handleResponse($response)
+	public function handleResponse($context, $response, $productCode)
 	{
 		$code = isset($response['code']) ? intval($response['code']) : -1;
 		$message = !empty($response['message']) ? $response['message'] : '';
-		$error = false;
+		$codeName = LicenseClient::getCodeName($code);
+		$codeType = LicenseClient::getCodeType($code);
+		$error = LicenseClient::isError($code);
+		$alien = LicenseClient::isAlien($code);
 
-		if (empty($message)) {
-			$error = true;
-			if (!empty($this->errors)) {
-				foreach ($this->errors as $error) {
-					fn_set_notification('E', __('error').'.', $error);
-				}
+		$success = LicenseClient::isSuccess($code);
+		$debug = defined('WS_DEBUG');
+
+
+		if ($context == LicenseClient::CONTEXT_ACTIVATE) {
+			$status = ($success ? LicenseClient::LICENSE_STATUS_ACTIVE : '');
+			$this->setLicenseStatus($productCode, $status);
+		}
+
+		if ($success) {
+			if (!empty($message)) {
+				fn_set_notification('S', __('well_done'), $message);
+			} else  {
+				// There are silent responses, you know..
+			}
+		} else if ($error || $alien) {
+			if ($codeName) {
+				fn_set_notification('E',  __('error'), __($codeName) . ($debug ? ' (' . $codeName . ')' : ''));
 			} else {
 				$message = json_encode($response);
-				fn_set_notification('E', 'Unknown error', $message);
-			}
-		} else {
-			if ($code == 0 || $code == 200) {
-				fn_set_notification('S', __('well_done'), $message);
-			} else {
-				$error = true;
-				fn_set_notification('E', __('error'), $message . ' (' . $code . ')');
+				fn_set_notification('E', 'Unknown error', $message . ($debug ? ' (' . $codeName . ')' : ''));
 			}
 		}
-		if (($error && defined('DEVELOPMENT') || defined('WS_DEBUG_ALWAYS'))) {
+
+		if (defined('WS_DEBUG')) {
 			if (!empty($response['request'])) {
 				fn_set_notification('W', 'Request', json_encode($response['request']));
 			}
@@ -258,33 +213,141 @@ class LicenseClient
 				fn_set_notification('W', 'Trace', $response['trace']);
 			}
 		}
-//		define('ADLS_SKIP_NOTIFICATION', true);{}
 
-		return ($code == 0 || $code == 200);
+
+		return (!$error);
 	}
-	public function activateLicense($addonName, $settings)
+	public function isLicenseActive($productCode)
 	{
-		$this->setData($addonName);
-		$data = $this->getData();
-		$data['product']['license'] = $settings['license'];
-		$response = $this->request(LicenseClient::CONTEXT_ACTIVATE, $data);
+		$status = $this->getLicenseStatus($productCode);
 
-		return $this->handleResponse($response);
-
-	}
-	public function deactivateLicense($addonName)
-	{
-		$this->setData($addonName);
-		$data = $this->getData();
-		$data['product']['license'] = $this->settings['license'];
-		$response = $this->request(LicenseClient::CONTEXT_DEACTIVATE, $data);
-
-		return $this->handleResponse($response);
+		return ($status == LicenseClient::LICENSE_STATUS_ACTIVE);
 	}
 
-	public static function inferAddonName($caller)
+	public function getLicenseStatus($productCode)
 	{
-		$addonName = '';
+		return fn_get_storage_data('helostore/' . $productCode . '/license_status');
+	}
+	public function setLicenseStatus($productCode, $status)
+	{
+		return fn_set_storage_data('helostore/' . $productCode . '/license_status', $status);
+	}
+	public function haveSettingsChanged($productCode)
+	{
+		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
+		$previousSettings = Registry::get('addons.' . $productCode);
+
+		if (
+			$previousSettings['license'] != $settings['license']
+			|| $previousSettings['email'] != $settings['email']
+			|| $previousSettings['password'] != $settings['password']
+			|| empty($settings['email'])
+			|| empty($settings['password'])
+			|| empty($settings['license'])
+		) {
+			Registry::set('addons.' . $productCode, $settings);
+
+			return true;
+		}
+
+		return false;
+	}
+	public function hasRequiredSettings($productCode)
+	{
+		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
+
+		if (empty($settings['email'])
+			|| empty($settings['password'])
+			|| empty($settings['license'])
+		) {
+			return false;
+		}
+
+		return true;
+	}
+
+
+
+
+
+
+
+	public static function getCodeTypes()
+	{
+		static $types = array(
+			LicenseClient::CODE_TYPE_ERROR,
+			LicenseClient::CODE_TYPE_SUCCESS,
+			LicenseClient::CODE_TYPE_NOTIFICATION,
+		);
+
+		return $types;
+	}
+	public static function getCodeConstants()
+	{
+		static $constants = null;
+		$types = self::getCodeTypes();
+		if ($constants == null) {
+			$reflection = new ReflectionClass(__CLASS__);
+			$allConstants = $reflection->getConstants();
+			foreach ($types as $type) {
+				$constants[$type] = array();
+				$typePrefix = 'CODE_' . strtoupper($type);
+				$typePrefixLen = strlen($typePrefix);
+				foreach ($allConstants as $constant => $value) {
+					if (substr($constant, 0, $typePrefixLen) == $typePrefix) {
+						$constants[$type][$constant] = $value;
+					}
+				}
+			}
+		}
+
+		return $constants;
+	}
+	public static function getCodeName($code)
+	{
+		$constants = self::getCodeConstants();
+		foreach ($constants as $type => $typeConstants) {
+			$name = array_search($code, $typeConstants);
+			if ($name !== false) {
+				return $name;
+			}
+		}
+
+		return false;
+	}
+	public static function getCodeType($code)
+	{
+		$constants = self::getCodeConstants();
+		$types = self::getCodeTypes();
+		foreach ($types as $type) {
+			if (in_array($code, $constants[$type])) {
+				return $type;
+			}
+		}
+
+		return LicenseClient::CODE_TYPE_UNKNOWN;
+	}
+	public static function isSuccess($code)
+	{
+		return (LicenseClient::getCodeType($code) === LicenseClient::CODE_TYPE_SUCCESS);
+	}
+	public static function isError($code)
+	{
+		$codeType = LicenseClient::getCodeType($code);
+		return ($codeType === LicenseClient::CODE_TYPE_ERROR);
+	}
+	public static function isAlien($code)
+	{
+		return (LicenseClient::getCodeType($code) === LicenseClient::CODE_TYPE_UNKNOWN);
+	}
+	public static function inferAddonName($backtrack = 1)
+	{
+		$trace = debug_backtrace(false);
+		$caller = array();
+		for ($i = 1; $i <= $backtrack + 1; $i++) {
+			$caller = array_shift($trace);
+		}
+		$productCode = '';
 		if (!empty($caller) && !empty($caller['file'])) {
 			// ughhh, workaround to handle symlinks!
 			$callerPath = str_replace(array('\\', '/'), '/', $caller['file']);
@@ -292,37 +355,86 @@ class LicenseClient
 			$dirs = explode('/', $relativePath);
 			array_shift($dirs);
 			array_shift($dirs);
-			$addonName = array_shift($dirs);
+			$productCode = array_shift($dirs);
 		}
 
-		return $addonName;
+		return $productCode;
 	}
-	public static function activate($addonName = null)
-	{
-		if (empty($addonName)) {
-			$trace = debug_backtrace(false);
-			$caller = array_shift($trace);
-			$addonName = self::inferAddonName($caller);
-		}
 
+
+
+
+	public static function helperInfo($productCode)
+	{
 		$client = new LicenseClient();
-		$client->setSettings($addonName);
-		return $client->maybeActivateLicense($addonName);
-	}
-	public static function deactivate($addonName = null)
-	{
-		if (empty($addonName)) {
-			$trace = debug_backtrace(false);
-			$caller = array_shift($trace);
-			$addonName = self::inferAddonName($caller);
+		$active = null;
+		if (!empty($productCode)) {
+			$active = $client->isLicenseActive($productCode);
 		}
 
-		$client = new LicenseClient();
-		$client->setSettings($addonName);
-		return $client->deactivateLicense($addonName);
+		return '
+			<div style="text-align: center;padding:5px 10%;">
+				' . ($active !== true ? '<p><input class="btn btn-primary " type="submit" value="' . __('activate') . '" name="dispatch[addons.update.activate]"></p>' : '') . '
+				<p>If you lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target="_blank" href="https://helostore.com/contact">https://helostore.com/contact</a> (opens new tab).</p>
+			</div>
+			';
 	}
-	public static function helperInfo()
+
+	public function processPreEvents($context, $settings)
 	{
-		return '<div style="text-align: center;padding:5px 10%;">If you lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target="_blank" href="https://helostore.com/contact">https://helostore.com/contact</a> (opens new tab).</div>';
+		$productCode = $settings['code'];
+		$productName = $settings['name'];
+		if ($context == LicenseClient::CONTEXT_INSTALL
+			|| ($context == LicenseClient::CONTEXT_ACTIVATE && !$this->hasRequiredSettings($productCode))
+		) {
+			$url = fn_url('addons.update?addon=' . $productCode);
+			$message = __('sidekick_app_setup_message', array('[addon]' => $productName, '[url]' => $url));
+			fn_set_notification('N', __('sidekick_app_setup_title'), $message);
+		}
+
+		if (in_array($context, array(LicenseClient::CONTEXT_DEACTIVATE, LicenseClient::CONTEXT_UNINSTALL))) {
+			$this->setLicenseStatus($productCode, '');
+		}
+	}
+	public static function process($context, $productCode = '', $backtrack = 1)
+	{
+		if (empty($context)) {
+			return false;
+		}
+		$client = new LicenseClient();
+
+		$productCode = !empty($productCode) ? $productCode : self::inferAddonName($backtrack);
+		$settings = $client->getSettings($productCode);
+		$data = $client->gatherData($context, $settings);
+		$client->processPreEvents($context, $settings);
+
+		if (!$client->hasRequiredSettings($productCode)) {
+			return false;
+		}
+
+		if ($context == LicenseClient::CONTEXT_ACTIVATE) {
+			$changes = $client->haveSettingsChanged($productCode);
+			$inactive = !$client->isLicenseActive($productCode);
+
+			if ($changes || $inactive) {
+				$response = $client->request($context, $data, $settings);
+			} else {
+				$response = array(
+					'code' => LicenseClient::CODE_NOTIFICATION_SETTINGS_UNCHANGED
+				);
+			}
+		} else {
+			$response = $client->request($context, $data, $settings);
+		}
+
+		return $client->handleResponse($context, $response, $productCode);
+	}
+	public static function activate($productCode = '', $backtrack = 2)
+	{
+		return LicenseClient::process(LicenseClient::CONTEXT_ACTIVATE, $productCode, $backtrack);
+	}
+	public static function deactivate($productCode = '', $backtrack = 2)
+	{
+		return LicenseClient::process(LicenseClient::CONTEXT_DEACTIVATE, $productCode, $backtrack);
 	}
 }

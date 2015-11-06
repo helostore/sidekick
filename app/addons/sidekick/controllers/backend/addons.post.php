@@ -11,12 +11,21 @@
  * @license    https://helostore.com/legal/license-agreement/   License Agreement
  * @version    $Id$
  */
+use Tygh\Registry;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	if ($mode == 'update') {
 		if (!empty($_REQUEST['addon'])) {
+			$action = Registry::get('runtime.action');
 			$addon = $_REQUEST['addon'];
-			fn_sidekick_check($addon);
+			if (fn_sidekick_check($addon) && $action == 'activate') {
+				$is_snapshot_correct = fn_check_addon_snapshot($addon);
+				if ($is_snapshot_correct) {
+					$status = fn_update_addon_status($addon, 'A');
+					Registry::clearCachedKeyValues();
+				}
+			}
 		}
 		return array(CONTROLLER_STATUS_OK);
 	}

@@ -12,6 +12,8 @@
  * @version    $Id$
  */
 
+use HeloStore\ADLS\LicenseClient;
+
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
 require_once 'vendor/autoload.php';
