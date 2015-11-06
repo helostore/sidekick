@@ -17,6 +17,27 @@ use Tygh\Registry;
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
+/**
+ * @param $addon
+ *
+ * @return bool
+ */
+function fn_sidekick_check($addon)
+{
+	if (!\HeloStore\ADLS\LicenseClient::isOwnProduct($addon)) {
+		return false;
+	}
+	if (\HeloStore\ADLS\LicenseClient::activate($addon)) {
+		return true;
+	}
+	return false;
+}
+
+/* Hooks */
+/**
+ * @param $statusNew
+ * @param $statusOld
+ */
 function fn_settings_actions_addons_sidekick(&$statusNew, $statusOld)
 {
 	if ($statusNew == $statusOld) {
@@ -33,5 +54,12 @@ function fn_settings_actions_addons_sidekick(&$statusNew, $statusOld)
 			)));
 		}
 	}
-
 }
+
+function fn_sidekick_user_init($auth, $userInfo, $firstInit)
+{
+	if (fn_is_expired_storage_data('helostore_update_check', SECONDS_IN_DAY * 2)) {
+		\HeloStore\ADLS\LicenseClient::checkUpdates();
+	}
+}
+/* /Hooks */

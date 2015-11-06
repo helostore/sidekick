@@ -27,3 +27,15 @@ msgstr "In order to configure the <b>[addon]</b> add-on, you have to configure i
 msgctxt "Languages::sidekick_app_setup_title"
 msgid "Hello from HELOstore!"
 msgstr "Hello from HELOstore!"
+
+msgctxt "Languages::sidekick.product_update_available"
+msgid "product_update_available"
+msgstr "An update is available for <b>[addon]</b> add-on from version [currentVersion] to [nextVersion]. <a href='[updateUrl]' class='cm-ajax cm-comet cm-dialog-closer'>Click here to update</a>."
+
+msgctxt "Languages::sidekick.product_update_available_title"
+msgid "product_update_available_title"
+msgstr "Fresh code"
+
+msgctxt "Languages::sidekick.check_updates_button"
+msgid "check_updates_button"
+msgstr "Check for updates"

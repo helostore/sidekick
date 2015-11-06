@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$action = Registry::get('runtime.action');
 			$addon = $_REQUEST['addon'];
 			if (fn_sidekick_check($addon) && $action == 'activate') {
+
 				$is_snapshot_correct = fn_check_addon_snapshot($addon);
 				if ($is_snapshot_correct) {
 					$status = fn_update_addon_status($addon, 'A');
@@ -29,33 +30,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		return array(CONTROLLER_STATUS_OK);
 	}
-}
-
-function fn_sidekick_check($addon)
-{
-	$scheme = \Tygh\Addons\SchemesManager::getScheme($addon);
-	if (empty($scheme)) {
-		return false;
-	}
-	try {
-		// xml prop is protected. We care not. We go for it. (XmlScheme3 should have implemented getAuthors()!)
-		$a = (Array)$scheme;
-		$key = "\0*\0_xml";;
-		if (empty($a) || empty($a[$key]) || ! $a[$key] instanceof SimpleXMLElement) {
-			return false;
-		}
-
-		$author = (Array)$a[$key]->authors->author;
-		if (empty($author) || empty($author['name']) || $author['name'] != SIDEKICK_AUTHOR_NAME) {
-			return false;
-		}
-
-		if (\HeloStore\ADLS\LicenseClient::activate($addon)) {
-			return true;
-		}
-	} catch (\Exception $e) {
-		// Doing nothing, having a coffee, chilling.
-	}
-
-	return false;
 }

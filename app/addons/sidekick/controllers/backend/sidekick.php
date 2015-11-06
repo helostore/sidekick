@@ -11,18 +11,24 @@
  * @license    https://helostore.com/legal/license-agreement/   License Agreement
  * @version    $Id$
  */
+use HeloStore\ADLS\UpdateManager;
+use Tygh\Registry;
 
-use HeloStore\ADLS\LicenseClient;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
-require_once 'vendor/autoload.php';
+}
 
-define('SIDEKICK_ADDON_NAME', 'sidekick');
-define('SIDEKICK_AUTHOR_NAME', 'HELOstore');
+if ($mode == 'update') {
+	if (!empty($_REQUEST['product'])) {
+		$productCode = $_REQUEST['product'];
+		\HeloStore\ADLS\LicenseClient::update(array($productCode));
 
-if (AREA == 'A') {
-	fn_register_hooks(
-		'user_init'
-	);
+	}
+	return array(CONTROLLER_STATUS_OK);
+}
+
+if ($mode == 'check_updates') {
+	\HeloStore\ADLS\LicenseClient::checkUpdates();
+	return array(CONTROLLER_STATUS_OK, 'addons.manage');
 }

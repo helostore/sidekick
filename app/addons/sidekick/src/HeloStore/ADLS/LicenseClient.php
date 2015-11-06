@@ -17,6 +17,7 @@ namespace HeloStore\ADLS;
 
 
 use ReflectionClass;
+use SimpleXMLElement;
 use Tygh\Addons\SchemesManager;
 use Tygh\Http;
 use Tygh\Registry;
@@ -29,6 +30,8 @@ class LicenseClient
 	const CONTEXT_UNINSTALL = 'uninstall';
 	const CONTEXT_DEACTIVATE = 'deactivate';
 	const CONTEXT_AUTHENTICATION = 'authentication';
+	const CONTEXT_UPDATE_CHECK = 'update_check';
+	const CONTEXT_UPDATE_REQUEST = 'update_request';
 
 	const API_ENDPOINT = 'helostore.com/index.php?dispatch=adls_api';
 
@@ -67,7 +70,7 @@ class LicenseClient
 
 	public function request($context, $data, $settings)
 	{
-		if ($context != LicenseClient::CONTEXT_AUTHENTICATION) {
+		if (!in_array($context, array(LicenseClient::CONTEXT_AUTHENTICATION, LicenseClient::CONTEXT_UPDATE_CHECK, LicenseClient::CONTEXT_UPDATE_REQUEST))) {
 			$tokenResponse = $this->refreshToken($data, $settings);
 			if (!empty($tokenResponse) && isset($tokenResponse['code']) && $this->isSuccess($tokenResponse['code'])) {
 				$data['token'] = fn_get_storage_data('helostore_token');
@@ -75,12 +78,9 @@ class LicenseClient
 				return $tokenResponse;
 			}
 		}
-
-//		$this->messages[] = 'Requesting: '.$context;
 		$protocol = (defined('WS_DEBUG') ? 'http' : 'https');
 		$url = $protocol . '://' . (defined('WS_DEBUG') ? 'local.' : '') . self::API_ENDPOINT . '.' . $context;
 		$data['context'] = $context;
-
 		$response = Http::get($url, $data);
 
 		$error = Http::getError();
@@ -265,6 +265,53 @@ class LicenseClient
 
 		return true;
 	}
+	public function processPreEvents($context, $settings)
+	{
+		$productCode = $settings['code'];
+		$productName = $settings['name'];
+		if ($context == LicenseClient::CONTEXT_INSTALL
+			|| ($context == LicenseClient::CONTEXT_ACTIVATE && !$this->hasRequiredSettings($productCode))
+		) {
+			$url = fn_url('addons.update?addon=' . $productCode);
+			$message = __('sidekick_app_setup_message', array('[addon]' => $productName, '[url]' => $url));
+			fn_set_notification('N', __('sidekick_app_setup_title'), $message);
+		}
+
+		if (in_array($context, array(LicenseClient::CONTEXT_DEACTIVATE, LicenseClient::CONTEXT_UNINSTALL))) {
+			$this->setLicenseStatus($productCode, '');
+		}
+	}
+	public function requestUpdateCheck($context, $data)
+	{
+		$manager = new UpdateManager();;
+		$data['products'] = $manager->getProducts();
+		unset($data['product']);
+
+		$response = $this->request($context, $data, array());
+
+		if (!empty($response) && !empty($response['updates'])) {
+			$manager->processNotifications($response['updates']);
+		}
+
+		return $response;
+	}
+
+	public function requestUpdateRequest($context, $data, $productCodes)
+	{
+		$manager = new UpdateManager();
+		$data['products'] = $manager->getProducts(array('codes' => $productCodes));
+		unset($data['product']);
+
+		$response = $this->request($context, $data, array());
+aa($response,1);
+		if (!empty($response) && !empty($response['updates'])) {
+			$manager->processNotifications($response['updates']);
+		}
+
+		aa($productCodes);
+
+		return $response;
+	}
 
 
 
@@ -362,39 +409,26 @@ class LicenseClient
 	}
 
 
-
-
 	public static function helperInfo($productCode)
 	{
 		$client = new LicenseClient();
 		$active = null;
 		if (!empty($productCode)) {
 			$active = $client->isLicenseActive($productCode);
+			$settings = $client->getSettings($productCode);
+			$version = !empty($settings) && !empty($settings['version']) ? $settings['version'] : 0;
 		}
+
+		LicenseClient::checkUpdates();
 
 		return '
 			<div style="text-align: center;padding:5px 10%;">
 				' . ($active !== true ? '<p><input class="btn btn-primary " type="submit" value="' . __('activate') . '" name="dispatch[addons.update.activate]"></p>' : '') . '
 				<p>If you lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target="_blank" href="https://helostore.com/contact">https://helostore.com/contact</a> (opens new tab).</p>
+				' . (!empty($version) ? '<p>' . __('version') . ': ' . $version . '</p>' : '') . '
+				<p><input class="btn btn-tertiary cm-ajax" type="submit" value="' . __('sidekick.check_updates_button') . '" name="dispatch[sidekick.check_updates]"></p>
 			</div>
 			';
-	}
-
-	public function processPreEvents($context, $settings)
-	{
-		$productCode = $settings['code'];
-		$productName = $settings['name'];
-		if ($context == LicenseClient::CONTEXT_INSTALL
-			|| ($context == LicenseClient::CONTEXT_ACTIVATE && !$this->hasRequiredSettings($productCode))
-		) {
-			$url = fn_url('addons.update?addon=' . $productCode);
-			$message = __('sidekick_app_setup_message', array('[addon]' => $productName, '[url]' => $url));
-			fn_set_notification('N', __('sidekick_app_setup_title'), $message);
-		}
-
-		if (in_array($context, array(LicenseClient::CONTEXT_DEACTIVATE, LicenseClient::CONTEXT_UNINSTALL))) {
-			$this->setLicenseStatus($productCode, '');
-		}
 	}
 	public static function process($context, $productCode = '', $backtrack = 1)
 	{
@@ -407,6 +441,16 @@ class LicenseClient
 		$settings = $client->getSettings($productCode);
 		$data = $client->gatherData($context, $settings);
 		$client->processPreEvents($context, $settings);
+
+		if ($context == LicenseClient::CONTEXT_UPDATE_CHECK) {
+			$response = $client->requestUpdateCheck($context, $data);
+			return $client->handleResponse($context, $response, $productCode);
+		}
+		if ($context == LicenseClient::CONTEXT_UPDATE_REQUEST) {
+			$response = $client->requestUpdateRequest($context, $data, $productCode);
+			return $client->handleResponse($context, $response, $productCode);
+		}
+
 
 		if (!$client->hasRequiredSettings($productCode)) {
 			return false;
@@ -436,5 +480,15 @@ class LicenseClient
 	public static function deactivate($productCode = '', $backtrack = 2)
 	{
 		return LicenseClient::process(LicenseClient::CONTEXT_DEACTIVATE, $productCode, $backtrack);
+	}
+
+	public static function checkUpdates()
+	{
+		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK);
+	}
+
+	public static function update($productCodes)
+	{
+		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_REQUEST, $productCodes);
 	}
 }
