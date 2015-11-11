@@ -34,7 +34,7 @@ msgstr "In order to use the <b>[addon]</b> add-on, you have to configure it by <
 
 msgctxt "Languages::sidekick.app_setup_title"
 msgid "app_setup_message"
-msgstr "Hello from HELOstore!"
+msgstr "Setup"
 
 msgctxt "Languages::sidekick.product_update_available"
 msgid "product_update_available"

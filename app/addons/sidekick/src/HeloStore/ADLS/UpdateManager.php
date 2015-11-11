@@ -17,6 +17,7 @@ namespace HeloStore\ADLS;
 
 use Tygh\Addons\SchemesManager;
 use Tygh\Http;
+use Tygh\Registry;
 use Tygh\Settings;
 
 class UpdateManager
@@ -45,12 +46,12 @@ class UpdateManager
 			}
 		}
 	}
-	public function update($updates)
-	{
-		foreach ($updates as $productCode => $update) {
-			$this->updateAddon($productCode, $update);
-		}
-	}
+//	public function update($updates)
+//	{
+//		foreach ($updates as $productCode => $update) {
+//			$this->updateAddon($productCode, $update);
+//		}
+//	}
 
 	public function getProducts($params = array())
 	{
@@ -112,17 +113,104 @@ class UpdateManager
 		return false;
 	}
 
-	public function updateAddon($productCode, $update)
+	public function updateAddon($productCode, $settings, $content)
 	{
-		$updateUrl = $update['updateUrl'];
-		$content = fn_get_contents($updateUrl);
-		aa(Http::getError());
-aa($content,1);
-		if (fn_put_contents($target_restore_file_path, $content, '', $target_restore_file_perms)) {
+		define('ADLS_UPDATING', true);
+		$installed = db_get_field("SELECT status FROM ?:addons WHERE addon = ?s", $productCode);
+		if (!empty($installed)) {
+			$section = Settings::instance()->getSectionByName($productCode, Settings::ADDON_SECTION);
+			$prevSettings = Settings::instance()->getList($section['section_id'], 0, true);
+		}
+
+		$tempPath = fn_get_cache_path(false) . 'tmp/';
+		$extractPath = $tempPath . $productCode . '/';
+		$archivePath = $tempPath . '/' . $productCode . '.zip';
+		if (!fn_put_contents($archivePath, $content)) {
+			// error
+			aa('Error at ' . __LINE__);
+			return false;
+		}
+
+		fn_rm($extractPath);
+		fn_mkdir($extractPath);
+
+
+		if (!fn_decompress_files($archivePath, $extractPath)) {
+			// error
+			aa('Error at ' . __LINE__);
+			return false;
+		}
+
+		$issueDirs = fn_check_copy_ability($extractPath, Registry::get('config.dir.root'));
+		if (!empty($issueDirs)) {
+			$message = __('sidekick.product_update_file_permissions_error', array('[files]' => implode("<br>", $issueDirs)));
+			fn_set_notification('E', __('error'), $message, 'S');
+//			Tygh::$app['view']->assign('non_writable', $non_writable_folders);
+//
+//			if (defined('AJAX_REQUEST')) {
+//				Tygh::$app['view']->display('views/addons/components/correct_permissions.tpl');
+//
+//				exit();
+//			}
+
+		} else {
+
+			$rootPath = Registry::get('config.dir.root');
+
+			if (!fn_copy($extractPath, $rootPath)) {
+				// error
+				aa('Error at ' . __LINE__);
+				return false;
+			}
+			fn_rm($extractPath);
+
+
+			if (!empty($installed)) {
+				fn_uninstall_addon($productCode, false);
+			}
+			if (!fn_install_addon($productCode)) {
+				// error
+				aa('Error at ' . __LINE__);
+				return false;
+			}
+
+			if (!empty($installed)) {
+//				$section = Settings::instance()->getSectionByName($productCode, Settings::ADDON_SECTION);
+//				$currentSettings = Settings::instance()->getList($section['section_id'], 0, true);
+
+
+			}
+
+			return true;
+
+			// restore add-on settings
+//			$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, true);
+//			aa($settings);
+
+//			fn_update_addon($prevSettings);
+
 
 		}
-		aa(func_get_args());
 
-		exit;
+
+
+//		// Re-create source folder
+//		fn_rm($extract_path);
+//		fn_mkdir($extract_path);
+//
+//		fn_copy($addon_pack['path'], $extract_path . $productCode);
+//
+//
+//
+//		$updateUrl = $update['updateUrl'];
+//		$content = fn_get_contents($updateUrl);
+//		aa(Http::getError());
+//aa($content,1);
+//		if (fn_put_contents($target_restore_file_path, $content, '', $target_restore_file_perms)) {
+//
+//		}
+//		aa(func_get_args());
+
+		return false;
 	}
 }

@@ -55,6 +55,9 @@ class LicenseClient
 	const CODE_ERROR_INVALID_CREDENTIALS_COMBINATION = 452;
 	const CODE_ERROR_MISMATCH_CREDENTIALS_COMBINATION = 453;
 
+	const CODE_ERROR_UPDATE_INVALID_REMOTE_PATH = 460;
+	const CODE_ERROR_UPDATE_FAILED_REMOTE_FILE_OPEN = 461;
+
 	const CODE_NOTIFICATION_SETTINGS_UNCHANGED = 200;
 
 	const CODE_TYPE_ERROR = 'error';
@@ -302,7 +305,7 @@ class LicenseClient
 		) {
 			$url = fn_url('addons.update?addon=' . $productCode);
 			$message = __('sidekick.app_setup_message', array('[addon]' => $productName, '[url]' => $url));
-			fn_set_notification('N', __('sidekick.app_setup_title'), $message);
+			fn_set_notification('N', __('sidekick.app_setup_title'), $message, 'S');
 		}
 
 		if (in_array($context, array(LicenseClient::CONTEXT_DEACTIVATE, LicenseClient::CONTEXT_UNINSTALL))) {
@@ -349,7 +352,11 @@ class LicenseClient
 		$data = $this->gatherData($context, $settings);
 
 		$response = $this->request($context, $data, $settings);
-		aa($response,1);
+		$manager = new UpdateManager();
+		$result = $manager->updateAddon($productCode, $settings, $response);
+		aa('Result: ' . $result);
+//		exit;
+//		$manager->upda
 	}
 
 
@@ -509,7 +516,6 @@ class LicenseClient
 		if ($context == LicenseClient::CONTEXT_ACTIVATE) {
 			$changes = $client->haveSettingsChanged($productCode);
 			$inactive = !$client->isLicenseActive($productCode);
-			fnx('Changes: ' . $changes . ' Inactive: ' . $inactive);
 			if ($changes || $inactive) {
 				$response = $client->request($context, $data, $settings);
 			} else {

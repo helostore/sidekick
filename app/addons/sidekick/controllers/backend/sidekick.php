@@ -23,6 +23,7 @@ if ($mode == 'update') {
 	if (!empty($_REQUEST['product'])) {
 		$productCode = $_REQUEST['product'];
 		\HeloStore\ADLS\LicenseClient::update(array($productCode));
+		fn_redirect('addons.manage');
 
 	}
 	return array(CONTROLLER_STATUS_OK);
