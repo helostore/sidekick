@@ -33,6 +33,17 @@ function fn_sidekick_check($addon)
 	return false;
 }
 
+if (!function_exists('fn_helostore_info')) :
+	function fn_helostore_info($productCode)
+	{
+		if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
+			return \HeloStore\ADLS\LicenseClient::helperInfo($productCode);
+		}
+
+		return '';
+	}
+endif;
+
 /* Hooks */
 /**
  * @param $statusNew
@@ -48,7 +59,7 @@ function fn_settings_actions_addons_sidekick(&$statusNew, $statusOld)
 		if (!empty($dependencies)) {
 			$scheme = SchemesManager::getScheme(SIDEKICK_ADDON_NAME);
 			$statusNew = 'A';
-			fn_set_notification('W', __('warning'), __('sidekick_dependency_breakage_warning', array(
+			fn_set_notification('W', __('warning'), __('sidekick.dependency_breakage_warning', array(
 				'[addons]' => implode(', ', SchemesManager::getNames($dependencies)),
 				'[addon_name]' => $scheme->getName()
 			)));

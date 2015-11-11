@@ -13,19 +13,27 @@ msgid "HELOstore's sidekick add-on, used to keep all your other add-ons and them
 msgstr "HELOstore's sidekick add-on, used to keep all your other add-ons and themes up-to-date"
 
 msgctxt "Languages::description::sidekick"
-msgid ""
+msgid "sidekick"
 msgstr "HELOstore's sidekick add-on, used to keep all your other add-ons and themes up-to-date"
 
-msgctxt "Languages::sidekick_dependency_breakage_warning"
-msgid "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."
+msgctxt "SettingsOptions::sidekick::email"
+msgid "HELOstore email"
+msgstr "HELOstore email"
+
+msgctxt "SettingsOptions::sidekick::password"
+msgid "HELOstore password"
+msgstr "HELOstore password"
+
+msgctxt "Languages::sidekick.dependency_breakage_warning"
+msgid "dependency_breakage_warning"
 msgstr "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."
 
-msgctxt "Languages::sidekick_app_setup_message"
-msgid "In order to configure the <b>[addon]</b> add-on, you have to configure it by <a href='[url]'>clicking here</a>. Thanks."
-msgstr "In order to configure the <b>[addon]</b> add-on, you have to configure it by <a href='[url]'>clicking here</a>. Thanks."
+msgctxt "Languages::sidekick.app_setup_message"
+msgid "app_setup_message"
+msgstr "In order to use the <b>[addon]</b> add-on, you have to configure it by <a href='[url]'>clicking here</a>. Thanks."
 
-msgctxt "Languages::sidekick_app_setup_title"
-msgid "Hello from HELOstore!"
+msgctxt "Languages::sidekick.app_setup_title"
+msgid "app_setup_message"
 msgstr "Hello from HELOstore!"
 
 msgctxt "Languages::sidekick.product_update_available"
@@ -39,3 +47,11 @@ msgstr "Fresh code"
 msgctxt "Languages::sidekick.check_updates_button"
 msgid "check_updates_button"
 msgstr "Check for updates"
+
+msgctxt "Languages::sidekick.license_status_active"
+msgid "license_status_active"
+msgstr "License is <b>active</b>."
+
+msgctxt "Languages::sidekick.contact_hint"
+msgid "contact_hint"
+msgstr "If you have lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."

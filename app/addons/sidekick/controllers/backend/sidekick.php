@@ -27,8 +27,3 @@ if ($mode == 'update') {
 	}
 	return array(CONTROLLER_STATUS_OK);
 }
-
-if ($mode == 'check_updates') {
-	\HeloStore\ADLS\LicenseClient::checkUpdates();
-	return array(CONTROLLER_STATUS_OK, 'addons.manage');
-}

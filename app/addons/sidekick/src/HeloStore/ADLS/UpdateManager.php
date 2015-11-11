@@ -16,6 +16,7 @@ namespace HeloStore\ADLS;
 
 
 use Tygh\Addons\SchemesManager;
+use Tygh\Http;
 use Tygh\Settings;
 
 class UpdateManager
@@ -113,6 +114,15 @@ class UpdateManager
 
 	public function updateAddon($productCode, $update)
 	{
+		$updateUrl = $update['updateUrl'];
+		$content = fn_get_contents($updateUrl);
+		aa(Http::getError());
+aa($content,1);
+		if (fn_put_contents($target_restore_file_path, $content, '', $target_restore_file_perms)) {
+
+		}
 		aa(func_get_args());
+
+		exit;
 	}
 }

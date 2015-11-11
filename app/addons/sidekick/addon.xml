@@ -7,6 +7,24 @@
     <status>active</status>
     <has_icon>Y</has_icon>
     <default_language>en</default_language>
+    <settings edition_type="ROOT">
+        <sections>
+            <section id="general">
+                <items>
+                    <item id="email">
+                        <type>input</type>
+                    </item>
+                    <item id="password">
+                        <type>password</type>
+                    </item>
+                    <item id="info">
+                        <type>info</type>
+                        <handler>fn_helostore_info,sidekick</handler>
+                    </item>
+                </items>
+            </section>
+        </sections>
+    </settings>
     <authors>
         <author>
             <name>HELOstore</name>

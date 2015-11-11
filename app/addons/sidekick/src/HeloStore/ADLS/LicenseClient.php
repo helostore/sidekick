@@ -32,6 +32,7 @@ class LicenseClient
 	const CONTEXT_AUTHENTICATION = 'authentication';
 	const CONTEXT_UPDATE_CHECK = 'update_check';
 	const CONTEXT_UPDATE_REQUEST = 'update_request';
+	const CONTEXT_UPDATE_DOWNLOAD = 'update_download';
 
 	const API_ENDPOINT = 'helostore.com/index.php?dispatch=adls_api';
 
@@ -70,7 +71,10 @@ class LicenseClient
 
 	public function request($context, $data, $settings)
 	{
-		if (!in_array($context, array(LicenseClient::CONTEXT_AUTHENTICATION, LicenseClient::CONTEXT_UPDATE_CHECK, LicenseClient::CONTEXT_UPDATE_REQUEST))) {
+		if (!in_array($context, array(
+				LicenseClient::CONTEXT_AUTHENTICATION,
+				LicenseClient::CONTEXT_UPDATE_CHECK))) {
+
 			$tokenResponse = $this->refreshToken($data, $settings);
 			if (!empty($tokenResponse) && isset($tokenResponse['code']) && $this->isSuccess($tokenResponse['code'])) {
 				$data['token'] = fn_get_storage_data('helostore_token');
@@ -78,8 +82,8 @@ class LicenseClient
 				return $tokenResponse;
 			}
 		}
-		$protocol = (defined('WS_DEBUG') ? 'http' : 'https');
-		$url = $protocol . '://' . (defined('WS_DEBUG') ? 'local.' : '') . self::API_ENDPOINT . '.' . $context;
+
+		$url = $this->formatApiUrl($context);
 		$data['context'] = $context;
 		$response = Http::get($url, $data);
 
@@ -98,6 +102,22 @@ class LicenseClient
 		}
 
 		return $response;
+	}
+
+	public function formatApiUrl($context, $args = array())
+	{
+		$protocol = (defined('WS_DEBUG') ? 'http' : 'https');
+		$url = $protocol . '://' . (defined('WS_DEBUG') ? 'local.' : '') . self::API_ENDPOINT . '.' . $context;
+		if (!empty($args)) {
+			$query = array();
+			foreach ($args as $k => $v) {
+				$query[] = $k . '=' . urlencode($v);
+			}
+			$query = implode('&', $query);
+			$url .= '&' . $query;
+		}
+
+		return $url;
 	}
 
 	public function gatherData($context, $settings)
@@ -186,8 +206,15 @@ class LicenseClient
 
 
 		if ($context == LicenseClient::CONTEXT_ACTIVATE) {
-			$status = ($success ? LicenseClient::LICENSE_STATUS_ACTIVE : '');
-			$this->setLicenseStatus($productCode, $status);
+			if ($success) {
+				$this->setLicenseStatus($productCode, LicenseClient::LICENSE_STATUS_ACTIVE);
+			} else if ($error) {
+				$this->setLicenseStatus($productCode, '');
+			} else {
+				// nothing changed, stay put
+			}
+		} else if ($context == LicenseClient::CONTEXT_UPDATE_REQUEST) {
+
 		}
 
 		if ($success) {
@@ -197,11 +224,12 @@ class LicenseClient
 				// There are silent responses, you know..
 			}
 		} else if ($error || $alien) {
-			if ($codeName) {
+			if ($codeName !== false) {
 				fn_set_notification('E',  __('error'), __($codeName) . ($debug ? ' (' . $codeName . ')' : ''));
 			} else {
 				$message = json_encode($response);
 				fn_set_notification('E', 'Unknown error', $message . ($debug ? ' (' . $codeName . ')' : ''));
+				fn_set_notification('E', 'Unknown error trace', btx());
 			}
 		}
 
@@ -273,8 +301,8 @@ class LicenseClient
 			|| ($context == LicenseClient::CONTEXT_ACTIVATE && !$this->hasRequiredSettings($productCode))
 		) {
 			$url = fn_url('addons.update?addon=' . $productCode);
-			$message = __('sidekick_app_setup_message', array('[addon]' => $productName, '[url]' => $url));
-			fn_set_notification('N', __('sidekick_app_setup_title'), $message);
+			$message = __('sidekick.app_setup_message', array('[addon]' => $productName, '[url]' => $url));
+			fn_set_notification('N', __('sidekick.app_setup_title'), $message);
 		}
 
 		if (in_array($context, array(LicenseClient::CONTEXT_DEACTIVATE, LicenseClient::CONTEXT_UNINSTALL))) {
@@ -303,14 +331,25 @@ class LicenseClient
 		unset($data['product']);
 
 		$response = $this->request($context, $data, array());
-aa($response,1);
 		if (!empty($response) && !empty($response['updates'])) {
 			$manager->processNotifications($response['updates']);
+//			foreach ($response['updates'] as $update) {
+//				$this->requestUpdateDownload($update);
+//			}
+//			$manager->update($response['updates']);
 		}
 
-		aa($productCodes);
-
 		return $response;
+	}
+
+	public function requestUpdateDownload($productCode)
+	{
+		$context = LicenseClient::CONTEXT_UPDATE_DOWNLOAD;
+		$settings = $this->getSettings($productCode);
+		$data = $this->gatherData($context, $settings);
+
+		$response = $this->request($context, $data, $settings);
+		aa($response,1);
 	}
 
 
@@ -413,20 +452,26 @@ aa($response,1);
 	{
 		$client = new LicenseClient();
 		$active = null;
+		$productName = '';
 		if (!empty($productCode)) {
 			$active = $client->isLicenseActive($productCode);
 			$settings = $client->getSettings($productCode);
 			$version = !empty($settings) && !empty($settings['version']) ? $settings['version'] : 0;
+			$productName = !empty($settings) && !empty($settings['name']) ? $settings['name'] : '';
 		}
 
-		LicenseClient::checkUpdates();
+		$mode = Registry::get('runtime.mode');
+		if (!in_array($mode, array('reinstall'))) {
+			LicenseClient::checkUpdates();
+		}
 
 		return '
 			<div style="text-align: center;padding:5px 10%;">
-				' . ($active !== true ? '<p><input class="btn btn-primary " type="submit" value="' . __('activate') . '" name="dispatch[addons.update.activate]"></p>' : '') . '
-				<p>If you lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target="_blank" href="https://helostore.com/contact">https://helostore.com/contact</a> (opens new tab).</p>
-				' . (!empty($version) ? '<p>' . __('version') . ': ' . $version . '</p>' : '') . '
-				<p><input class="btn btn-tertiary cm-ajax" type="submit" value="' . __('sidekick.check_updates_button') . '" name="dispatch[sidekick.check_updates]"></p>
+				' . ($active === true ? '<p>' . __('sidekick.license_status_active') . '</p>' : '') . '
+				' . ($active !== true ? '<p><input class="btn btn-primary cm-ajax" type="submit" value="' . __('activate') . '" name="dispatch[addons.update.activate]"></p>' : '') . '
+				<p>' . __('sidekick.contact_hint') . '</p>
+				' . (!empty($version) ? '<p>' . $productName . ' ' . __('version') . ': ' . $version . '</p>' : '') . '
+				<p><input class="btn btn-tertiary cm-ajax" type="submit" value="' . __('sidekick.check_updates_button') . '" name="dispatch[addons.update.check_updates]"></p>
 			</div>
 			';
 	}
@@ -448,6 +493,11 @@ aa($response,1);
 		}
 		if ($context == LicenseClient::CONTEXT_UPDATE_REQUEST) {
 			$response = $client->requestUpdateRequest($context, $data, $productCode);
+			if (!empty($response['updates'])) {
+				foreach ($response['updates'] as $update) {
+					$client->requestUpdateDownload($update['code']);
+				}
+			}
 			return $client->handleResponse($context, $response, $productCode);
 		}
 
@@ -459,7 +509,7 @@ aa($response,1);
 		if ($context == LicenseClient::CONTEXT_ACTIVATE) {
 			$changes = $client->haveSettingsChanged($productCode);
 			$inactive = !$client->isLicenseActive($productCode);
-
+			fnx('Changes: ' . $changes . ' Inactive: ' . $inactive);
 			if ($changes || $inactive) {
 				$response = $client->request($context, $data, $settings);
 			} else {

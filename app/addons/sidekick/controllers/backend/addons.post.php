@@ -19,15 +19,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (!empty($_REQUEST['addon'])) {
 			$action = Registry::get('runtime.action');
 			$addon = $_REQUEST['addon'];
-			if (fn_sidekick_check($addon) && $action == 'activate') {
-
+			$activated = fn_sidekick_check($addon);
+			if ($activated && $action == 'activate') {
 				$is_snapshot_correct = fn_check_addon_snapshot($addon);
 				if ($is_snapshot_correct) {
 					$status = fn_update_addon_status($addon, 'A');
 					Registry::clearCachedKeyValues();
 				}
 			}
+			if ($activated && $action == 'check_updates') {
+				\HeloStore\ADLS\LicenseClient::checkUpdates();
+				return array(CONTROLLER_STATUS_OK, 'addons.manage');
+			}
 		}
 		return array(CONTROLLER_STATUS_OK);
 	}
+}
+
+
+if ($mode == 'check_updates') {
+	\HeloStore\ADLS\LicenseClient::checkUpdates();
+	return array(CONTROLLER_STATUS_OK, 'addons.manage');
 }
