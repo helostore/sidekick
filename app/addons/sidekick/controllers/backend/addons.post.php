@@ -16,29 +16,23 @@ use Tygh\Registry;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($mode == 'update') {
 		if (!empty($_REQUEST['addon'])) {
-
 			$action = Registry::get('runtime.action');
 			$addon = $_REQUEST['addon'];
-			$activated = fn_sidekick_check($addon);
-			if ($activated) {
+			$ownProduct = \HeloStore\ADLS\UpdateManager::isOwnProduct($addon);
+
+			if ($ownProduct) {
 				if ($action == 'activate') {
-					$is_snapshot_correct = fn_check_addon_snapshot($addon);
-					if ($is_snapshot_correct) {
-						$status = fn_update_addon_status($addon, 'A');
+					$status = fn_update_addon_status($addon, 'A');
+					if ($status == 'A') {
 						Registry::clearCachedKeyValues();
 					}
 				}
 				if ($action == 'check_updates') {
 					\HeloStore\ADLS\LicenseClient::checkUpdates();
-					return array(CONTROLLER_STATUS_OK, 'addons.manage');
 				}
-			}
-			if (in_array($action, array('activate', 'check_updates'))) {
-				fn_delete_notification('changes_saved');
+				return array(CONTROLLER_STATUS_OK, 'addons.manage');
 			}
 		}
-
-		return array(CONTROLLER_STATUS_REDIRECT, 'addons.manage');
 	}
 }
 

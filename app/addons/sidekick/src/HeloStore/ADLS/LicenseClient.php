@@ -50,6 +50,8 @@ class LicenseClient
 	const CODE_ERROR_MISSING_LICENSE = 405;
 	const CODE_ERROR_MISSING_DOMAIN = 406;
 	const CODE_ERROR_COMMUNICATION_FAILURE = 407;
+	const CODE_ERROR_PRODUCT_SUBSCRIPTION_TYPE_NOT_FOUND = 420;
+
 	const CODE_ERROR_INVALID_LICENSE_OR_DOMAIN = 450;
 	const CODE_ERROR_INVALID_CUSTOMER_EMAIL = 451;
 	const CODE_ERROR_INVALID_CREDENTIALS_COMBINATION = 452;
@@ -276,7 +278,7 @@ class LicenseClient
 			|| empty($settings['password'])
 			|| empty($settings['license'])
 		) {
-			Registry::set('addons.' . $productCode, $settings);
+//			Registry::set('addons.' . $productCode, $settings);
 
 			return true;
 		}

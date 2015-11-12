@@ -19,12 +19,18 @@
                     </item>
                     <item id="info">
                         <type>info</type>
-                        <handler>fn_helostore_info,sidekick</handler>
+                        <handler>fn_sidekick_info,autoimage_lite</handler>
                     </item>
                 </items>
             </section>
         </sections>
     </settings>
+    <compatibility>
+        <dependencies></dependencies>
+        <core_version>
+            <min>4.0.0</min>
+        </core_version>
+    </compatibility>
     <authors>
         <author>
             <name>HELOstore</name>

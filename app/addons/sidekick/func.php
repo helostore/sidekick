@@ -33,16 +33,14 @@ function fn_sidekick_check($addon)
 	return false;
 }
 
-if (!function_exists('fn_helostore_info')) :
-	function fn_helostore_info($productCode)
-	{
-		if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
-			return \HeloStore\ADLS\LicenseClient::helperInfo($productCode);
-		}
-
-		return '';
+function fn_sidekick_info($productCode)
+{
+	if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
+		return \HeloStore\ADLS\LicenseClient::helperInfo($productCode);
 	}
-endif;
+
+	return '';
+}
 
 /* Hooks */
 /**

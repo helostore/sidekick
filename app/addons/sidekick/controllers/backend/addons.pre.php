@@ -13,13 +13,3 @@
  */
 use Tygh\Registry;
 
-if (!function_exists('fn_helostore_info')) :
-	function fn_helostore_info($productCode)
-	{
-		if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
-			return \HeloStore\ADLS\LicenseClient::helperInfo($productCode);
-		}
-
-		return '';
-	}
-endif;
