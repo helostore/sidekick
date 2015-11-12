@@ -11,23 +11,7 @@
  * @license    https://helostore.com/legal/license-agreement/   License Agreement
  * @version    $Id$
  */
-
-use HeloStore\ADLS\LicenseClient;
-
-if (!defined('BOOTSTRAP')) { die('Access denied'); }
-
-require_once 'vendor/autoload.php';
-
-define('SIDEKICK_ADDON_NAME', 'sidekick');
-define('SIDEKICK_AUTHOR_NAME', 'HELOstore');
-
-
-if (AREA == 'A') {
-	fn_register_hooks(
-		'user_init'
-	);
-}
-
+use Tygh\Registry;
 
 if (!function_exists('fn_helostore_info')) :
 	function fn_helostore_info($productCode)

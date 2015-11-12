@@ -228,7 +228,7 @@ class LicenseClient
 			}
 		} else if ($error || $alien) {
 			if ($codeName !== false) {
-				fn_set_notification('E',  __('error'), __($codeName) . ($debug ? ' (' . $codeName . ')' : ''));
+				fn_set_notification('E',  __('error'), __('sidekick.' . $codeName) . ($debug ? ' (' . $codeName . ')' : ''));
 			} else {
 				$message = json_encode($response);
 				fn_set_notification('E', 'Unknown error', $message . ($debug ? ' (' . $codeName . ')' : ''));
@@ -289,7 +289,7 @@ class LicenseClient
 
 		if (empty($settings['email'])
 			|| empty($settings['password'])
-			|| empty($settings['license'])
+//			|| empty($settings['license'])
 		) {
 			return false;
 		}
@@ -300,13 +300,13 @@ class LicenseClient
 	{
 		$productCode = $settings['code'];
 		$productName = $settings['name'];
-		if ($context == LicenseClient::CONTEXT_INSTALL
-			|| ($context == LicenseClient::CONTEXT_ACTIVATE && !$this->hasRequiredSettings($productCode))
-		) {
-			$url = fn_url('addons.update?addon=' . $productCode);
-			$message = __('sidekick.app_setup_message', array('[addon]' => $productName, '[url]' => $url));
-			fn_set_notification('N', __('sidekick.app_setup_title'), $message, 'S');
-		}
+//		if ($context == LicenseClient::CONTEXT_INSTALL
+//			|| ($context == LicenseClient::CONTEXT_ACTIVATE && !$this->hasRequiredSettings($productCode))
+//		) {
+//			$url = fn_url('addons.update?addon=' . $productCode);
+//			$message = __('sidekick.app_setup_message', array('[addon]' => $productName, '[url]' => $url));
+//			fn_set_notification('N', __('sidekick.app_setup_title'), $message, 'S');
+//		}
 
 		if (in_array($context, array(LicenseClient::CONTEXT_DEACTIVATE, LicenseClient::CONTEXT_UNINSTALL))) {
 			$this->setLicenseStatus($productCode, '');

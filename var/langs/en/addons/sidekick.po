@@ -55,3 +55,71 @@ msgstr "License is <b>active</b>."
 msgctxt "Languages::sidekick.contact_hint"
 msgid "contact_hint"
 msgstr "If you have lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."
+
+msgctxt "Languages::sidekick.contact_hint"
+msgid "contact_hint"
+msgstr "If you have lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."
+
+msgctxt "Languages::sidekick.code_error_invalid_token"
+msgid "code_error_invalid_token"
+msgstr "Communication with HELOstore has failed because your token has expired. Please try again or contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_error_missing_token"
+msgid "code_error_missing_token"
+msgstr "Communication with HELOstore has failed because your token is missing. Please try again or contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_error_alien"
+msgid "code_error_alien"
+msgstr "Oops! Something went wrong! Help us improve your experience by sending an error report at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_error_missing_email"
+msgid "code_error_missing_email"
+msgstr "Please enter your customer email."
+
+msgctxt "Languages::sidekick.code_error_missing_password"
+msgid "code_error_missing_password"
+msgstr "Please enter your customer password."
+
+msgctxt "Languages::sidekick.code_error_missing_license"
+msgid "code_error_missing_license"
+msgstr "Please enter your license key."
+
+msgctxt "Languages::sidekick.code_error_missing_domain"
+msgid "code_error_missing_domain"
+msgstr "Communication with HELOstore has failed because your domain was not found. Please try again or contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_error_communication_failure"
+msgid "code_error_communication_failure"
+msgstr "Communication with HELOstore has failed. Please try again or contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_error_invalid_license_or_domain"
+msgid "code_error_invalid_license_or_domain"
+msgstr "Invalid license or domain."
+
+msgctxt "Languages::sidekick.code_error_invalid_customer_email"
+msgid "code_error_invalid_customer_email"
+msgstr "Invalid customer email."
+
+msgctxt "Languages::sidekick.code_error_invalid_credentials_combination"
+msgid "code_error_invalid_credentials_combination"
+msgstr "Invalid customer email and/or password combination."
+
+msgctxt "Languages::sidekick.code_error_mismatch_credentials_combination"
+msgid "code_error_mismatch_credentials_combination"
+msgstr "Invalid customer email and password combination."
+
+msgctxt "Languages::sidekick.code_error_update_invalid_remote_path"
+msgid "code_error_update_invalid_remote_path"
+msgstr "Oops! Something went wrong while preparing the update! Please try again or help us improve your experience by sending an error report at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_error_update_failed_remote_file_open"
+msgid "code_error_update_failed_remote_file_open"
+msgstr "Oops! Something went wrong while downloading the update! Please try again or help us improve your experience by sending an error report at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_success"
+msgid "code_success"
+msgstr ""
+
+msgctxt "Languages::sidekick.code_notification_settings_unchanged"
+msgid "code_notification_settings_unchanged"
+msgstr ""

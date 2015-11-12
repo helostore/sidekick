@@ -2,7 +2,7 @@
 <addon scheme="3.0">
     <id>sidekick</id>
     <version>0.1.4</version>
-    <priority>1010111</priority>
+    <priority>10101</priority>
     <position>0</position>
     <status>active</status>
     <has_icon>Y</has_icon>
