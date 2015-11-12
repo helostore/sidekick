@@ -22,8 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 			if ($ownProduct) {
 				if ($action == 'activate') {
-					$status = fn_update_addon_status($addon, 'A');
+					$activated = false;
+					$status = Registry::get('addons.' . $addon . '.status');
 					if ($status == 'A') {
+						$activated = fn_sidekick_check($addon);
+					} else {
+						$status = fn_update_addon_status($addon, 'A');
+						if ($status == 'A') {
+							$activated = true;
+						}
+					}
+					if ($activated) {
 						Registry::clearCachedKeyValues();
 					}
 				}
