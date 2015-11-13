@@ -158,7 +158,6 @@ class UpdateManager
 
 	public function preserveAddonSettings($productCode)
 	{
-		ws_log_file('preserveAddonSettings called()');
 		static $prevSettings = null;
 		$persistentSettings = array('email', 'password', 'license');
 		// on first call, store previous settings
@@ -172,8 +171,7 @@ class UpdateManager
 					}
 				}
 			}
-			ws_log_file('prevSettings');
-			ws_log_file($prevSettings);
+
 			return !empty($prevSettings);
 		}
 
@@ -191,15 +189,9 @@ class UpdateManager
 			if (empty($setting['value']) && !empty($prevSettings[$setting['name']])) {
 				$currentSettings[$i]['value'] = $prevSettings[$setting['name']];
 				$value = $prevSettings[$setting['name']];
-				db_query('UPDATE ?:settings_objects SET value = ?i WHERE object_id = ?i', $value, $setting['object_id']);
+				db_query('UPDATE ?:settings_objects SET value = ?s WHERE object_id = ?i', $value, $setting['object_id']);
 				$changes = true;
 			}
-		}
-		ws_log_file('$currentSettings');
-		ws_log_file($currentSettings);
-		if ($changes) {
-			ws_log_file('CHANGESSSSSSSSSSSSSSS updating');
-			// fn_update_addon($currentSettings);
 		}
 
 		return $changes;
