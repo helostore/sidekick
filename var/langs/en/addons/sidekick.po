@@ -58,7 +58,7 @@ msgstr "If you have lost your email, password or license key, or you\'re having 
 
 msgctxt "Languages::sidekick.update_successful"
 msgid "update_successful"
-msgstr "Very well! [product] has been updated successfully"
+msgstr "Great! <b>[product]</b> has been successfully updated!"
 
 msgctxt "Languages::sidekick.code_error_invalid_token"
 msgid "code_error_invalid_token"
