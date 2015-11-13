@@ -150,6 +150,7 @@ class LicenseClient
 				'status' => isset($settings['status']) ? $settings['status'] : '',
 			);
 			$data['email'] = isset($settings['email']) ? $settings['email'] : '';
+			$data['password'] = isset($settings['password']) ? $settings['password'] : '';
 		}
 
 		return $data;
