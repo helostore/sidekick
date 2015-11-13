@@ -60,6 +60,8 @@ msgctxt "Languages::sidekick.update_successful"
 msgid "update_successful"
 msgstr "Great! <b>[product]</b> has been successfully updated!"
 
+#. BEGIN CODES
+
 msgctxt "Languages::sidekick.code_error_invalid_token"
 msgid "code_error_invalid_token"
 msgstr "Communication with HELOstore has failed because your token has expired. Please try again or contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
@@ -92,6 +94,14 @@ msgctxt "Languages::sidekick.code_error_communication_failure"
 msgid "code_error_communication_failure"
 msgstr "Communication with HELOstore has failed. Please try again or contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
 
+msgctxt "Languages::sidekick.code_error_access_denied"
+msgid "code_error_access_denied"
+msgstr "Oops! You do not have access to perform this request. If you think this is a mistake, please contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
+msgctxt "Languages::sidekick.code_error_product_subscription_type_not_found"
+msgid "code_error_product_subscription_type_not_found"
+msgstr "Oops! Something went wrong while preparing the update! Please try again or help us improve your experience by sending an error report at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
+
 msgctxt "Languages::sidekick.code_error_invalid_license_or_domain"
 msgid "code_error_invalid_license_or_domain"
 msgstr "Invalid license or domain."
@@ -123,3 +133,9 @@ msgstr ""
 msgctxt "Languages::sidekick.code_notification_settings_unchanged"
 msgid "code_notification_settings_unchanged"
 msgstr ""
+
+msgctxt "Languages::sidekick.code_notification_no_updates_available"
+msgid "code_notification_no_updates_available"
+msgstr "No updates found. You already have the latest updates."
+
+#. END CODES
