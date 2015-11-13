@@ -185,7 +185,6 @@ class LicenseClient
 			return false;
 		}
 		$this->tries++;
-//		$this->messages[] = 'Refreshing token';
 		if (!empty($settings)) {
 			$data['password'] = $settings['password'];
 		}
@@ -194,9 +193,7 @@ class LicenseClient
 
 		if (!empty($response['token'])) {
 			fn_set_storage_data('helostore_token', $response['token']);
-//			$this->messages[] = 'Received new token';
 			$this->tries = 0;
-//			return true;
 		}
 
 		if ($this->tries > 1) {
@@ -204,8 +201,6 @@ class LicenseClient
 		}
 
 		return $response;
-
-//		return false;
 	}
 
 	public function handleResponse($context, $response, $productCode)
@@ -369,10 +364,6 @@ class LicenseClient
 
 		return $result;
 	}
-
-
-
-
 
 
 
