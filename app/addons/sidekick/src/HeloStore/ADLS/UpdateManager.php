@@ -151,7 +151,7 @@ class UpdateManager
 
 			if (fn_install_addon($productCode, true)) {
 				$this->preserveAddonSettings($productCode);
-				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'S');
+				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'K');
 				$force_redirection = 'addons.manage';
 				if (defined('AJAX_REQUEST')) {
 					Tygh::$app['ajax']->assign('force_redirection', fn_url($force_redirection));
