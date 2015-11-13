@@ -11,23 +11,50 @@
  * @license    https://helostore.com/legal/license-agreement/   License Agreement
  * @version    $Id$
  */
-use HeloStore\ADLS\UpdateManager;
 use Tygh\Registry;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if ($mode == 'activate') {
+		if (!empty($_REQUEST['addon'])) {
+			$addon = $_REQUEST['addon'];
+			$ownProduct = \HeloStore\ADLS\UpdateManager::isOwnProduct($addon);
 
+			if (isset($_REQUEST['addon_data'])) {
+				fn_update_addon($_REQUEST['addon_data']);
+			}
+
+			if ($ownProduct) {
+				$activated = false;
+				$status = Registry::get('addons.' . $addon . '.status');
+				if ($status == 'A') {
+					$activated = fn_sidekick_check($addon);
+				} else {
+					$status = fn_update_addon_status($addon, 'A');
+					if ($status == 'A') {
+						$activated = true;
+					}
+				}
+				if ($activated) {
+					Registry::clearCachedKeyValues();
+				}
+
+				return array(CONTROLLER_STATUS_OK, 'addons.manage');
+			}
+		}
+	}
+
+	if ($mode == 'check') {
+		\HeloStore\ADLS\LicenseClient::checkUpdates();
+
+		return array(CONTROLLER_STATUS_OK, 'addons.manage');
+	}
 }
 
-if ($mode == 'test') {
-	$manager = new UpdateManager();
-	$manager->restoreAddonSettings('sidekick');
-}
 if ($mode == 'update') {
 	if (!empty($_REQUEST['product'])) {
 		$productCode = $_REQUEST['product'];
 		\HeloStore\ADLS\LicenseClient::update($productCode);
 		fn_redirect('addons.manage');
-
 	}
 	return array(CONTROLLER_STATUS_OK);
 }
