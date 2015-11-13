@@ -166,9 +166,11 @@ class UpdateManager
 
 
 			if (!empty($installed)) {
-				fn_uninstall_addon($productCode, false);
+				if (fn_uninstall_addon($productCode, true)) {
+					
+				}
 			}
-			if (!fn_install_addon($productCode)) {
+			if (!fn_install_addon($productCode, true)) {
 				// error
 				return false;
 			}
