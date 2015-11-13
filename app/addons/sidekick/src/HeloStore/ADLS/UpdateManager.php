@@ -171,6 +171,7 @@ class UpdateManager
 					}
 				}
 			}
+			fnx($prevSettings, 'prevSettings');
 			return !empty($prevSettings);
 		}
 
@@ -190,6 +191,7 @@ class UpdateManager
 				$changes = true;
 			}
 		}
+		fnx($currentSettings, '$currentSettings');
 		if ($changes) {
 			fn_update_addon($currentSettings);
 		}
