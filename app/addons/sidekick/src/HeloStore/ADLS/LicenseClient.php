@@ -523,7 +523,6 @@ class LicenseClient
 			return $client->handleResponse($context, $response, $productCode);
 		}
 
-
 		if (!$client->hasRequiredSettings($productCode)) {
 			return false;
 		}

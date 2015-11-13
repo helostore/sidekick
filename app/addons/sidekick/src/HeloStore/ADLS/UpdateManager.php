@@ -121,7 +121,6 @@ class UpdateManager
 		$archivePath = $tempPath . '/' . $productCode . '.zip';
 		if (!fn_put_contents($archivePath, $content)) {
 			// error
-			aa('Error at ' . __LINE__);
 			return false;
 		}
 
@@ -131,7 +130,6 @@ class UpdateManager
 
 		if (!fn_decompress_files($archivePath, $extractPath)) {
 			// error
-			aa('Error at ' . __LINE__);
 			return false;
 		}
 
@@ -143,7 +141,6 @@ class UpdateManager
 			$rootPath = Registry::get('config.dir.root');
 			if (!fn_copy($extractPath, $rootPath)) {
 				// error
-				aa('Error at ' . __LINE__);
 				return false;
 			}
 			fn_rm($extractPath);
