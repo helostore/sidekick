@@ -340,19 +340,15 @@ class LicenseClient
 		return $response;
 	}
 
-	public function requestUpdateRequest($context, $data, $productCodes)
+	public function requestUpdateRequest($context, $data, $productCode)
 	{
 		$manager = new UpdateManager();
-		$data['products'] = $manager->getProducts(array('codes' => $productCodes));
+		$data['products'] = $manager->getProducts(array('codes' => array($productCode)));
 		unset($data['product']);
 
 		$response = $this->request($context, $data, array());
 		if (!empty($response) && !empty($response['updates'])) {
 			$manager->processNotifications($response['updates']);
-//			foreach ($response['updates'] as $update) {
-//				$this->requestUpdateDownload($update);
-//			}
-//			$manager->update($response['updates']);
 		}
 
 		return $response;
