@@ -196,6 +196,7 @@ class UpdateManager
 		ws_log_file('$currentSettings');
 		ws_log_file($currentSettings);
 		if ($changes) {
+			ws_log_file('CHANGESSSSSSSSSSSSSSS updating');
 			fn_update_addon($currentSettings);
 		}
 
