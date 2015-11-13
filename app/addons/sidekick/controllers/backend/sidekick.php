@@ -56,10 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($mode == 'update') {
 	if (!empty($_REQUEST['product'])) {
 		$productCode = $_REQUEST['product'];
+		ws_log_file($_SESSION['notifications']);
 		fn_delete_notification('sidekick.product_update_available_title');
 		\HeloStore\ADLS\LicenseClient::update($productCode);
 	}
 	return array(CONTROLLER_STATUS_OK);
 }
 
-// jkahdjasdasads
+// jkahdjasasdsadasdasads
