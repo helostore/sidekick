@@ -70,7 +70,7 @@ class LicenseClient
 	const CODE_TYPE_NOTIFICATION = 'notification';
 
 	protected $tries = 0;
-	protected $maxTries = 3;
+	protected $maxTries = 2;
 
 	public function __construct()
 	{
@@ -82,11 +82,14 @@ class LicenseClient
 				LicenseClient::CONTEXT_AUTHENTICATION,
 				LicenseClient::CONTEXT_UPDATE_CHECK))) {
 
-			$tokenResponse = $this->refreshToken($data, $settings);
-			if (!empty($tokenResponse) && isset($tokenResponse['code']) && $this->isSuccess($tokenResponse['code'])) {
-				$data['token'] = fn_get_storage_data('helostore_token');
-			} else {
-				return $tokenResponse;
+			$data['token'] = fn_get_storage_data('helostore_token');
+			if (empty($data['token'])) {
+				$tokenResponse = $this->refreshToken($data, $settings);
+				if (!empty($tokenResponse) && isset($tokenResponse['code']) && $this->isSuccess($tokenResponse['code'])) {
+					$data['token'] = fn_get_storage_data('helostore_token');
+				} else {
+					return $tokenResponse;
+				}
 			}
 		}
 
@@ -104,8 +107,13 @@ class LicenseClient
 		if (is_array($_tmp)) {
 			$response = $_tmp;
 		}
-		if (!empty($response) && !empty($response['code']) && $response['code'] == LicenseClient::CODE_ERROR_INVALID_TOKEN) {
+		if (!empty($response) && !empty($response['code']) && in_array($response['code'], array(LicenseClient::CODE_ERROR_INVALID_TOKEN, LicenseClient::CODE_ERROR_MISSING_TOKEN))) {
 			fn_set_storage_data('helostore_token', '');
+
+			// retry initial request with new token, if available
+			$this->refreshToken($data, $settings);
+
+			return $this->request($context, $data, $settings);
 		}
 
 		return $response;

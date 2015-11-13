@@ -47,12 +47,6 @@ class UpdateManager
 			}
 		}
 	}
-//	public function update($updates)
-//	{
-//		foreach ($updates as $productCode => $update) {
-//			$this->updateAddon($productCode, $update);
-//		}
-//	}
 
 	public function getProducts($params = array())
 	{
