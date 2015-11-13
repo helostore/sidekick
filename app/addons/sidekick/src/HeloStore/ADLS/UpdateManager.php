@@ -191,6 +191,7 @@ class UpdateManager
 //			aa($settings);
 //			fn_update_addon($prevSettings);
 //			}
+			// test 123
 		}
 	}
 }
