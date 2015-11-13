@@ -204,6 +204,13 @@ class LicenseClient
 		return $response;
 	}
 
+	/**
+	 * @param $context
+	 * @param $response
+	 * @param $productCode
+	 *
+	 * @return bool
+	 */
 	public function handleResponse($context, $response, $productCode)
 	{
 		$code = isset($response['code']) ? intval($response['code']) : -1;
@@ -357,9 +364,6 @@ class LicenseClient
 		$response = $this->request($context, $data, $settings);
 		$manager = new UpdateManager();
 		$result = $manager->updateAddon($productCode, $settings, $response);
-		if ($result) {
-			fn_redirect('addons.update?addon=' . $productCode);
-		}
 
 		return $result;
 	}
@@ -502,9 +506,13 @@ class LicenseClient
 		if ($context == LicenseClient::CONTEXT_UPDATE_REQUEST) {
 			$response = $client->requestUpdateRequest($context, $data, $productCode);
 			if (!empty($response['updates'])) {
+				$result = true;
 				foreach ($response['updates'] as $update) {
-					$client->requestUpdateDownload($update['code']);
+					if (!$client->requestUpdateDownload($update['code'])) {
+						$result = false;
+					}
 				}
+				return $result;
 			}
 			return $client->handleResponse($context, $response, $productCode);
 		}

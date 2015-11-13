@@ -12,6 +12,7 @@
  * @version    $Id$
  */
 use Tygh\Registry;
+use Tygh\Tygh;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($mode == 'activate') {
@@ -57,7 +58,16 @@ if ($mode == 'update') {
 	if (!empty($_REQUEST['product'])) {
 		$productCode = $_REQUEST['product'];
 		fn_delete_notification('sidekick.product_update_available_title');
-		\HeloStore\ADLS\LicenseClient::update($productCode);
+		if (\HeloStore\ADLS\LicenseClient::update($productCode)) {
+			$redirection = 'addons.manage';
+			if (defined('AJAX_REQUEST')) {
+				Tygh::$app['ajax']->assign('force_redirection', fn_url($redirection));
+				exit;
+			} else {
+				return array(CONTROLLER_STATUS_REDIRECT, $redirection);
+			}
+		}
+
 	}
 	return array(CONTROLLER_STATUS_OK);
 }

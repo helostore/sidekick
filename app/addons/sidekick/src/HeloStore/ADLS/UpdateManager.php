@@ -16,10 +16,8 @@ namespace HeloStore\ADLS;
 
 
 use Tygh\Addons\SchemesManager;
-use Tygh\Http;
 use Tygh\Registry;
 use Tygh\Settings;
-use Tygh\Tygh;
 
 class UpdateManager
 {
@@ -152,14 +150,6 @@ class UpdateManager
 			if (fn_install_addon($productCode, false)) {
 				$this->preserveAddonSettings($productCode);
 				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'K');
-/*				$force_redirection = 'addons.manage';
-				if (defined('AJAX_REQUEST')) {
-					Tygh::$app['ajax']->assign('force_redirection', fn_url($force_redirection));
-					exit;
-				} else {
-					fn_redirect($force_redirection);
-				}*/
-
 			}
 
 			return true;
