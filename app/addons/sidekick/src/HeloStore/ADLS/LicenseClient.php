@@ -343,11 +343,7 @@ class LicenseClient
 		$manager = new UpdateManager();
 		$data['products'] = $manager->getProducts(array('codes' => array($productCode)));
 		unset($data['product']);
-
 		$response = $this->request($context, $data, array());
-		if (!empty($response) && !empty($response['updates'])) {
-			$manager->processNotifications($response['updates']);
-		}
 
 		return $response;
 	}
