@@ -63,6 +63,7 @@ msgstr "Great! <b>[product]</b> has been successfully updated!"
 
 
 
+
 msgctxt "Languages::sidekick.code_error_invalid_token"
 msgid "code_error_invalid_token"
 msgstr "Communication with HELOstore has failed because your token has expired. Please try again or contact us at <a href=\"mailto:contact@helostore.com\">contact@helostore.com</a>."
