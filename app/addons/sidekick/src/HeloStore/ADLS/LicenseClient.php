@@ -478,10 +478,10 @@ class LicenseClient
 		return '
 			<div style="text-align: center;padding:5px 10%;">
 				' . ($active === true ? '<p>' . __('sidekick.license_status_active') . '</p>' : '') . '
-				<p><input class="btn ' . ($active !== true ? 'btn-primary' : 'btn-secondary') . ' cm-ajax" type="submit" value="' . __('activate') . '" name="dispatch[sidekick.activate]"></p>
+				<p><input class="btn ' . ($active !== true ? 'btn-primary' : 'btn-secondary') . ' cm-ajax cm-submit" type="submit" value="' . __('activate') . '" name="dispatch[sidekick.activate]"></p>
 				<p>' . __('sidekick.contact_hint') . '</p>
 				' . (!empty($version) ? '<p>' . $productName . ' ' . __('version') . ': ' . $version . '</p>' : '') . '
-				<p><input class="btn btn-tertiary cm-ajax" type="submit" value="' . __('sidekick.check_updates_button') . '" name="dispatch[sidekick.check]"></p>
+				<p><input class="btn btn-tertiary cm-ajax cm-submit" type="submit" value="' . __('sidekick.check_updates_button') . '" name="dispatch[sidekick.check]"></p>
 			</div>
 			';
 	}
