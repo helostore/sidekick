@@ -38,7 +38,7 @@ msgstr "Setup"
 
 msgctxt "Languages::sidekick.product_update_available"
 msgid "product_update_available"
-msgstr "An update is available for <b>[addon]</b> add-on from version [currentVersion] to [nextVersion]. <a href='[updateUrl]' class='cm-ajax cm-comet cm-dialog-closer cm-notification-close'>Click here to update</a>."
+msgstr "An update is available for <b>[addon]</b> add-on from version [currentVersion] to [nextVersion]. <a href='[updateUrl]' class='cm-ajax cm-comet cm-notification-close'>Click here to update</a>."
 
 msgctxt "Languages::sidekick.product_update_available_title"
 msgid "product_update_available_title"
