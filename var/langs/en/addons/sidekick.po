@@ -62,7 +62,8 @@ msgstr "Great! <b>[product]</b> has been successfully updated!"
 
 
 
-
+msgid ""
+msgstr "BEGIN CODES SECTION"
 
 msgctxt "Languages::sidekick.code_error_invalid_token"
 msgid "code_error_invalid_token"
@@ -139,3 +140,6 @@ msgstr ""
 msgctxt "Languages::sidekick.code_notification_no_updates_available"
 msgid "code_notification_no_updates_available"
 msgstr "No updates found. You already have the latest updates."
+
+msgid ""
+msgstr "END CODES SECTION"
