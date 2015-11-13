@@ -225,8 +225,10 @@ class LicenseClient
 			} else {
 				// nothing changed, stay put
 			}
-		} else if ($context == LicenseClient::CONTEXT_UPDATE_REQUEST) {
-
+		} else if ($context == LicenseClient::CONTEXT_UPDATE_CHECK) {
+			if ($code == LicenseClient::CODE_NOTIFICATION_NO_UPDATES_AVAILABLE) {
+				fn_set_notification('N', __('notice'), $message);
+			}
 		}
 
 		if ($success) {
@@ -472,7 +474,7 @@ class LicenseClient
 
 		$mode = Registry::get('runtime.mode');
 		if (!in_array($mode, array('reinstall'))) {
-			LicenseClient::checkUpdates();
+//			LicenseClient::checkUpdates();
 		}
 
 		return '
