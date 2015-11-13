@@ -30,7 +30,7 @@ msgstr "Add-on [addon_name] cannot be disabled because the following add-ons dep
 
 msgctxt "Languages::sidekick.app_setup_message"
 msgid "app_setup_message"
-msgstr "In order to use the <b>[addon]</b> add-on, you have to configure it by <a href='[url]'>clicking here</a>. Thanks."
+msgstr "In order to use the <b>[addon]</b> add-on, you have to configure it by <a href='[url]' class='cm-notification-close'>clicking here</a>. Thanks."
 
 msgctxt "Languages::sidekick.app_setup_title"
 msgid "app_setup_message"
