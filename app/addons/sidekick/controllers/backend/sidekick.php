@@ -58,9 +58,8 @@ if ($mode == 'update') {
 		$productCode = $_REQUEST['product'];
 		fn_delete_notification('sidekick.product_update_available_title');
 		\HeloStore\ADLS\LicenseClient::update($productCode);
-		ws_log_file($_SESSION['notifications']);
 	}
 	return array(CONTROLLER_STATUS_OK);
 }
 
-// jkahdjasaasdssdsadasdasads
+// jkahdjasaasdssdadsasadasdasads
