@@ -544,7 +544,6 @@ class LicenseClient
 
 	public static function checkUpdates()
 	{
-		ws_log_file(btx());
 		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK);
 	}
 
