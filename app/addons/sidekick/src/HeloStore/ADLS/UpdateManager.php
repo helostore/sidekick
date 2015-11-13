@@ -170,7 +170,6 @@ class UpdateManager
 			}
 			if (!fn_install_addon($productCode)) {
 				// error
-				aa('Error at ' . __LINE__);
 				return false;
 			}
 
