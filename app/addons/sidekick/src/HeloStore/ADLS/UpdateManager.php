@@ -190,6 +190,8 @@ class UpdateManager
 		foreach ($currentSettings as $i => $setting) {
 			if (empty($setting['value']) && !empty($prevSettings[$setting['name']])) {
 				$currentSettings[$i]['value'] = $prevSettings[$setting['name']];
+				$value = $prevSettings[$setting['name']];
+				db_query('UPDATE ?:settings_objects SET value = ?i WHERE object_id = ?i', $value, $setting['object_id']);
 				$changes = true;
 			}
 		}
@@ -197,7 +199,7 @@ class UpdateManager
 		ws_log_file($currentSettings);
 		if ($changes) {
 			ws_log_file('CHANGESSSSSSSSSSSSSSS updating');
-			fn_update_addon($currentSettings);
+			// fn_update_addon($currentSettings);
 		}
 
 		return $changes;
