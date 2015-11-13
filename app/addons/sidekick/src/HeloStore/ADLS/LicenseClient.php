@@ -227,7 +227,7 @@ class LicenseClient
 			}
 		} else if ($context == LicenseClient::CONTEXT_UPDATE_CHECK) {
 			if ($code == LicenseClient::CODE_NOTIFICATION_NO_UPDATES_AVAILABLE) {
-				fn_set_notification('N', __('notice'), $message);
+				fn_set_notification('N', __('notice'), __('sidekick.' . $codeName));
 			}
 		}
 
