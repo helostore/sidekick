@@ -42,7 +42,7 @@ class UpdateManager
 					'[currentVersion]' => $currentVersion,
 					'[nextVersion]' => $nextVersion,
 					'[updateUrl]' => $updateUrl,
-				));
+				)) . TIME;
 				fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'K');
 			}
 		}
