@@ -19,6 +19,7 @@ use Tygh\Addons\SchemesManager;
 use Tygh\Http;
 use Tygh\Registry;
 use Tygh\Settings;
+use Tygh\Tygh;
 
 class UpdateManager
 {
