@@ -44,6 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 
 	if ($mode == 'check') {
+		if (isset($_REQUEST['addon_data'])) {
+			fn_update_addon($_REQUEST['addon_data']);
+		}
 		\HeloStore\ADLS\LicenseClient::checkUpdates();
 
 		return array(CONTROLLER_STATUS_OK, 'addons.manage');
