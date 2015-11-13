@@ -158,6 +158,7 @@ class UpdateManager
 
 	public function preserveAddonSettings($productCode)
 	{
+		ws_log_file('preserveAddonSettings called()');
 		static $prevSettings = null;
 		$persistentSettings = array('email', 'password', 'license');
 		// on first call, store previous settings
@@ -192,8 +193,8 @@ class UpdateManager
 				$changes = true;
 			}
 		}
-		fnx('$currentSettings');
-		fnx($currentSettings);
+		ws_log_file('$currentSettings');
+		ws_log_file($currentSettings);
 		if ($changes) {
 			fn_update_addon($currentSettings);
 		}
