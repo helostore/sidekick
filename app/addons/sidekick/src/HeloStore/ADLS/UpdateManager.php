@@ -43,7 +43,7 @@ class UpdateManager
 					'[nextVersion]' => $nextVersion,
 					'[updateUrl]' => $updateUrl,
 				));
-				fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'K');
+				fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'K', 'fn_delete_notification');
 			}
 		}
 	}
