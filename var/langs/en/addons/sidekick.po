@@ -56,9 +56,9 @@ msgctxt "Languages::sidekick.contact_hint"
 msgid "contact_hint"
 msgstr "If you have lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."
 
-msgctxt "Languages::sidekick.contact_hint"
-msgid "contact_hint"
-msgstr "If you have lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."
+msgctxt "Languages::sidekick.update_successful"
+msgid "update_successful"
+msgstr "Very well! [product] has been updated successfully"
 
 msgctxt "Languages::sidekick.code_error_invalid_token"
 msgid "code_error_invalid_token"
