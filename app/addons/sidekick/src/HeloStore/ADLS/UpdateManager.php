@@ -43,7 +43,7 @@ class UpdateManager
 					'[nextVersion]' => $nextVersion,
 					'[updateUrl]' => $updateUrl,
 				));
-				fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'S');
+				fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'K');
 			}
 		}
 	}
@@ -145,7 +145,7 @@ class UpdateManager
 		$issueDirs = fn_check_copy_ability($extractPath, Registry::get('config.dir.root'));
 		if (!empty($issueDirs)) {
 			$message = __('sidekick.product_update_file_permissions_error', array('[files]' => implode("<br>", $issueDirs)));
-			fn_set_notification('E', __('error'), $message, 'S');
+			fn_set_notification('E', __('error'), $message, 'K');
 //			Tygh::$app['view']->assign('non_writable', $non_writable_folders);
 //
 //			if (defined('AJAX_REQUEST')) {
