@@ -187,9 +187,9 @@ class UpdateManager
 		$currentSettings = Settings::instance()->getList($section['section_id'], 0, true);
 
 		$changes = false;
-		foreach ($currentSettings as $setting) {
+		foreach ($currentSettings as $i => $setting) {
 			if (empty($setting['value']) && !empty($prevSettings[$setting['name']])) {
-				$setting['value'] = $prevSettings[$setting['name']];
+				$currentSettings[$i]['value'] = $prevSettings[$setting['name']];
 				$changes = true;
 			}
 		}
