@@ -358,9 +358,11 @@ class LicenseClient
 		$response = $this->request($context, $data, $settings);
 		$manager = new UpdateManager();
 		$result = $manager->updateAddon($productCode, $settings, $response);
-		aa('Result: ' . $result);
-//		exit;
-//		$manager->upda
+		if ($result) {
+			fn_redirect('addons.update?addon=' . $productCode);
+		}
+
+		return $result;
 	}
 
 
