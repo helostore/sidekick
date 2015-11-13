@@ -119,8 +119,7 @@ class UpdateManager
 		define('ADLS_UPDATING', true);
 		$installed = db_get_field("SELECT status FROM ?:addons WHERE addon = ?s", $productCode);
 		if (!empty($installed)) {
-			$section = Settings::instance()->getSectionByName($productCode, Settings::ADDON_SECTION);
-			$prevSettings = Settings::instance()->getList($section['section_id'], 0, true);
+			$this->preserveAddonSettings($productCode);
 		}
 
 		$tempPath = fn_get_cache_path(false) . 'tmp/';
@@ -146,18 +145,8 @@ class UpdateManager
 		if (!empty($issueDirs)) {
 			$message = __('sidekick.product_update_file_permissions_error', array('[files]' => implode("<br>", $issueDirs)));
 			fn_set_notification('E', __('error'), $message, 'K');
-//			Tygh::$app['view']->assign('non_writable', $non_writable_folders);
-//
-//			if (defined('AJAX_REQUEST')) {
-//				Tygh::$app['view']->display('views/addons/components/correct_permissions.tpl');
-//
-//				exit();
-//			}
-
 		} else {
-
 			$rootPath = Registry::get('config.dir.root');
-
 			if (!fn_copy($extractPath, $rootPath)) {
 				// error
 				aa('Error at ' . __LINE__);
@@ -165,34 +154,64 @@ class UpdateManager
 			}
 			fn_rm($extractPath);
 
-
 			if (!empty($installed)) {
-				if (fn_uninstall_addon($productCode, true)) {
-
-				}
+				fn_uninstall_addon($productCode, true);
 			}
+
 			if (fn_install_addon($productCode, true)) {
+				$this->preserveAddonSettings($productCode);
 				$force_redirection = 'addons.manage';
 				if (defined('AJAX_REQUEST')) {
 					Tygh::$app['ajax']->assign('force_redirection', fn_url($force_redirection));
 					exit;
 				} else {
-					return array(CONTROLLER_STATUS_REDIRECT, $force_redirection);
+					fn_redirect($force_redirection);
 				}
 
-			} else {
-				return false;
 			}
 
-//			if (!empty($installed)) {
-//				$section = Settings::instance()->getSectionByName($productCode, Settings::ADDON_SECTION);
-//				$currentSettings = Settings::instance()->getList($section['section_id'], 0, true);
-				// restore add-on settings
-//			$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, true);
-//			aa($settings);
-//			fn_update_addon($prevSettings);
-//			}
-			// test 123
+			return true;
 		}
+	}
+
+	public function preserveAddonSettings($productCode)
+	{
+		static $prevSettings = null;
+		$persistentSettings = array('email', 'password', 'license');
+		// on first call, store previous settings
+		if ($prevSettings === null) {
+			$section = Settings::instance()->getSectionByName($productCode, Settings::ADDON_SECTION);
+			$settings = Settings::instance()->getList($section['section_id'], 0, true);
+			if (!empty($settings)) {
+				foreach ($settings as $setting) {
+					if (in_array($setting['name'], $persistentSettings)) {
+						$prevSettings[$setting['name']] = $setting['value'];
+					}
+				}
+			}
+			return !empty($prevSettings);
+		}
+
+		// nothing to restore
+		if (empty($prevSettings)) {
+			return false;
+		}
+
+		// on subsequent calls, restore settings
+		$section = Settings::instance()->getSectionByName($productCode, Settings::ADDON_SECTION);
+		$currentSettings = Settings::instance()->getList($section['section_id'], 0, true);
+
+		$changes = false;
+		foreach ($currentSettings as $setting) {
+			if (empty($setting['value']) && !empty($prevSettings[$setting['name']])) {
+				$setting['value'] = $prevSettings[$setting['name']];
+				$changes = true;
+			}
+		}
+		if ($changes) {
+			fn_update_addon($currentSettings);
+		}
+
+		return $changes;
 	}
 }

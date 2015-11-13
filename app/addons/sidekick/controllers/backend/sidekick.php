@@ -16,9 +16,12 @@ use Tygh\Registry;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-
 }
 
+if ($mode == 'test') {
+	$manager = new UpdateManager();
+	$manager->restoreAddonSettings('sidekick');
+}
 if ($mode == 'update') {
 	if (!empty($_REQUEST['product'])) {
 		$productCode = $_REQUEST['product'];
