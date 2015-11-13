@@ -183,43 +183,14 @@ class UpdateManager
 				return false;
 			}
 
-			if (!empty($installed)) {
+//			if (!empty($installed)) {
 //				$section = Settings::instance()->getSectionByName($productCode, Settings::ADDON_SECTION);
 //				$currentSettings = Settings::instance()->getList($section['section_id'], 0, true);
-
-
-			}
-
-			return true;
-
-			// restore add-on settings
+				// restore add-on settings
 //			$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, true);
 //			aa($settings);
-
 //			fn_update_addon($prevSettings);
-
-
+//			}
 		}
-
-
-
-//		// Re-create source folder
-//		fn_rm($extract_path);
-//		fn_mkdir($extract_path);
-//
-//		fn_copy($addon_pack['path'], $extract_path . $productCode);
-//
-//
-//
-//		$updateUrl = $update['updateUrl'];
-//		$content = fn_get_contents($updateUrl);
-//		aa(Http::getError());
-//aa($content,1);
-//		if (fn_put_contents($target_restore_file_path, $content, '', $target_restore_file_perms)) {
-//
-//		}
-//		aa(func_get_args());
-
-		return false;
 	}
 }
