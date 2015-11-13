@@ -149,7 +149,7 @@ class UpdateManager
 
 			if (fn_install_addon($productCode, false)) {
 				$this->preserveAddonSettings($productCode);
-				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'K');
+				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'S');
 			}
 
 			return true;
