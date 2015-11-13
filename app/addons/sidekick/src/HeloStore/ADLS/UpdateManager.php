@@ -167,11 +167,19 @@ class UpdateManager
 
 			if (!empty($installed)) {
 				if (fn_uninstall_addon($productCode, true)) {
-					
+
 				}
 			}
-			if (!fn_install_addon($productCode, true)) {
-				// error
+			if (fn_install_addon($productCode, true)) {
+				$force_redirection = 'addons.manage';
+				if (defined('AJAX_REQUEST')) {
+					Tygh::$app['ajax']->assign('force_redirection', fn_url($force_redirection));
+					exit;
+				} else {
+					return array(CONTROLLER_STATUS_REDIRECT, $force_redirection);
+				}
+
+			} else {
 				return false;
 			}
 
