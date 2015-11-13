@@ -285,17 +285,13 @@ class LicenseClient
 	{
 		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
 		$previousSettings = Registry::get('addons.' . $productCode);
-
-		if (
-			$previousSettings['license'] != $settings['license']
-			|| $previousSettings['email'] != $settings['email']
-			|| $previousSettings['password'] != $settings['password']
-			|| empty($settings['email'])
+		if (empty($settings['email'])
 			|| empty($settings['password'])
 			|| empty($settings['license'])
+			|| (isset($previousSettings['license']) && $previousSettings['license'] != $settings['license'])
+			|| (isset($previousSettings['email']) && $previousSettings['email'] != $settings['email'])
+			|| (isset($previousSettings['password']) && $previousSettings['password'] != $settings['password'])
 		) {
-//			Registry::set('addons.' . $productCode, $settings);
-
 			return true;
 		}
 
