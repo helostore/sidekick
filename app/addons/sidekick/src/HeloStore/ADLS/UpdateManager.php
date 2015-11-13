@@ -146,10 +146,10 @@ class UpdateManager
 			fn_rm($extractPath);
 
 			if (!empty($installed)) {
-				fn_uninstall_addon($productCode, true);
+				fn_uninstall_addon($productCode, false);
 			}
 
-			if (fn_install_addon($productCode, true)) {
+			if (fn_install_addon($productCode, false)) {
 				$this->preserveAddonSettings($productCode);
 				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'K');
 /*				$force_redirection = 'addons.manage';
