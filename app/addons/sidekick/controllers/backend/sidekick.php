@@ -63,7 +63,11 @@ if ($mode == 'update') {
 		if (\HeloStore\ADLS\LicenseClient::update($productCode)) {
 			$redirection = 'addons.manage';
 			if (defined('AJAX_REQUEST')) {
-				Tygh::$app['ajax']->assign('force_redirection', fn_url($redirection));
+				if (class_exists('Tygh', true)) {
+					Tygh::$app['ajax']->assign('force_redirection', fn_url($redirection));
+				} else {
+					Registry::get('ajax')->assign('force_redirection', fn_url($redirection));
+				}
 				exit;
 			} else {
 				return array(CONTROLLER_STATUS_REDIRECT, $redirection);
