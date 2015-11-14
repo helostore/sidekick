@@ -36,7 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					}
 				}
 				if ($activated) {
-					Registry::clearCachedKeyValues();
+					if (method_exists('Registry','clearCachedKeyValues')) {
+						Registry::clearCachedKeyValues();
+					}
 				}
 
 				return array(CONTROLLER_STATUS_OK, 'addons.manage');
