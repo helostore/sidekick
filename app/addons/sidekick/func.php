@@ -72,3 +72,4 @@ function fn_sidekick_user_init($auth, $userInfo, $firstInit)
 	}
 }
 /* /Hooks */
+// terads
