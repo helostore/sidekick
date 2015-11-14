@@ -28,7 +28,7 @@
     <compatibility>
         <dependencies/>
         <core_version>
-            <min>4.0.0</min>
+            <min>4.2.1</min>
         </core_version>
     </compatibility>
     <authors>
