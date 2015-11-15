@@ -17,6 +17,9 @@
                     <item id="password">
                         <type>password</type>
                     </item>
+                    <item id="license">
+                        <type>input</type>
+                    </item>
                     <item id="info">
                         <type>info</type>
                         <handler>fn_sidekick_info,sidekick</handler>

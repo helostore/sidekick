@@ -24,6 +24,10 @@ msgctxt "SettingsOptions::sidekick::password"
 msgid "HELOstore password"
 msgstr "HELOstore password"
 
+msgctxt "SettingsOptions::sidekick::license"
+msgid "License key"
+msgstr "License key"
+
 msgctxt "Languages::sidekick.dependency_breakage_warning"
 msgid "dependency_breakage_warning"
 msgstr "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."
