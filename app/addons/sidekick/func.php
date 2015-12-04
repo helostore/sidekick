@@ -65,10 +65,23 @@ function fn_settings_actions_addons_sidekick(&$statusNew, $statusOld)
 	}
 }
 
+/**
+ * Regularly check for updates (once every 2 days) on authentication of an administrator
+ *
+ * @param $auth
+ * @param $userInfo
+ * @param $firstInit
+ *
+ * @return bool
+ */
 function fn_sidekick_user_init($auth, $userInfo, $firstInit)
 {
-	if (fn_is_expired_storage_data('helostore_update_check', SECONDS_IN_DAY * 2)) {
-		\HeloStore\ADLS\LicenseClient::checkUpdates();
+	if (!empty($userInfo) && !empty($userInfo['user_type']) && $userInfo['user_type'] == 'A') {
+		if (fn_is_expired_storage_data('helostore_update_check', SECONDS_IN_DAY * 2)) {
+			return \HeloStore\ADLS\LicenseClient::checkUpdates();
+		}
 	}
+
+	return false;
 }
 /* /Hooks */
