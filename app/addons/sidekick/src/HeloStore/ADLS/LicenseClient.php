@@ -122,7 +122,7 @@ class LicenseClient
 
 	public function formatApiUrl($context, $args = array())
 	{
-		$protocol = (defined('WS_DEBUG') ? 'http' : 'https');
+		$protocol = (defined('SIDEKICK_NO_HTTPS') ? 'http' : 'https');
 		$url = $protocol . '://' . (defined('WS_DEBUG') ? 'local.' : '') . self::API_ENDPOINT . '.' . $context;
 		if (!empty($args)) {
 			$query = array();
