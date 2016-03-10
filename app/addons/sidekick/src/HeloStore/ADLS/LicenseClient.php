@@ -234,7 +234,9 @@ class LicenseClient
 			}
 		} else if ($context == LicenseClient::CONTEXT_UPDATE_CHECK) {
 			if ($code == LicenseClient::CODE_NOTIFICATION_NO_UPDATES_AVAILABLE) {
-				fn_set_notification('N', __('notice'), __('sidekick.' . $codeName));
+				if (!defined('SIDEKICK_SILENT_UPDATES_CHECK')) {
+					fn_set_notification('N', __('notice'), __('sidekick.' . $codeName));
+				}
 			}
 		}
 
@@ -542,7 +544,7 @@ class LicenseClient
 		return LicenseClient::process(LicenseClient::CONTEXT_DEACTIVATE, $productCode, $backtrack);
 	}
 
-	public static function checkUpdates()
+	public static function checkUpdates($silent = false)
 	{
 		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK);
 	}

@@ -78,6 +78,8 @@ function fn_sidekick_user_init($auth, $userInfo, $firstInit)
 {
 	if (!empty($userInfo) && !empty($userInfo['user_type']) && $userInfo['user_type'] == 'A') {
 		if (fn_is_expired_storage_data('helostore_update_check', SECONDS_IN_DAY * 2)) {
+			fn_define('SIDEKICK_SILENT_UPDATES_CHECK', true);
+
 			return \HeloStore\ADLS\LicenseClient::checkUpdates();
 		}
 	}
