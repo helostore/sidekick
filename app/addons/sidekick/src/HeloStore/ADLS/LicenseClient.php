@@ -363,6 +363,7 @@ class LicenseClient
 		$manager = new UpdateManager();
 		$result = $manager->updateAddon($productCode, $settings, $response);
 
+
 		return $result;
 	}
 
@@ -506,7 +507,9 @@ class LicenseClient
 			if (!empty($response['updates'])) {
 				$result = true;
 				foreach ($response['updates'] as $update) {
-					if (!$client->requestUpdateDownload($update['code'])) {
+					if ($client->requestUpdateDownload($update['code'])) {
+						UpdateManager::showUpdateSummary($update['code'], $update);
+					} else {
 						$result = false;
 					}
 				}

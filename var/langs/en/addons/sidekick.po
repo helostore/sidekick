@@ -64,7 +64,16 @@ msgctxt "Languages::sidekick.update_successful"
 msgid "update_successful"
 msgstr "Great! <b>[product]</b> has been successfully updated!"
 
+msgctxt "Languages::sidekick.update_summary_title"
+msgid "update_summary_title"
+msgstr "Update summary"
 
+msgctxt "Languages::sidekick.update_summary_message"
+msgid "update_summary_message"
+msgstr "<p><b>[product]</b> has been successfully updated to v<b>[version]</b>, released on <b>[date]</b>.</p>"
+    "<p>Here's what changed: <br> <pre style='max-height: 100px;overflow: auto;'>[commits]</pre></p>"
+    "<p>If you\'re having trouble with this update, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."
+    "<br>Thank you,<br>HELOstore.com team</p>"
 
 msgid ""
 msgstr "BEGIN CODES SECTION"

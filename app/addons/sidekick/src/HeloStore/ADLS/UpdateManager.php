@@ -21,7 +21,6 @@ use Tygh\Settings;
 
 class UpdateManager
 {
-
 	public function processNotifications($updates)
 	{
 		foreach ($updates as $productCode => $update) {
@@ -195,5 +194,51 @@ class UpdateManager
 		}
 
 		return $changes;
+	}
+
+	public static function showUpdateSummary($productCode, $update = array())
+	{
+		if (empty($productCode) || empty($update)) {
+			return false;
+		}
+		$releaseLogFilename = 'release.json';
+		$scheme = SchemesManager::getScheme($productCode);
+		if (empty($scheme)) {
+			return false;
+		}
+
+		$addonPath = Registry::get('config.dir.addons') . $productCode . DIRECTORY_SEPARATOR . '';
+		$releaseLogPath = $addonPath . $releaseLogFilename;
+		if (!file_exists($releaseLogPath)) {
+			return false;
+		}
+		$string = file_get_contents($releaseLogPath);
+		$releases = json_decode($string, true);
+		if (empty($releases) || !is_array($releases)) {
+			return false;
+		}
+		$release = array_shift($releases);
+		if (!is_array($release)
+			|| empty($release['version'])
+			|| empty($release['releaseTimestamp'])
+			|| empty($release['commits'])
+			|| !is_array($release['commits'])
+		) {
+			return false;
+		}
+
+		$message = __('sidekick.update_summary_message', array(
+			'[product]' => $scheme->getName(),
+			'[version]' => $release['version'],
+			'[date]' => fn_date_format($release['releaseTimestamp'], "%m/%d/%Y"),
+			'[commits]' => implode('<br>', $release['commits'])
+		));
+
+		if (!empty($update['reviewMessage'])) {
+			$message .= $update['reviewMessage'];
+		}
+		fn_set_notification('I', __('sidekick.update_summary_title'), $message, 'S', 'sidekick.update_summary');
+
+		return true;
 	}
 }
