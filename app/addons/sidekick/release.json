@@ -1,0 +1,31 @@
+[
+    {
+        "version": "0.1.93",
+        "releaseDate": "2016-05-07 09:13:04",
+        "releaseTimestamp": "1462655584",
+        "hash": "cc63794d40f92e8d45e21fafd8490576b5c718cf",
+        "commits": [
+            "[2016-05-07] Bumped version to 0.1.93",
+            "[2016-05-08] Display update summary with details regarding what changed in the newly updated version",
+            "[2016-03-10] Bumped version to 0.1.92",
+            "[2016-03-10] Disable notifications on login when there are no updates available",
+            "[2016-03-01] Bumped version to 0.1.91",
+            "[2016-03-01] Allow http communication, added SIDEKICK_NO_HTTPS flag",
+            "[2015-12-04] Bumped version to 0.1.90",
+            "[2015-12-04] Fixed updates check - only check for updates on authentication of an administrator",
+            "[2015-11-15] Bumped version to 0.1.89",
+            "[2015-11-15] Added license field",
+            "[2015-11-14] Bumped version to 0.1.88",
+            "[2015-11-14] Set minumum dependency to 4.2.1",
+            "[2015-11-14] Bumped version to 0.1.87",
+            "[2015-11-14] Backward compatibility fix with 4.2.1",
+            "[2015-11-14] Bumped version to 0.1.86",
+            "[2015-11-14] Backward compatibility fix with 4.2.1",
+            "[2015-11-14] Bumped version to 0.1.85",
+            "[2015-11-14] Backward compatibility fix with 4.2.1",
+            "[2015-11-14] Bumped version to 0.1.84",
+            "[2015-11-14] Test",
+            "[2015-11-14] Bumped version to 0.1.83"
+        ]
+    }
+]
