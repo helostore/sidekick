@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.1.94",
+        "releaseDate": "2016-05-20 12:38:10",
+        "releaseTimestamp": "1463747890",
+        "hash": "eceb66132cb9e0d4095070d4b08eb1d36e99d789",
+        "commits": [
+            "[2016-05-20] Bumped version to 0.1.94",
+            "[2016-05-20] Fixed minor compatibility with CS-Cart 4.3.6 in HTTP class"
+        ]
+    },
+    {
         "version": "0.1.93",
         "releaseDate": "2016-05-07 09:13:04",
         "releaseTimestamp": "1462655584",
