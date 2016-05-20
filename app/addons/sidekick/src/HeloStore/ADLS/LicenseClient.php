@@ -80,8 +80,8 @@ class LicenseClient
 	public function request($context, $data, $settings)
 	{
 		if (!in_array($context, array(
-				LicenseClient::CONTEXT_AUTHENTICATION,
-				LicenseClient::CONTEXT_UPDATE_CHECK))) {
+			LicenseClient::CONTEXT_AUTHENTICATION,
+			LicenseClient::CONTEXT_UPDATE_CHECK))) {
 
 			$data['token'] = fn_get_storage_data('helostore_token');
 			if (empty($data['token'])) {
@@ -97,17 +97,25 @@ class LicenseClient
 		$url = $this->formatApiUrl($context);
 		$data['context'] = $context;
 		$response = Http::get($url, $data);
+		if (is_string($response)) {
+			$_tmp = json_decode($response, true);
+			if (is_array($_tmp)) {
+				$response = $_tmp;
+			}
+		}
 
-		$error = Http::getError();
-		if (!empty($error)) {
+		if (version_compare(PRODUCT_VERSION, '4.3.6', '<')) {
+			$errorCode = $errorMessage = Http::getError();
+		} else {
+			$errorCode = Http::getErrorFields();
+			$errorMessage = Http::getError();
+		}
+
+		if (!empty($errorCode)) {
 			$response['code'] = LicenseClient::CODE_ERROR_COMMUNICATION_FAILURE;
-			$response['message'] = $error;
+			$response['message'] = $errorMessage;
 		}
 
-		$_tmp = json_decode($response, true);
-		if (is_array($_tmp)) {
-			$response = $_tmp;
-		}
 		if (!empty($response) && !empty($response['code']) && in_array($response['code'], array(LicenseClient::CODE_ERROR_INVALID_TOKEN, LicenseClient::CODE_ERROR_MISSING_TOKEN))) {
 			fn_set_storage_data('helostore_token', '');
 
