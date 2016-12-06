@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					}
 				}
 				if ($activated) {
-					if (method_exists('Registry','clearCachedKeyValues')) {
+					if (method_exists('Tygh\Registry', 'clearCachedKeyValues')) {
 						Registry::clearCachedKeyValues();
 					}
 				}
