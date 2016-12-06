@@ -1,5 +1,16 @@
 [
     {
+        "version": "0.1.96",
+        "releaseDate": "2016-12-06 02:32:33",
+        "releaseTimestamp": "1481034753",
+        "hash": "cba1e8a3270dc8c4b4fd12072c1bdf66ae366625",
+        "commits": [
+            "[2016-12-06] Bumped version to 0.1.96",
+            "[2016-12-06] Fixed class autoloading issue",
+            "[2016-12-06] Bumped version to 0.1.95"
+        ]
+    },
+    {
         "version": "0.1.94",
         "releaseDate": "2016-05-20 12:38:10",
         "releaseTimestamp": "1463747890",
