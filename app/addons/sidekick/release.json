@@ -1,5 +1,16 @@
 [
     {
+        "version": "0.1.98",
+        "releaseDate": "2016-12-06 03:50:09",
+        "releaseTimestamp": "1481039409",
+        "hash": "9f9fbbde3960e094e88bc87b555cd27a3a14bbc6",
+        "commits": [
+            "[2016-12-06] Bumped version to 0.1.98",
+            "[2016-12-06] Added error messages for insufficient write permissions",
+            "[2016-12-06] Bumped version to 0.1.97"
+        ]
+    },
+    {
         "version": "0.1.96",
         "releaseDate": "2016-12-06 02:32:33",
         "releaseTimestamp": "1481034753",
