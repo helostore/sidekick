@@ -117,7 +117,9 @@ class UpdateManager
 		$extractPath = $tempPath . $productCode . '/';
 		$archivePath = $tempPath . '/' . $productCode . '.zip';
 		if (!fn_put_contents($archivePath, $content)) {
-			// error
+			$message = sprintf('Insufficient write permissions: cannot write archive to `%s`', $archivePath);
+			fn_set_notification('E', __('error'), $message, 'K');
+
 			return false;
 		}
 
@@ -126,7 +128,9 @@ class UpdateManager
 
 
 		if (!fn_decompress_files($archivePath, $extractPath)) {
-			// error
+			$message = sprintf('Insufficient write permissions: cannot unpack archive to `%s`', $extractPath);
+			fn_set_notification('E', __('error'), $message, 'K');
+
 			return false;
 		}
 
@@ -137,7 +141,9 @@ class UpdateManager
 		} else {
 			$rootPath = Registry::get('config.dir.root');
 			if (!fn_copy($extractPath, $rootPath)) {
-				// error
+				$message = sprintf('Insufficient write permissions: cannot copy files to `%s`', $rootPath);
+				fn_set_notification('E', __('error'), $message, 'K');
+
 				return false;
 			}
 			fn_rm($extractPath);
