@@ -37,7 +37,7 @@ function fn_sidekick_check($addon)
 
 function fn_sidekick_info($productCode)
 {
-	if (class_exists('LicenseClient', true)) {
+	if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
 		return LicenseClient::helperInfo($productCode);
 	}
 
