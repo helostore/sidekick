@@ -12,11 +12,9 @@
  * @version    $Id$
  */
 
-use HeloStore\ADLS\LicenseClient;
-
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 define('SIDEKICK_ADDON_NAME', 'sidekick');
 define('SIDEKICK_AUTHOR_NAME', 'HELOstore');

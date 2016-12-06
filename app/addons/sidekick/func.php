@@ -12,6 +12,8 @@
  * @version    $Id$
  */
 
+use HeloStore\ADLS\LicenseClient;
+use HeloStore\ADLS\UpdateManager;
 use Tygh\Addons\SchemesManager;
 use Tygh\Registry;
 
@@ -24,10 +26,10 @@ if (!defined('BOOTSTRAP')) { die('Access denied'); }
  */
 function fn_sidekick_check($addon)
 {
-	if (!\HeloStore\ADLS\UpdateManager::isOwnProduct($addon)) {
+	if (!UpdateManager::isOwnProduct($addon)) {
 		return false;
 	}
-	if (\HeloStore\ADLS\LicenseClient::activate($addon)) {
+	if (LicenseClient::activate($addon)) {
 		return true;
 	}
 	return false;
@@ -35,8 +37,8 @@ function fn_sidekick_check($addon)
 
 function fn_sidekick_info($productCode)
 {
-	if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
-		return \HeloStore\ADLS\LicenseClient::helperInfo($productCode);
+	if (class_exists('LicenseClient', true)) {
+		return LicenseClient::helperInfo($productCode);
 	}
 
 	return '';
@@ -80,7 +82,7 @@ function fn_sidekick_user_init($auth, $userInfo, $firstInit)
 		if (fn_is_expired_storage_data('helostore_update_check', SECONDS_IN_DAY * 2)) {
 			fn_define('SIDEKICK_SILENT_UPDATES_CHECK', true);
 
-			return \HeloStore\ADLS\LicenseClient::checkUpdates();
+			return LicenseClient::checkUpdates();
 		}
 	}
 
