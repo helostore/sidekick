@@ -1,5 +1,16 @@
 [
     {
+        "version": "0.1.100",
+        "releaseDate": "2016-12-07 08:26:45",
+        "releaseTimestamp": "1481099205",
+        "hash": "567f89777fc34cc5f0049935fad8bf45488604ed",
+        "commits": [
+            "[2016-12-07] Bumped version to 0.1.100",
+            "[2016-12-07] Bugfix: allow license re-activation even when license settings\/status is unchanged",
+            "[2016-12-06] Bumped version to 0.1.99"
+        ]
+    },
+    {
         "version": "0.1.98",
         "releaseDate": "2016-12-06 03:50:09",
         "releaseTimestamp": "1481039409",
@@ -29,35 +40,6 @@
         "commits": [
             "[2016-05-20] Bumped version to 0.1.94",
             "[2016-05-20] Fixed minor compatibility with CS-Cart 4.3.6 in HTTP class"
-        ]
-    },
-    {
-        "version": "0.1.93",
-        "releaseDate": "2016-05-07 09:13:04",
-        "releaseTimestamp": "1462655584",
-        "hash": "cc63794d40f92e8d45e21fafd8490576b5c718cf",
-        "commits": [
-            "[2016-05-07] Bumped version to 0.1.93",
-            "[2016-05-08] Display update summary with details regarding what changed in the newly updated version",
-            "[2016-03-10] Bumped version to 0.1.92",
-            "[2016-03-10] Disable notifications on login when there are no updates available",
-            "[2016-03-01] Bumped version to 0.1.91",
-            "[2016-03-01] Allow http communication, added SIDEKICK_NO_HTTPS flag",
-            "[2015-12-04] Bumped version to 0.1.90",
-            "[2015-12-04] Fixed updates check - only check for updates on authentication of an administrator",
-            "[2015-11-15] Bumped version to 0.1.89",
-            "[2015-11-15] Added license field",
-            "[2015-11-14] Bumped version to 0.1.88",
-            "[2015-11-14] Set minumum dependency to 4.2.1",
-            "[2015-11-14] Bumped version to 0.1.87",
-            "[2015-11-14] Backward compatibility fix with 4.2.1",
-            "[2015-11-14] Bumped version to 0.1.86",
-            "[2015-11-14] Backward compatibility fix with 4.2.1",
-            "[2015-11-14] Bumped version to 0.1.85",
-            "[2015-11-14] Backward compatibility fix with 4.2.1",
-            "[2015-11-14] Bumped version to 0.1.84",
-            "[2015-11-14] Test",
-            "[2015-11-14] Bumped version to 0.1.83"
         ]
     }
 ]
