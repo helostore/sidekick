@@ -533,7 +533,7 @@ class LicenseClient
 		if ($context == LicenseClient::CONTEXT_ACTIVATE) {
 			$changes = $client->haveSettingsChanged($productCode);
 			$inactive = !$client->isLicenseActive($productCode);
-			if ($changes || $inactive) {
+			if (true || $changes || $inactive) {
 				$response = $client->request($context, $data, $settings);
 			} else {
 				$response = array(
