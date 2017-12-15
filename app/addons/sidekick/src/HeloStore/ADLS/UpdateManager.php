@@ -21,22 +21,13 @@ use Tygh\Settings;
 
 class UpdateManager
 {
+	/**
+	 * @param $updates
+	 * @param array $requestProducts
+	 */
 	public function processNotifications($updates, $requestProducts = array())
 	{
 		foreach ($updates as $productCode => $update) {
-			$settings = $this->getSettings($productCode);
-			$productName = !empty($settings['name']) ? $settings['name'] : '';
-			$currentVersion = !empty($settings['version']) ? $settings['version'] : '';
-			// For testing purposes
-			if ( ! empty( $requestProducts ) && ! empty( $requestProducts[ $productCode ] ) ) {
-				$currentVersion = $requestProducts[ $productCode ]['version'];
-			}
-
-			$nextVersion = !empty($update['version']) ? $update['version'] : '';
-			if (empty($productName) || empty($currentVersion) || empty($nextVersion)) {
-				continue;
-			}
-
 			if ( ! empty( $update['notifications'] ) ) {
 				foreach ( $update['notifications'] as $notification ) {
 					$notificationType = isset( $notification['notification_type'] ) ? $notification['notification_type'] : 'N';
@@ -49,24 +40,39 @@ class UpdateManager
 
 			} else {
 				// @TODO deprecate, logic moved into ADLS module
-			if (version_compare($nextVersion, $currentVersion) === 1) {
-				$updateUrl = fn_url('sidekick.update?product=' . $productCode);
-				$message = __('sidekick.product_update_available', array(
-					'[addon]' => $productName,
-					'[currentVersion]' => $currentVersion,
-					'[nextVersion]' => $nextVersion,
-					'[updateUrl]' => $updateUrl,
-				));
+				$settings = $this->getSettings($productCode);
+				$productName = !empty($settings['name']) ? $settings['name'] : '';
+				$currentVersion = !empty($settings['version']) ? $settings['version'] : '';
+				// For testing purposes
+				if ( ! empty( $requestProducts ) && ! empty( $requestProducts[ $productCode ] ) ) {
+					$currentVersion = $requestProducts[ $productCode ]['version'];
+				}
 
-				fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'K', 'sidekick.product_update_available_title');
+				$nextVersion = !empty($update['version']) ? $update['version'] : '';
+				if (empty($productName) || empty($currentVersion) || empty($nextVersion)) {
+					continue;
+				}
+
+				if (version_compare($nextVersion, $currentVersion) === 1) {
+					$updateUrl = fn_url('sidekick.update?product=' . $productCode);
+					$message = __('sidekick.product_update_available', array(
+						'[addon]' => $productName,
+						'[currentVersion]' => $currentVersion,
+						'[nextVersion]' => $nextVersion,
+						'[updateUrl]' => $updateUrl,
+					));
+
+					fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'K', 'sidekick.product_update_available_title');
+				}
 			}
-			}
-
-
-
 		}
 	}
 
+	/**
+	 * @param array $params
+	 *
+	 * @return array
+	 */
 	public function getProducts($params = array())
 	{
 		list($addons, ) = fn_get_addons(array());
@@ -85,6 +91,12 @@ class UpdateManager
 
 		return $products;
 	}
+
+	/**
+	 * @param $productCode
+	 *
+	 * @return array|bool
+	 */
 	public function getSettings($productCode)
 	{
 		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
@@ -99,6 +111,12 @@ class UpdateManager
 
 		return $settings;
 	}
+
+	/**
+	 * @param $productCode
+	 *
+	 * @return bool
+	 */
 	public static function isOwnProduct($productCode)
 	{
 		$scheme = SchemesManager::getScheme($productCode);
@@ -127,6 +145,13 @@ class UpdateManager
 		return false;
 	}
 
+	/**
+	 * @param $productCode
+	 * @param $settings
+	 * @param $content
+	 *
+	 * @return bool
+	 */
 	public function updateAddon($productCode, $settings, $content)
 	{
 		define('ADLS_UPDATING', true);
@@ -183,6 +208,11 @@ class UpdateManager
 		}
 	}
 
+	/**
+	 * @param $productCode
+	 *
+	 * @return bool
+	 */
 	public function preserveAddonSettings($productCode)
 	{
 		static $prevSettings = null;
@@ -224,6 +254,12 @@ class UpdateManager
 		return $changes;
 	}
 
+	/**
+	 * @param $productCode
+	 * @param array $update
+	 *
+	 * @return bool
+	 */
 	public static function showUpdateSummary($productCode, $update = array())
 	{
 		if (empty($productCode) || empty($update)) {

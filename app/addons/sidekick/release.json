@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.2.3",
+        "releaseDate": "2017-12-15 01:11:22",
+        "releaseTimestamp": "1513343482",
+        "hash": "6f4220c56e6c85bac47a7f3f7d6b978d980d0e6c",
+        "commits": [
+            "[2017-12-15] Bumped version to 0.2.3",
+            "[2017-12-15]\tBumped version to 0.2.2"
+        ]
+    },
+    {
         "version": "0.2.1",
         "releaseDate": "2017-12-15 12:50:06",
         "releaseTimestamp": "1513342206",
@@ -29,17 +39,6 @@
             "[2016-12-06] Bumped version to 0.1.98",
             "[2016-12-06] Added error messages for insufficient write permissions",
             "[2016-12-06] Bumped version to 0.1.97"
-        ]
-    },
-    {
-        "version": "0.1.96",
-        "releaseDate": "2016-12-06 02:32:33",
-        "releaseTimestamp": "1481034753",
-        "hash": "cba1e8a3270dc8c4b4fd12072c1bdf66ae366625",
-        "commits": [
-            "[2016-12-06] Bumped version to 0.1.96",
-            "[2016-12-06] Fixed class autoloading issue",
-            "[2016-12-06] Bumped version to 0.1.95"
         ]
     }
 ]
