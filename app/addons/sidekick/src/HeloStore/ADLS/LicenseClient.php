@@ -23,6 +23,10 @@ use Tygh\Http;
 use Tygh\Registry;
 use Tygh\Settings;
 
+/**
+ * Class LicenseClient
+ * @package HeloStore\ADLS
+ */
 class LicenseClient
 {
 	const CONTEXT_INSTALL = 'install';
@@ -51,18 +55,24 @@ class LicenseClient
 	const CODE_ERROR_MISSING_DOMAIN = 406;
 	const CODE_ERROR_COMMUNICATION_FAILURE = 407;
 	const CODE_ERROR_ACCESS_DENIED = 408;
+	const CODE_ERROR_MISSING_PRODUCT_VERSION = 409;
 
 	const CODE_ERROR_PRODUCT_SUBSCRIPTION_TYPE_NOT_FOUND = 420;
+	const CODE_ERROR_PRODUCT_NOT_FOUND = 421;
 
 	const CODE_ERROR_INVALID_LICENSE_OR_DOMAIN = 450;
 	const CODE_ERROR_INVALID_CUSTOMER_EMAIL = 451;
 	const CODE_ERROR_INVALID_CREDENTIALS_COMBINATION = 452;
 	const CODE_ERROR_MISMATCH_CREDENTIALS_COMBINATION = 453;
+    const CODE_ERROR_PRODUCT_INVALID_VERSION = 454;
 
 	const CODE_ERROR_UPDATE_INVALID_REMOTE_PATH = 460;
 	const CODE_ERROR_UPDATE_FAILED_REMOTE_FILE_OPEN = 461;
 
-	const CODE_NOTIFICATION_SETTINGS_UNCHANGED = 200;
+    const CODE_ERROR_ACTIVATION_SUBSCRIPTION_NO_ACCESS_TO_RELEASE = 470;
+
+
+    const CODE_NOTIFICATION_SETTINGS_UNCHANGED = 200;
 	const CODE_NOTIFICATION_NO_UPDATES_AVAILABLE = 201;
 
 	const CODE_TYPE_ERROR = 'error';
@@ -73,10 +83,19 @@ class LicenseClient
 	protected $tries = 0;
 	protected $maxTries = 2;
 
+    /**
+     * LicenseClient constructor.
+     */
 	public function __construct()
 	{
 	}
 
+    /**
+     * @param $context
+     * @param $data
+     * @param $settings
+     * @return array|mixed|string
+     */
 	public function request($context, $data, $settings)
 	{
 		if (!in_array($context, array(
@@ -117,7 +136,7 @@ class LicenseClient
 		}
 
 		if (!empty($response) && !empty($response['code']) && in_array($response['code'], array(LicenseClient::CODE_ERROR_INVALID_TOKEN, LicenseClient::CODE_ERROR_MISSING_TOKEN))) {
-			fn_set_storage_data('helostore_token', '');
+            $this->resetToken();
 
 			// retry initial request with new token, if available
 			$this->refreshToken($data, $settings);
@@ -128,6 +147,11 @@ class LicenseClient
 		return $response;
 	}
 
+    /**
+     * @param $context
+     * @param array $args
+     * @return string
+     */
 	public function formatApiUrl($context, $args = array())
 	{
 		$protocol = (defined('SIDEKICK_NO_HTTPS') ? 'http' : 'https');
@@ -144,6 +168,11 @@ class LicenseClient
 		return $url;
 	}
 
+    /**
+     * @param $context
+     * @param $settings
+     * @return array
+     */
 	public function gatherData($context, $settings)
 	{
 		$data = array();
@@ -169,10 +198,15 @@ class LicenseClient
 			$data['email'] = isset($settings['email']) ? $settings['email'] : '';
 			$data['password'] = isset($settings['password']) ? $settings['password'] : '';
 		}
+        $data['licenseClient'] = $this->getSettings(SIDEKICK_ADDON_NAME);
 
-		return $data;
+        return $data;
 	}
 
+    /**
+     * @param $productCode
+     * @return array|bool
+     */
 	public function getSettings($productCode)
 	{
 		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
@@ -188,6 +222,11 @@ class LicenseClient
 		return $settings;
 	}
 
+    /**
+     * @param $data
+     * @param $settings
+     * @return array|bool|mixed|string
+     */
 	private function refreshToken($data, $settings)
 	{
 		if ($this->tries >= $this->maxTries) {
@@ -212,6 +251,16 @@ class LicenseClient
 		return $response;
 	}
 
+    /**
+     * Reset authorization token
+     *
+     * @return mixed
+     */
+    public function resetToken()
+    {
+        return fn_set_storage_data('helostore_token', '');
+    }
+
 	/**
 	 * @param $context
 	 * @param $response
@@ -221,6 +270,7 @@ class LicenseClient
 	 */
 	public function handleResponse($context, $response, $productCode)
 	{
+        // @TODO handleResponse should not set any notifications, errors in notifications aren't testable
 		$code = isset($response['code']) ? intval($response['code']) : -1;
 		$message = !empty($response['message']) ? $response['message'] : '';
 		$codeName = LicenseClient::getCodeName($code);
@@ -276,6 +326,11 @@ class LicenseClient
 
 		return (!$error);
 	}
+
+    /**
+     * @param $productCode
+     * @return bool
+     */
 	public function isLicenseActive($productCode)
 	{
 		$status = $this->getLicenseStatus($productCode);
@@ -283,14 +338,29 @@ class LicenseClient
 		return ($status == LicenseClient::LICENSE_STATUS_ACTIVE);
 	}
 
+    /**
+     * @param $productCode
+     * @return mixed
+     */
 	public function getLicenseStatus($productCode)
 	{
 		return fn_get_storage_data('helostore/' . $productCode . '/license_status');
 	}
+
+    /**
+     * @param $productCode
+     * @param $status
+     * @return mixed
+     */
 	public function setLicenseStatus($productCode, $status)
 	{
 		return fn_set_storage_data('helostore/' . $productCode . '/license_status', $status);
 	}
+
+    /**
+     * @param $productCode
+     * @return bool
+     */
 	public function haveSettingsChanged($productCode)
 	{
 		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
@@ -307,9 +377,17 @@ class LicenseClient
 
 		return false;
 	}
-	public function hasRequiredSettings($productCode)
+
+    /**
+     * @param $productCode
+     * @param array $settings
+     * @return bool
+     */
+	public function hasRequiredSettings($productCode, $settings = array())
 	{
-		$settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
+        if (empty($settings)) {
+            $settings = Settings::instance()->getValues($productCode, Settings::ADDON_SECTION, false);
+        }
 
 		if (empty($settings['email'])
 			|| empty($settings['password'])
@@ -320,6 +398,11 @@ class LicenseClient
 
 		return true;
 	}
+
+    /**
+     * @param $context
+     * @param $settings
+     */
 	public function processPreEvents($context, $settings)
 	{
 		$productCode = $settings['code'];
@@ -336,6 +419,12 @@ class LicenseClient
 			$this->setLicenseStatus($productCode, '');
 		}
 	}
+
+    /**
+     * @param $context
+     * @param $data
+     * @return array|mixed|string
+     */
 	public function requestUpdateCheck($context, $data)
 	{
 		$manager = new UpdateManager();;
@@ -351,6 +440,12 @@ class LicenseClient
 		return $response;
 	}
 
+    /**
+     * @param $context
+     * @param $data
+     * @param $productCode
+     * @return array|mixed|string
+     */
 	public function requestUpdateRequest($context, $data, $productCode)
 	{
 		$manager = new UpdateManager();
@@ -361,6 +456,10 @@ class LicenseClient
 		return $response;
 	}
 
+    /**
+     * @param $productCode
+     * @return bool
+     */
 	public function requestUpdateDownload($productCode)
 	{
 		$context = LicenseClient::CONTEXT_UPDATE_DOWNLOAD;
@@ -375,8 +474,9 @@ class LicenseClient
 		return $result;
 	}
 
-
-
+    /**
+     * @return array
+     */
 	public static function getCodeTypes()
 	{
 		static $types = array(
@@ -387,6 +487,10 @@ class LicenseClient
 
 		return $types;
 	}
+
+    /**
+     * @return null
+     */
 	public static function getCodeConstants()
 	{
 		static $constants = null;
@@ -408,6 +512,11 @@ class LicenseClient
 
 		return $constants;
 	}
+
+    /**
+     * @param $code
+     * @return bool
+     */
 	public static function getCodeName($code)
 	{
 		$constants = self::getCodeConstants();
@@ -420,6 +529,11 @@ class LicenseClient
 
 		return false;
 	}
+
+    /**
+     * @param $code
+     * @return mixed|string
+     */
 	public static function getCodeType($code)
 	{
 		$constants = self::getCodeConstants();
@@ -432,19 +546,39 @@ class LicenseClient
 
 		return LicenseClient::CODE_TYPE_UNKNOWN;
 	}
+
+    /**
+     * @param $code
+     * @return bool
+     */
 	public static function isSuccess($code)
 	{
 		return (LicenseClient::getCodeType($code) === LicenseClient::CODE_TYPE_SUCCESS);
 	}
+
+    /**
+     * @param $code
+     * @return bool
+     */
 	public static function isError($code)
 	{
 		$codeType = LicenseClient::getCodeType($code);
 		return ($codeType === LicenseClient::CODE_TYPE_ERROR);
 	}
+
+    /**
+     * @param $code
+     * @return bool
+     */
 	public static function isAlien($code)
 	{
 		return (LicenseClient::getCodeType($code) === LicenseClient::CODE_TYPE_UNKNOWN);
 	}
+
+    /**
+     * @param int $backtrack
+     * @return string
+     */
 	public static function inferAddonName($backtrack = 1)
 	{
 		$trace = debug_backtrace(false);
@@ -466,7 +600,10 @@ class LicenseClient
 		return $productCode;
 	}
 
-
+    /**
+     * @param $productCode
+     * @return string
+     */
 	public static function helperInfo($productCode)
 	{
 		$client = new LicenseClient();
@@ -494,7 +631,15 @@ class LicenseClient
 			</div>
 			';
 	}
-	public static function process($context, $productCode = '', $backtrack = 1)
+
+    /**
+     * @param $context
+     * @param string $productCode
+     * @param int $backtrack
+     * @param array $params
+     * @return bool
+     */
+	public static function process($context, $productCode = '', $backtrack = 1, $params = array())
 	{
 		if (empty($context)) {
 			return false;
@@ -502,8 +647,9 @@ class LicenseClient
 		$client = new LicenseClient();
 
 		$productCode = !empty($productCode) ? $productCode : self::inferAddonName($backtrack);
-		$settings = $client->getSettings($productCode);
-		$data = $client->gatherData($context, $settings);
+        $settings = !empty($params) && !empty($params['settings']) ? $params['settings'] : $client->getSettings($productCode);
+        $data = !empty($params) && !empty($params['data']) ? $params['data'] : $client->gatherData($context, $settings);
+
 		$client->processPreEvents($context, $settings);
 
 		if ($context == LicenseClient::CONTEXT_UPDATE_CHECK) {
@@ -526,7 +672,7 @@ class LicenseClient
 			return $client->handleResponse($context, $response, $productCode);
 		}
 
-		if (!$client->hasRequiredSettings($productCode)) {
+		if (!$client->hasRequiredSettings($productCode, $settings)) {
 			return false;
 		}
 
@@ -546,20 +692,40 @@ class LicenseClient
 
 		return $client->handleResponse($context, $response, $productCode);
 	}
+
+	/**
+	 * @param string $productCode
+	 * @param int $backtrack
+	 * @return bool
+	 */
 	public static function activate($productCode = '', $backtrack = 2)
 	{
 		return LicenseClient::process(LicenseClient::CONTEXT_ACTIVATE, $productCode, $backtrack);
 	}
+
+	/**
+	 * @param string $productCode
+	 * @param int $backtrack
+	 * @return bool
+	 */
 	public static function deactivate($productCode = '', $backtrack = 2)
 	{
 		return LicenseClient::process(LicenseClient::CONTEXT_DEACTIVATE, $productCode, $backtrack);
 	}
 
+	/**
+	 * @param bool $silent
+	 * @return bool
+	 */
 	public static function checkUpdates($silent = false)
 	{
 		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK);
 	}
 
+	/**
+	 * @param $productCodes
+	 * @return bool
+	 */
 	public static function update($productCodes)
 	{
 		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_REQUEST, $productCodes);
