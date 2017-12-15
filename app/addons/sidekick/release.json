@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.2.1",
+        "releaseDate": "2017-12-15 12:50:06",
+        "releaseTimestamp": "1513342206",
+        "hash": "2f4c1f0745206b1b5d3f47d263c0ec504a3ce03c",
+        "commits": [
+            "[2017-12-15] Bumped version to 0.2.1",
+            "[2017-12-15]\tBumped version to 0.2.0"
+        ]
+    },
+    {
         "version": "0.1.100",
         "releaseDate": "2016-12-07 08:26:45",
         "releaseTimestamp": "1481099205",
@@ -30,16 +40,6 @@
             "[2016-12-06] Bumped version to 0.1.96",
             "[2016-12-06] Fixed class autoloading issue",
             "[2016-12-06] Bumped version to 0.1.95"
-        ]
-    },
-    {
-        "version": "0.1.94",
-        "releaseDate": "2016-05-20 12:38:10",
-        "releaseTimestamp": "1463747890",
-        "hash": "eceb66132cb9e0d4095070d4b08eb1d36e99d789",
-        "commits": [
-            "[2016-05-20] Bumped version to 0.1.94",
-            "[2016-05-20] Fixed minor compatibility with CS-Cart 4.3.6 in HTTP class"
         ]
     }
 ]

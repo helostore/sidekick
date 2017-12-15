@@ -21,17 +21,34 @@ use Tygh\Settings;
 
 class UpdateManager
 {
-	public function processNotifications($updates)
+	public function processNotifications($updates, $requestProducts = array())
 	{
 		foreach ($updates as $productCode => $update) {
 			$settings = $this->getSettings($productCode);
 			$productName = !empty($settings['name']) ? $settings['name'] : '';
 			$currentVersion = !empty($settings['version']) ? $settings['version'] : '';
+			// For testing purposes
+			if ( ! empty( $requestProducts ) && ! empty( $requestProducts[ $productCode ] ) ) {
+				$currentVersion = $requestProducts[ $productCode ]['version'];
+			}
+
 			$nextVersion = !empty($update['version']) ? $update['version'] : '';
 			if (empty($productName) || empty($currentVersion) || empty($nextVersion)) {
 				continue;
 			}
 
+			if ( ! empty( $update['notifications'] ) ) {
+				foreach ( $update['notifications'] as $notification ) {
+					$notificationType = isset( $notification['notification_type'] ) ? $notification['notification_type'] : 'N';
+					$notificationExtra = isset( $notification['notification_extra'] ) ? $notification['notification_extra'] : '';
+					$notificationState = isset( $notification['notification_state'] ) ? $notification['notification_state'] : 'K';
+					$title = isset( $notification['title'] ) ? $notification['title'] : __('notice');
+					$message = $notification['message'];
+					fn_set_notification($notificationType, $title, $message, $notificationState, $notificationExtra);
+				}
+
+			} else {
+				// @TODO deprecate, logic moved into ADLS module
 			if (version_compare($nextVersion, $currentVersion) === 1) {
 				$updateUrl = fn_url('sidekick.update?product=' . $productCode);
 				$message = __('sidekick.product_update_available', array(
@@ -40,8 +57,13 @@ class UpdateManager
 					'[nextVersion]' => $nextVersion,
 					'[updateUrl]' => $updateUrl,
 				));
+
 				fn_set_notification('N', __('sidekick.product_update_available_title'), $message, 'K', 'sidekick.product_update_available_title');
 			}
+			}
+
+
+
 		}
 	}
 

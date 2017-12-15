@@ -68,6 +68,9 @@ class LicenseClient
 
 	const CODE_ERROR_UPDATE_INVALID_REMOTE_PATH = 460;
 	const CODE_ERROR_UPDATE_FAILED_REMOTE_FILE_OPEN = 461;
+	const CODE_ERROR_UPDATE_FAILED_RELEASE_NOT_FOUND = 462;
+	const CODE_ERROR_UPDATE_CHECK_FAILED_INVALID_LICENSE = 463;
+	const CODE_ERROR_UPDATE_CHECK_FAILED_INVALID_VERSION = 464;
 
     const CODE_ERROR_ACTIVATION_SUBSCRIPTION_NO_ACCESS_TO_RELEASE = 470;
 
@@ -266,7 +269,7 @@ class LicenseClient
 	 * @param $response
 	 * @param $productCode
 	 *
-	 * @return bool
+	 * @return bool|array
 	 */
 	public function handleResponse($context, $response, $productCode)
 	{
@@ -321,6 +324,10 @@ class LicenseClient
 			if (!empty($response['trace'])) {
 				fn_set_notification('W', 'Trace', $response['trace']);
 			}
+		}
+
+		if ( php_sapi_name() == 'cli' ) {
+			return array(!$error, $response);
 		}
 
 
@@ -427,14 +434,18 @@ class LicenseClient
      */
 	public function requestUpdateCheck($context, $data)
 	{
-		$manager = new UpdateManager();;
+		$manager = new UpdateManager();
+		if ( empty( $data['product'] ) ) {
 		$data['products'] = $manager->getProducts();
+		} else {
+			$data['products'] = array( $data['product']['code'] => $data['product'] );
 		unset($data['product']);
+		}
 
 		$response = $this->request($context, $data, array());
 
 		if (!empty($response) && !empty($response['updates'])) {
-			$manager->processNotifications($response['updates']);
+			$manager->processNotifications($response['updates'], $data['products']);
 		}
 
 		return $response;
@@ -654,6 +665,7 @@ class LicenseClient
 
 		if ($context == LicenseClient::CONTEXT_UPDATE_CHECK) {
 			$response = $client->requestUpdateCheck($context, $data);
+
 			return $client->handleResponse($context, $response, $productCode);
 		}
 		if ($context == LicenseClient::CONTEXT_UPDATE_REQUEST) {
