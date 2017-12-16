@@ -54,7 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if ( ! empty( $_REQUEST['addon'] ) ) {
 			$addonId = $_REQUEST['addon'];
 		}
-		\HeloStore\ADLS\LicenseClient::checkUpdates(false, $addonId);
+		if ( ! empty( $action ) && $action == 'all' ) {
+			$addonId = 'all';
+		}
+		\HeloStore\ADLS\LicenseClient::checkUpdates($addonId);
 
 		return array(CONTROLLER_STATUS_OK, 'addons.manage');
 	}

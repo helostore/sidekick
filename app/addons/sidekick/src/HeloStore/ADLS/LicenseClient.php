@@ -633,6 +633,7 @@ class LicenseClient
 		if (!in_array($mode, array('reinstall'))) {
 //			LicenseClient::checkUpdates();
 		}
+		$isSidekick = ($productCode === SIDEKICK_ADDON_NAME);
 
 		return '
 			<div style="text-align: center;padding:5px 10%;">
@@ -641,6 +642,9 @@ class LicenseClient
 				<p>' . __('sidekick.contact_hint') . '</p>
 				' . (!empty($version) ? '<p>' . $productName . ' ' . __('version') . ': ' . $version . '</p>' : '') . '
 				<p><input class="btn btn-tertiary cm-ajax cm-submit" type="submit" value="' . __('sidekick.check_updates_button') . '" name="dispatch[sidekick.check]"></p>
+				' . ($isSidekick ? '
+					<p><input class="btn btn-tertiary cm-ajax cm-submit" type="submit" value="' . __('sidekick.check_updates_button') . ' (all)" name="dispatch[sidekick.check.all]"></p>
+				' : '') . '
 			</div>
 			';
 	}
@@ -728,12 +732,11 @@ class LicenseClient
 	}
 
 	/**
-	 * @param bool $silent
 	 * @param string $productCode
 	 *
 	 * @return bool
 	 */
-	public static function checkUpdates($silent = false, $productCode = '')
+	public static function checkUpdates($productCode = '')
 	{
 		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK, $productCode);
 	}

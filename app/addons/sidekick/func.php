@@ -82,7 +82,7 @@ function fn_sidekick_user_init($auth, $userInfo, $firstInit)
 		if (fn_is_expired_storage_data('helostore_update_check', SECONDS_IN_DAY * 2)) {
 			fn_define('SIDEKICK_SILENT_UPDATES_CHECK', true);
 
-			return LicenseClient::checkUpdates();
+			return LicenseClient::checkUpdates('all');
 		}
 	}
 
