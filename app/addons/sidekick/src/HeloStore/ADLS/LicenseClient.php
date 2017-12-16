@@ -727,11 +727,13 @@ class LicenseClient
 
 	/**
 	 * @param bool $silent
+	 * @param string $productCode
+	 *
 	 * @return bool
 	 */
-	public static function checkUpdates($silent = false)
+	public static function checkUpdates($silent = false, $productCode = '')
 	{
-		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK);
+		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK, $productCode);
 	}
 
 	/**
