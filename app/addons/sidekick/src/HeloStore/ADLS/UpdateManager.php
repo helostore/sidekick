@@ -28,6 +28,8 @@ class UpdateManager
 	public function processNotifications($updates, $requestProducts = array())
 	{
 		foreach ($updates as $productCode => $update) {
+			$updateUrl = fn_url('sidekick.update?product=' . $productCode);
+
 			if ( ! empty( $update['notifications'] ) ) {
 				foreach ( $update['notifications'] as $notification ) {
 					$notificationType = isset( $notification['notification_type'] ) ? $notification['notification_type'] : 'N';
@@ -35,9 +37,9 @@ class UpdateManager
 					$notificationState = isset( $notification['notification_state'] ) ? $notification['notification_state'] : 'K';
 					$title = isset( $notification['title'] ) ? $notification['title'] : __('notice');
 					$message = $notification['message'];
+					$message = str_replace( '[updateUrl]', $updateUrl, $message );
 					fn_set_notification($notificationType, $title, $message, $notificationState, $notificationExtra);
 				}
-
 			} else {
 				// @TODO deprecate, logic moved into ADLS module
 				$settings = $this->getSettings($productCode);
@@ -54,7 +56,7 @@ class UpdateManager
 				}
 
 				if (version_compare($nextVersion, $currentVersion) === 1) {
-					$updateUrl = fn_url('sidekick.update?product=' . $productCode);
+
 					$message = __('sidekick.product_update_available', array(
 						'[addon]' => $productName,
 						'[currentVersion]' => $currentVersion,
