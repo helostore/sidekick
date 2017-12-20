@@ -22,6 +22,8 @@ use Tygh\Addons\SchemesManager;
 use Tygh\Http;
 use Tygh\Registry;
 use Tygh\Settings;
+use Tygh\Languages\Values as LanguageValues;
+
 
 /**
  * Class LicenseClient
@@ -193,7 +195,7 @@ class LicenseClient
 		);
 		$data['language'] = CART_LANGUAGE;
 
-		if (!empty($settings)) {
+		if (!empty($settings) && !empty($settings['code'])) {
 			$data['product'] = array(
 				'code' => $settings['code'],
 				'license' => isset($settings['license']) ? $settings['license'] : '',
@@ -286,7 +288,6 @@ class LicenseClient
 		$success = LicenseClient::isSuccess($code);
 		$debug = defined('WS_DEBUG');
 
-
 		if ($context == LicenseClient::CONTEXT_ACTIVATE) {
 			if ($success) {
 				$this->setLicenseStatus($productCode, LicenseClient::LICENSE_STATUS_ACTIVE);
@@ -311,7 +312,12 @@ class LicenseClient
 			}
 		} else if ($error || $alien) {
 			if ($codeName !== false) {
-				fn_set_notification('E',  __('error'), __('sidekick.' . $codeName) . ($debug ? ' (' . $codeName . ')' : ''));
+				$langKey = 'sidekick.' . $codeName;
+				$translation = LanguageValues::getLangVar($langKey);
+				if ( ! empty( $translation ) && $translation[0] !== '_' ) {
+					$message = __( $langKey );
+				}
+				fn_set_notification('E',  __('error'),  $message . ($debug ? ' (' . $codeName . ')' : ''));
 			} else {
 				$message = json_encode($response);
 				fn_set_notification('E', 'Unknown error', $message . ($debug ? ' (' . $codeName . ')' : ''));
@@ -429,25 +435,25 @@ class LicenseClient
 		}
 	}
 
-    /**
-     * @param $context
-     * @param $data
-     * @return array|mixed|string
-     */
-	public function requestUpdateCheck($context, $data)
-	{
+	/**
+	 * @param $context
+	 * @param $data
+	 *
+	 * @return array|mixed|string
+	 */
+	public function requestUpdateCheck( $context, $data ) {
 		$manager = new UpdateManager();
 		if ( empty( $data['product'] ) ) {
-		$data['products'] = $manager->getProducts();
+			$data['products'] = $manager->getProducts();
 		} else {
 			$data['products'] = array( $data['product']['code'] => $data['product'] );
-		unset($data['product']);
+			unset( $data['product'] );
 		}
 
-		$response = $this->request($context, $data, array());
+		$response = $this->request( $context, $data, array() );
 
-		if (!empty($response) && !empty($response['updates'])) {
-			$manager->processNotifications($response['updates'], $data['products']);
+		if ( ! empty( $response ) && ! empty( $response['updates'] ) ) {
+			$manager->processNotifications( $response['updates'], $data['products'] );
 		}
 
 		return $response;

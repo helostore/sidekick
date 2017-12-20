@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.2.7",
+        "releaseDate": "2017-12-16 02:27:07",
+        "releaseTimestamp": "1513434427",
+        "hash": "56e29d4264dd97211418897a82c10fef73904ef2",
+        "commits": [
+            "[2017-12-20] Bumped version to 0.2.7",
+            "[2017-12-16]\tBumped version to 0.2.6"
+        ]
+    },
+    {
         "version": "0.2.5",
         "releaseDate": "2017-12-16 10:14:02",
         "releaseTimestamp": "1513419242",
@@ -27,17 +37,6 @@
         "commits": [
             "[2017-12-15] Bumped version to 0.2.1",
             "[2017-12-15]\tBumped version to 0.2.0"
-        ]
-    },
-    {
-        "version": "0.1.100",
-        "releaseDate": "2016-12-07 08:26:45",
-        "releaseTimestamp": "1481099205",
-        "hash": "567f89777fc34cc5f0049935fad8bf45488604ed",
-        "commits": [
-            "[2016-12-07] Bumped version to 0.1.100",
-            "[2016-12-07] Bugfix: allow license re-activation even when license settings\/status is unchanged",
-            "[2016-12-06] Bumped version to 0.1.99"
         ]
     }
 ]
