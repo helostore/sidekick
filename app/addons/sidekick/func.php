@@ -16,8 +16,71 @@ use HeloStore\ADLS\LicenseClient;
 use HeloStore\ADLS\UpdateManager;
 use Tygh\Addons\SchemesManager;
 use Tygh\Registry;
+use Tygh\Settings;
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
+
+
+function fn_sidekick_encrypt_password_in_settings()
+{
+    if (empty($_REQUEST) || empty($_REQUEST['addon'])) {
+        return array(CONTROLLER_STATUS_OK);
+    }
+
+    if (empty($_REQUEST['addon_data']) || empty($_REQUEST['addon_data']['options'])) {
+        return array(CONTROLLER_STATUS_OK);
+    }
+
+    $addon = $_REQUEST['addon'];
+    $ownProduct = \HeloStore\ADLS\UpdateManager::isOwnProduct($addon);
+    if (!$ownProduct) {
+        return array(CONTROLLER_STATUS_OK);
+    }
+
+    $section = Settings::instance()->getSectionByName($addon, Settings::ADDON_SECTION);
+    if (empty($section)) {
+        return array(CONTROLLER_STATUS_OK);
+    }
+
+    $sectionsOptions = Settings::instance()->getList($section['section_id']);
+    $passwordOptionId = null;
+    $currentHash = null;
+    foreach ($sectionsOptions as $sectionCode => $options) {
+        foreach ($options as $optionId => $option) {
+            if (empty($option) || empty($option['name'])) {
+                continue;
+            }
+            if ($option['name'] !== 'password') {
+                continue;
+            }
+            $passwordOptionId = $optionId;
+            $currentHash = $option['value'];
+        }
+    }
+
+    if (empty($_REQUEST['addon_data']['options'][$passwordOptionId])) {
+        return array(CONTROLLER_STATUS_OK);
+    }
+    $nextValue = $_REQUEST['addon_data']['options'][$passwordOptionId];
+    $nextHash = md5($_REQUEST['addon_data']['options'][$passwordOptionId]);
+
+    $isNextValueMd5 = strlen($nextValue) == 32 && ctype_xdigit($nextValue);
+
+    // The password's hash did not change
+    //  - case 1. The input value is already a hash, and it did not change
+    if ($isNextValueMd5 && $currentHash === $nextValue) {
+        return array(CONTROLLER_STATUS_OK);
+    }
+    //  - case 2. The input value is not a hash (ie. user has re-entered the password in plain-text), but the hashes did not change
+    if (!$isNextValueMd5 && $currentHash === $nextHash) {
+        return array(CONTROLLER_STATUS_OK);
+    }
+
+    Settings::instance()->updateValueById($passwordOptionId, $nextHash);
+
+    return array(CONTROLLER_STATUS_OK);
+}
+
 
 /**
  * @param $addon
@@ -79,6 +142,11 @@ function fn_settings_actions_addons_sidekick(&$statusNew, $statusOld)
 function fn_sidekick_user_init($auth, $userInfo, $firstInit)
 {
 	if (!empty($userInfo) && !empty($userInfo['user_type']) && $userInfo['user_type'] == 'A') {
+        $autoCheckUpdates = Registry::get('addons.' . SIDEKICK_ADDON_NAME . '.auto_check_updates');
+        if ($autoCheckUpdates !== 'Y') {
+            return false;
+        }
+
 		if (fn_is_expired_storage_data('helostore_update_check', SECONDS_IN_DAY * 2)) {
 			fn_define('SIDEKICK_SILENT_UPDATES_CHECK', true);
 

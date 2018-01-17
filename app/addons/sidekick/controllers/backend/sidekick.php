@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 
 			if ($ownProduct) {
+                fn_sidekick_encrypt_password_in_settings();
 				$activated = false;
 				$status = Registry::get('addons.' . $addon . '.status');
 				if ($status == 'A') {
@@ -49,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($mode == 'check') {
 		if (isset($_REQUEST['addon_data'])) {
 			fn_update_addon($_REQUEST['addon_data']);
+            fn_sidekick_encrypt_password_in_settings();
 		}
 		\HeloStore\ADLS\LicenseClient::checkUpdates();
 

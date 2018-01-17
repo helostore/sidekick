@@ -11,3 +11,15 @@
  * @license    https://helostore.com/legal/license-agreement/   License Agreement
  * @version    $Id$
  */
+
+use Tygh\Settings;
+use Tygh\Registry;
+
+if (!defined('BOOTSTRAP')) { die('Access denied'); }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if ($mode == 'update') {
+        fn_sidekick_encrypt_password_in_settings();
+    }
+}

@@ -28,6 +28,10 @@ msgctxt "SettingsOptions::sidekick::license"
 msgid "License key"
 msgstr "License key"
 
+msgctxt "SettingsOptions::sidekick::auto_check_updates"
+msgid "Periodically check for new updates"
+msgstr "Periodically check for new updates"
+
 msgctxt "Languages::sidekick.dependency_breakage_warning"
 msgid "dependency_breakage_warning"
 msgstr "Add-on [addon_name] cannot be disabled because the following add-ons depend on it: [addons]. You should disable these dependent add-ons first, if you must."

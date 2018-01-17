@@ -557,6 +557,7 @@ class LicenseClient
 
 	public static function checkUpdates($silent = false)
 	{
+        fnx('checkUpdates!');
 		return LicenseClient::process(LicenseClient::CONTEXT_UPDATE_CHECK);
 	}
 
