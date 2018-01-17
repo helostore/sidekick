@@ -29,8 +29,8 @@ msgid "License key"
 msgstr "License key"
 
 msgctxt "SettingsOptions::sidekick::auto_check_updates"
-msgid "Periodically check for new updates"
-msgstr "Periodically check for new updates"
+msgid "Periodically check for new updates (recommended)"
+msgstr "Periodically check for new updates (recommended)"
 
 msgctxt "Languages::sidekick.dependency_breakage_warning"
 msgid "dependency_breakage_warning"
