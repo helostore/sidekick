@@ -152,6 +152,12 @@ class UpdateManager
 				fn_uninstall_addon($productCode, false);
 			}
 
+			// Clear internal cache of the schema, since the new update might have introduces new settings in the scheme XML; this will force the XML scheme to be re-read
+            if (!empty(SchemesManager::$schemas) && isset(SchemesManager::$schemas[$productCode])) {
+                unset(SchemesManager::$schemas[$productCode]);
+            }
+
+
 			if (fn_install_addon($productCode, false)) {
 				$this->preserveAddonSettings($productCode);
 				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'S');

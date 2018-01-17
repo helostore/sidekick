@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <addon scheme="3.0">
     <id>sidekick</id>
-    <version>0.1.101</version>
+    <version>0.1.102</version>
     <priority>10101</priority>
     <position>0</position>
     <status>active</status>
@@ -23,6 +23,9 @@
                     <item id="auto_check_updates">
                         <type>checkbox</type>
                         <default_value>Y</default_value>
+                    </item>
+                    <item id="auto_check_updates2">
+                        <type>checkbox</type>
                     </item>
                     <item id="info">
                         <type>info</type>
