@@ -1,5 +1,16 @@
 [
     {
+        "version": "0.1.103",
+        "releaseDate": "2018-01-17 02:30:12",
+        "releaseTimestamp": "1516199412",
+        "hash": "0f38cffd25e900b6b3ecd3c20e5f00184c4c14b8",
+        "commits": [
+            "[2018-01-17] Bumped version to 0.1.103",
+            "[2018-01-17]\tAdd function to secure all existing passwords of all installed HELOstore add-ons",
+            "[2018-01-17]\tBumped version to 0.1.102"
+        ]
+    },
+    {
         "version": "0.1.101",
         "releaseDate": "2018-01-17 11:38:26",
         "releaseTimestamp": "1516189106",
@@ -30,17 +41,6 @@
             "[2016-12-06] Bumped version to 0.1.98",
             "[2016-12-06] Added error messages for insufficient write permissions",
             "[2016-12-06] Bumped version to 0.1.97"
-        ]
-    },
-    {
-        "version": "0.1.96",
-        "releaseDate": "2016-12-06 02:32:33",
-        "releaseTimestamp": "1481034753",
-        "hash": "cba1e8a3270dc8c4b4fd12072c1bdf66ae366625",
-        "commits": [
-            "[2016-12-06] Bumped version to 0.1.96",
-            "[2016-12-06] Fixed class autoloading issue",
-            "[2016-12-06] Bumped version to 0.1.95"
         ]
     }
 ]
