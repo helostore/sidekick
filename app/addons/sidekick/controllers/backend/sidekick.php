@@ -58,6 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 }
 
+if ($mode == 'secure_passwords') {
+    fn_sidekick_secure_passwords();
+    fn_set_storage_data('helostore/patch/secure_password', 1);
+    fn_set_notification('N', __('notice'), 'All the passwords related to HELOstore products have been secured with md5 hashing.', 'K');
+    exit;
+}
+
 if ($mode == 'update') {
 	if (!empty($_REQUEST['product'])) {
 		$productCode = $_REQUEST['product'];
