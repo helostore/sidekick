@@ -229,21 +229,31 @@ class UpdateManager
 		if (empty($releases) || !is_array($releases)) {
 			return false;
 		}
-		$release = array_shift($releases);
-		if (!is_array($release)
-			|| empty($release['version'])
-			|| empty($release['releaseTimestamp'])
-			|| empty($release['commits'])
-			|| !is_array($release['commits'])
-		) {
-			return false;
-		}
+		$commits = array();
+		$latestRelease = array();
+        foreach ($releases as $release) {
+            if ( ! is_array($release)
+                 || empty($release['version'])
+                 || empty($release['releaseTimestamp'])
+                 || empty($release['commits'])
+                 || ! is_array($release['commits'])
+            ) {
+                continue;
+            }
+            // userVersion = old user version
+            if (1 === version_compare($release['version'], $update['userVersion'])) {
+                $commits = array_merge($commits, $release['commits']);
+            }
+            if (0 === version_compare($release['version'], $update['version'])) {
+                $latestRelease = $release;
+            }
+        }
 
 		$message = __('sidekick.update_summary_message', array(
 			'[product]' => $scheme->getName(),
-			'[version]' => $release['version'],
-			'[date]' => fn_date_format($release['releaseTimestamp'], "%m/%d/%Y"),
-			'[commits]' => implode('<br>', $release['commits'])
+			'[version]' => $latestRelease['version'],
+			'[date]' => fn_date_format($latestRelease['releaseTimestamp'], "%m/%d/%Y"),
+			'[commits]' => implode('<br>', $commits)
 		));
 
 		if (!empty($update['reviewMessage'])) {
