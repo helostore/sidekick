@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.1.104",
+        "releaseDate": "2018-01-18 01:09:15",
+        "releaseTimestamp": "1516280955",
+        "hash": "bbc9eca7f49a168637be572eb724485431ffeb8a",
+        "commits": [
+            "[2018-01-18] Bumped version to 0.1.104",
+            "[2018-01-18]\tImprove update summary"
+        ]
+    },
+    {
         "version": "0.1.103",
         "releaseDate": "2018-01-17 02:30:12",
         "releaseTimestamp": "1516199412",
@@ -30,17 +40,6 @@
             "[2016-12-07] Bumped version to 0.1.100",
             "[2016-12-07] Bugfix: allow license re-activation even when license settings\/status is unchanged",
             "[2016-12-06] Bumped version to 0.1.99"
-        ]
-    },
-    {
-        "version": "0.1.98",
-        "releaseDate": "2016-12-06 03:50:09",
-        "releaseTimestamp": "1481039409",
-        "hash": "9f9fbbde3960e094e88bc87b555cd27a3a14bbc6",
-        "commits": [
-            "[2016-12-06] Bumped version to 0.1.98",
-            "[2016-12-06] Added error messages for insufficient write permissions",
-            "[2016-12-06] Bumped version to 0.1.97"
         ]
     }
 ]
