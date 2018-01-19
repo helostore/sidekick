@@ -245,3 +245,45 @@ if ( ! function_exists('fn_update_addon_settings_polyfill')) {
         return true;
     }
 }
+
+/**
+ * Needed by fn_update_addon_settings_polyfill but missing in CS-Cart 4.2.3
+ */
+if ( ! function_exists('fn_update_addon_settings_originals')) {
+    /**
+     * Updates settings original values
+     *
+     * @param string $addon_id Addon ID (discussions, gift_certificates, etc)
+     * @param string $name Text settings ID (use_search_on_page, gift_certificate_code, etc)
+     * @param string $type Setting type. Enum: section, option, variant
+     * @param string $value Setting description
+     * @return bool True if updated
+     */
+    function fn_update_addon_settings_originals($addon_id, $name, $type, $value)
+    {
+        switch (strtolower($type)) {
+            case 'section':
+                $context = 'SettingsSections::' . $addon_id . '::' . $name;
+                break;
+
+            case 'option':
+                $context = 'SettingsOptions::' . $addon_id . '::' . $name;
+                break;
+
+            case 'variant':
+                // Variant name must include option name (option_name::variant_name)
+                $context = 'SettingsVariants::' . $addon_id . '::' . $name;
+                break;
+
+            default:
+                $context = '';
+                break;
+        }
+
+        if (empty($context)) {
+            return false;
+        }
+
+        return db_query('REPLACE INTO ?:original_values (msgctxt, msgid) VALUES (?s, ?s)', $context, $value);
+    }
+}
