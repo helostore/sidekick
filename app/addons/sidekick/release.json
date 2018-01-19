@@ -1,11 +1,11 @@
 [
     {
-        "version": "0.1.106",
+        "version": "0.1.107",
         "releaseDate": "2018-01-19 09:11:32",
         "releaseTimestamp": "1516353092",
         "hash": "140d689002a8ac01a74e6cfb0f8d04f778cb7528",
         "commits": [
-            "[2018-01-19] Bumped version to 0.1.106",
+            "[2018-01-19] Bumped version to 0.1.107",
             "[2018-01-19]\tAdd function that refreshes settings and translations on add-on update"
         ]
     },
