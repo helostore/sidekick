@@ -289,7 +289,10 @@ class UpdateManager
         }
 
         fn_clear_cache();
-        Registry::clearCachedKeyValues();
+
+        if (method_exists('\Tygh\Registry', "clearCachedKeyValues")) {
+            Registry::clearCachedKeyValues();
+        }
 
         if ($update_addon_settings_result) {
             return true;
