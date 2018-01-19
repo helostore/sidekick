@@ -159,6 +159,7 @@ class UpdateManager
 
 
 			if (fn_install_addon($productCode, false)) {
+                UpdateManager::refreshAddon($productCode);
 				$this->preserveAddonSettings($productCode);
 				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'S');
 			}
@@ -263,4 +264,38 @@ class UpdateManager
 
 		return true;
 	}
+
+    /**
+     * @param $addonId
+     *
+     * @return bool
+     */
+    public static function refreshAddon($addonId)
+    {
+        if ( ! empty(SchemesManager::$schemas[$addonId])) {
+            unset(SchemesManager::$schemas[$addonId]);
+        }
+        $addon_scheme = SchemesManager::getScheme($addonId);
+
+        fn_update_addon_language_variables($addon_scheme);
+
+        $settings_values = fn_get_addon_settings_values($addonId);
+        $settings_vendor_values = fn_get_addon_settings_vendor_values($addonId);
+
+        if (version_compare(PRODUCT_VERSION, '4.7.1', '<')) {
+            $update_addon_settings_result = fn_update_addon_settings_polyfill($addon_scheme, true, $settings_values, $settings_vendor_values);
+        } else {
+            $update_addon_settings_result = fn_update_addon_settings($addon_scheme, true, $settings_values, $settings_vendor_values);
+        }
+
+        fn_clear_cache();
+        Registry::clearCachedKeyValues();
+
+        if ($update_addon_settings_result) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

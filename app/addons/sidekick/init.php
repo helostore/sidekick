@@ -15,6 +15,7 @@
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/compatibility.php';
 
 define('SIDEKICK_ADDON_NAME', 'sidekick');
 define('SIDEKICK_AUTHOR_NAME', 'HELOstore');
