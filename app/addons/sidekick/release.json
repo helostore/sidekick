@@ -6,11 +6,7 @@
         "hash": "3e92d955261a023653119b117dc8a0d98d95beaa",
         "commits": [
             "[2018-01-19] Bumped version to 0.1.106",
-            "[2018-01-19]\tBumped version to 0.1.110",
-            "[2018-01-19]\tBumped version to 0.1.109",
             "[2018-01-19]\tFix backward compatibility with CS-Cart 4.2.3",
-            "[2018-01-19]\tBumped version to 0.1.107",
-            "[2018-01-19]\tBumped version to 0.1.106",
             "[2018-01-19]\tAdd function that refreshes settings and translations on add-on update"
         ]
     },
