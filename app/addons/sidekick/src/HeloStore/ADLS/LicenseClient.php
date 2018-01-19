@@ -485,10 +485,12 @@ class LicenseClient
 		}
 
         $securePatch = fn_get_storage_data('helostore/patch/secure_password');
-        $securePatchButton = '';
+        $extra = '';
         if (empty($securePatch)) {
-            $securePatchButton = '<p><a class="btn btn-tertiary cm-ajax" href="' . fn_url('sidekick.secure_passwords') . '">Secure existing passwords</a></p>';
+            $extra .= '<p><a class="btn btn-tertiary cm-ajax" href="' . fn_url('sidekick.secure_passwords') . '">Secure existing passwords</a></p>';
         }
+        $extra .= '<p><a class="btn btn-tertiary cm-ajax" href="' . fn_url('sidekick.refresh?addon=sidekick') . '">Refresh</a></p>';
+
 
 		return '
 			<div style="text-align: center;padding:5px 10%;">
@@ -497,7 +499,7 @@ class LicenseClient
 				<p>' . __('sidekick.contact_hint') . '</p>
 				' . (!empty($version) ? '<p>' . $productName . ' ' . __('version') . ': ' . $version . '</p>' : '') . '
 				<p><input class="btn btn-tertiary cm-ajax cm-submit" type="submit" value="' . __('sidekick.check_updates_button') . '" name="dispatch[sidekick.check]"></p>
-				' . $securePatchButton . '
+				' . $extra . '
 			</div>
 			';
 	}

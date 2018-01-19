@@ -11,6 +11,8 @@
  * @license    https://helostore.com/legal/license-agreement/   License Agreement
  * @version    $Id$
  */
+
+use HeloStore\ADLS\UpdateManager;
 use Tygh\Registry;
 use Tygh\Tygh;
 
@@ -58,11 +60,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 }
 
+if ($mode == 'refresh' && !empty($_REQUEST['addon'])) {
+    UpdateManager::refreshAddon($_REQUEST['addon']);
+    fn_set_notification('N', __('notice'), 'The settings and translations have been refreshed.', 'S');
+
+    $redirection = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'addons.manage';
+    if (defined('AJAX_REQUEST')) {
+        if (class_exists('Tygh', true)) {
+            Tygh::$app['ajax']->assign('force_redirection', fn_url($redirection));
+        } else {
+            Registry::get('ajax')->assign('force_redirection', fn_url($redirection));
+        }
+        exit;
+    } else {
+        return array(CONTROLLER_STATUS_REDIRECT, $redirection);
+    }
+}
+
 if ($mode == 'secure_passwords') {
     fn_sidekick_secure_passwords();
     fn_set_storage_data('helostore/patch/secure_password', 1);
     fn_set_notification('N', __('notice'), 'All the passwords related to HELOstore products have been secured with md5 hashing.', 'K');
-    exit;
+    return array(CONTROLLER_STATUS_REDIRECT, 'addons.manage');
 }
 
 if ($mode == 'update') {
