@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.1.107",
+        "releaseDate": "2018-01-19 10:11:22",
+        "releaseTimestamp": "1516356682",
+        "hash": "aa199dc272ab57efdca8b416b07a473230c35036",
+        "commits": [
+            "[2018-01-19] Bumped version to 0.1.107",
+            "[2018-01-19]\tUpdate release log"
+        ]
+    },
+    {
         "version": "0.1.106",
         "releaseDate": "2018-01-19 09:51:31",
         "releaseTimestamp": "1516355491",
