@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 
 			if ($ownProduct) {
+                fn_sidekick_encrypt_password_in_settings();
 				$activated = false;
 				$status = Registry::get('addons.' . $addon . '.status');
 				if ($status == 'A') {
@@ -49,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($mode == 'check') {
 		if (isset($_REQUEST['addon_data'])) {
 			fn_update_addon($_REQUEST['addon_data']);
+            fn_sidekick_encrypt_password_in_settings();
 		}
 		$addonId = null;
 		if ( ! empty( $_REQUEST['addon'] ) ) {
@@ -61,6 +63,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 		return array(CONTROLLER_STATUS_OK, 'addons.manage');
 	}
+}
+
+if ($mode == 'secure_passwords') {
+    fn_sidekick_secure_passwords();
+    fn_set_storage_data('helostore/patch/secure_password', 1);
+    fn_set_notification('N', __('notice'), 'All the passwords related to HELOstore products have been secured with md5 hashing.', 'K');
+    exit;
 }
 
 if ($mode == 'update') {

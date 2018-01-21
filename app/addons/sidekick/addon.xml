@@ -20,6 +20,10 @@
                     <item id="license">
                         <type>input</type>
                     </item>
+                    <item id="auto_check_updates">
+                        <type>checkbox</type>
+                        <default_value>Y</default_value>
+                    </item>
                     <item id="info">
                         <type>info</type>
                         <handler>fn_sidekick_info,sidekick</handler>

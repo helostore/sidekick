@@ -201,6 +201,12 @@ class UpdateManager
 				fn_uninstall_addon($productCode, false);
 			}
 
+			// Clear internal cache of the schema, since the new update might have introduces new settings in the scheme XML; this will force the XML scheme to be re-read
+            if (!empty(SchemesManager::$schemas) && isset(SchemesManager::$schemas[$productCode])) {
+                unset(SchemesManager::$schemas[$productCode]);
+            }
+
+
 			if (fn_install_addon($productCode, false)) {
 				$this->preserveAddonSettings($productCode);
 				fn_set_notification('N', __('notice'), __('sidekick.update_successful', array('[product]' => $settings['name'])), 'S');
@@ -283,21 +289,31 @@ class UpdateManager
 		if (empty($releases) || !is_array($releases)) {
 			return false;
 		}
-		$release = array_shift($releases);
-		if (!is_array($release)
-			|| empty($release['version'])
-			|| empty($release['releaseTimestamp'])
-			|| empty($release['commits'])
-			|| !is_array($release['commits'])
-		) {
-			return false;
-		}
+		$commits = array();
+		$latestRelease = array();
+        foreach ($releases as $release) {
+            if ( ! is_array($release)
+                 || empty($release['version'])
+                 || empty($release['releaseTimestamp'])
+                 || empty($release['commits'])
+                 || ! is_array($release['commits'])
+            ) {
+                continue;
+            }
+            // userVersion = old user version
+            if (1 === version_compare($release['version'], $update['userVersion'])) {
+                $commits = array_merge($commits, $release['commits']);
+            }
+            if (0 === version_compare($release['version'], $update['version'])) {
+                $latestRelease = $release;
+            }
+        }
 
 		$message = __('sidekick.update_summary_message', array(
 			'[product]' => $scheme->getName(),
-			'[version]' => $release['version'],
-			'[date]' => fn_date_format($release['releaseTimestamp'], "%m/%d/%Y"),
-			'[commits]' => implode('<br>', $release['commits'])
+			'[version]' => $latestRelease['version'],
+			'[date]' => fn_date_format($latestRelease['releaseTimestamp'], "%m/%d/%Y"),
+			'[commits]' => implode('<br>', $commits)
 		));
 
 		if (!empty($update['reviewMessage'])) {
