@@ -1,5 +1,24 @@
 [
     {
+        "version": "0.2.8",
+        "releaseDate": "2018-01-21 12:39:42",
+        "releaseTimestamp": "1516538382",
+        "hash": "7eac84f4b5d40dbc3c2d5bd21f8c81d43aaf696d",
+        "commits": [
+            "[2018-01-21] Bumped version to 0.2.8",
+            "[2018-01-21]\tMerge",
+            "[2018-01-18]\tImprove update summary",
+            "[2018-01-18]\tBumped version to 0.1.105",
+            "[2018-01-18]\tBumped version to 0.1.104",
+            "[2018-01-17]\tBumped version to 0.1.103",
+            "[2018-01-17]\tAdd function to secure all existing passwords of all installed HELOstore add-ons",
+            "[2018-01-17]\tBumped version to 0.1.102",
+            "[2018-01-17]\tBumped version to 0.1.101",
+            "[2018-01-17]\tAdd option to disable automatic updates check",
+            "[2018-01-17]\tUpdated authentication mechanism to work with hashes instead of plain-text password; passwords are now stored locally as hashes, and not plain-text"
+        ]
+    },
+    {
         "version": "0.2.7",
         "releaseDate": "2017-12-16 02:27:07",
         "releaseTimestamp": "1513434427",
@@ -27,16 +46,6 @@
         "commits": [
             "[2017-12-15] Bumped version to 0.2.3",
             "[2017-12-15]\tBumped version to 0.2.2"
-        ]
-    },
-    {
-        "version": "0.2.1",
-        "releaseDate": "2017-12-15 12:50:06",
-        "releaseTimestamp": "1513342206",
-        "hash": "2f4c1f0745206b1b5d3f47d263c0ec504a3ce03c",
-        "commits": [
-            "[2017-12-15] Bumped version to 0.2.1",
-            "[2017-12-15]\tBumped version to 0.2.0"
         ]
     }
 ]
