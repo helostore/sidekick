@@ -127,8 +127,13 @@ class LicenseClient
 			$_tmp = json_decode($response, true);
 			if (is_array($_tmp)) {
 				$response = $_tmp;
-			}
+			} else {
+			    $response = array('body' => $response);
+            }
 		}
+        if (empty($response)) {
+            $response = array();
+        }
 
 		if (version_compare(PRODUCT_VERSION, '4.3.6', '<')) {
 			$errorCode = $errorMessage = Http::getError();
@@ -319,9 +324,13 @@ class LicenseClient
 				}
 				fn_set_notification('E',  __('error'),  $message . ($debug ? ' (' . $codeName . ')' : ''));
 			} else {
-				$message = json_encode($response);
-				fn_set_notification('E', 'Unknown error', $message . ($debug ? ' (' . $codeName . ')' : ''));
-				fn_set_notification('E', 'Unknown error trace', btx());
+				$reason = htmlentities(serialize($response));
+                $message = 'The server cannot be contacted at this time. Please try again later.';
+                if ( ! empty($reason) && stristr($reason, '&lt;html') === false) {
+                    $message .= " (reason: ${reason})";
+                }
+
+				fn_set_notification('E', 'Communication error', $message);
 			}
 		}
 
