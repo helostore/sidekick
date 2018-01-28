@@ -1,5 +1,14 @@
 [
     {
+        "version": "0.2.11",
+        "releaseDate": "2018-01-28 07:23:18",
+        "releaseTimestamp": "1517124198",
+        "hash": "514d820d0539e8d15cbc7bb5aac3e8d3529f25ae",
+        "commits": [
+            "[2018-01-28] Bumped version to 0.2.11"
+        ]
+    },
+    {
         "version": "0.2.10",
         "releaseDate": "2018-01-26 09:35:24",
         "releaseTimestamp": "1516959324",
@@ -35,16 +44,6 @@
             "[2018-01-17]\tBumped version to 0.1.101",
             "[2018-01-17]\tAdd option to disable automatic updates check",
             "[2018-01-17]\tUpdated authentication mechanism to work with hashes instead of plain-text password; passwords are now stored locally as hashes, and not plain-text"
-        ]
-    },
-    {
-        "version": "0.2.7",
-        "releaseDate": "2017-12-16 02:27:07",
-        "releaseTimestamp": "1513434427",
-        "hash": "56e29d4264dd97211418897a82c10fef73904ef2",
-        "commits": [
-            "[2017-12-20] Bumped version to 0.2.7",
-            "[2017-12-16]\tBumped version to 0.2.6"
         ]
     }
 ]

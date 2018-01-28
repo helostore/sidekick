@@ -309,7 +309,7 @@ class UpdateManager
             }
         }
         if (empty($latestRelease)) {
-            $latestRelease = reset($latestRelease);
+            $latestRelease = reset($releases);
         }
 
 		$message = __('sidekick.update_summary_message', array(
