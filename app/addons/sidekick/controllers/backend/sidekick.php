@@ -72,12 +72,19 @@ if ($mode == 'secure_passwords') {
     exit;
 }
 
+if ($mode == 'update_summary' && !empty($_REQUEST['product'])) {
+    $productCode = $_REQUEST['product'];
+    \HeloStore\ADLS\UpdateManager::showUpdateSummary($productCode);
+
+    return array(CONTROLLER_STATUS_REDIRECT, 'addons.manage');
+}
+
 if ($mode == 'update') {
 	if (!empty($_REQUEST['product'])) {
 		$productCode = $_REQUEST['product'];
 		fn_delete_notification('sidekick.product_update_available_title');
 		if (\HeloStore\ADLS\LicenseClient::update($productCode)) {
-			$redirection = 'addons.manage';
+			$redirection = 'sidekick.update_summary?product='.$productCode;
 			if (defined('AJAX_REQUEST')) {
 				if (class_exists('Tygh', true)) {
 					Tygh::$app['ajax']->assign('force_redirection', fn_url($redirection));
