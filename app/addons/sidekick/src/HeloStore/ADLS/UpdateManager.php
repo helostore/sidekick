@@ -308,6 +308,9 @@ class UpdateManager
                 $latestRelease = $release;
             }
         }
+        if (empty($latestRelease)) {
+            $latestRelease = reset($latestRelease);
+        }
 
 		$message = __('sidekick.update_summary_message', array(
 			'[product]' => $scheme->getName(),
