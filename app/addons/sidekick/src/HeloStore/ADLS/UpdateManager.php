@@ -19,6 +19,11 @@ use Tygh\Addons\SchemesManager;
 use Tygh\Registry;
 use Tygh\Settings;
 
+/**
+ * Class UpdateManager
+ * @version 0.2.0
+ * @package HeloStore\ADLS
+ */
 class UpdateManager
 {
 	/**

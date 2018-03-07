@@ -1,5 +1,14 @@
 [
     {
+        "version": "0.2.13",
+        "releaseDate": "2018-01-28 07:54:11",
+        "releaseTimestamp": "1517126051",
+        "hash": "e37ef4fdb461e8a71715e1579ee1c7ab6ed84906",
+        "commits": [
+            "[2018-03-07] Bumped version to 0.2.13"
+        ]
+    },
+    {
         "version": "0.2.12",
         "releaseDate": "2018-01-28 07:54:07",
         "releaseTimestamp": "1517126047",
@@ -25,16 +34,6 @@
         "hash": "0a52b45d9f1d00b2df6ae5e372093385fdc3822c",
         "commits": [
             "[2018-01-28] Bumped version to 0.2.10"
-        ]
-    },
-    {
-        "version": "0.2.9",
-        "releaseDate": "2018-01-26 09:35:20",
-        "releaseTimestamp": "1516959320",
-        "hash": "883aed0a8724981e14d21fcdc81c1da7de133942",
-        "commits": [
-            "[2018-01-26] Bumped version to 0.2.9",
-            "[2018-01-26]\tBetter handle API unavailability"
         ]
     }
 ]

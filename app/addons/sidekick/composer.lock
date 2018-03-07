@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "5549d67085ef0927dca1d4a9478c8805",
+    "packages": [
+        {
+            "name": "helostore/adls-client",
+            "version": "0.2.12",
+            "source": {
+                "type": "git",
+                "url": "git@git.helostore.com:helostore/adls-client.git",
+                "reference": "df474d0f21b5591925cd831e2623a180214c7415"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HeloStore\\": "src/HeloStore/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "HELOstore",
+                    "email": "sales@helostore.com",
+                    "homepage": "https://helostore.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "License client for ADLS module",
+            "support": {
+                "email": "contact@helostore.com"
+            },
+            "time": "2018-03-04T10:28:00+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

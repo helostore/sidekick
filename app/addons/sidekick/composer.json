@@ -16,5 +16,13 @@
     "autoload": {
         "psr-0": { "HeloStore": "src/" }
     },
-    "require": {}
+    "require": {
+        "helostore/adls-client": "^0.2"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@git.helostore.com:helostore/adls-client.git"
+        }
+    ]
 }

@@ -27,6 +27,7 @@ use Tygh\Languages\Values as LanguageValues;
 
 /**
  * Class LicenseClient
+ * @version 0.2.0
  * @package HeloStore\ADLS
  */
 class LicenseClient
@@ -518,6 +519,7 @@ class LicenseClient
 
     /**
      * @return null
+     * @throws \ReflectionException
      */
 	public static function getCodeConstants()
 	{
