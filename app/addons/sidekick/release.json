@@ -1,5 +1,14 @@
 [
     {
+        "version": "0.2.14",
+        "releaseDate": "2018-03-07 08:16:03",
+        "releaseTimestamp": "1520453763",
+        "hash": "3c1f09e997e50690a05cfa24c505151ee10e32c8",
+        "commits": [
+            "[2018-03-24] Bumped version to 0.2.14"
+        ]
+    },
+    {
         "version": "0.2.13",
         "releaseDate": "2018-01-28 07:54:11",
         "releaseTimestamp": "1517126051",
@@ -25,15 +34,6 @@
         "hash": "514d820d0539e8d15cbc7bb5aac3e8d3529f25ae",
         "commits": [
             "[2018-01-28] Bumped version to 0.2.11"
-        ]
-    },
-    {
-        "version": "0.2.10",
-        "releaseDate": "2018-01-26 09:35:24",
-        "releaseTimestamp": "1516959324",
-        "hash": "0a52b45d9f1d00b2df6ae5e372093385fdc3822c",
-        "commits": [
-            "[2018-01-28] Bumped version to 0.2.10"
         ]
     }
 ]
