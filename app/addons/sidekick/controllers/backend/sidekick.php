@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (!empty($_REQUEST['addon'])) {
 			$addon = $_REQUEST['addon'];
             $client = \HeloStore\ADLS\LicenseClientFactory::build();
-            aa($client->getEnvironment(),1);
 			$ownProduct = $client->getEnvironment()->isOwnProduct($addon);
 
 			if (isset($_REQUEST['addon_data'])) {
