@@ -126,6 +126,7 @@ function fn_sidekick_encrypt_password_in_settings()
 
     $addon = $_REQUEST['addon'];
     $client = \HeloStore\ADLS\LicenseClientFactory::build();
+    aa($client->getEnvironment(),1);
     $ownProduct = $client->getEnvironment()->isOwnProduct($addon);
     if (!$ownProduct) {
         return array(CONTROLLER_STATUS_OK);
