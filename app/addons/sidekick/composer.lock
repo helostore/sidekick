@@ -8,11 +8,11 @@
     "packages": [
         {
             "name": "helostore/adls-client",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "git@git.helostore.com:helostore/adls-client.git",
-                "reference": "7f63a86857b4d58052e4388eb6dbebdc4cb1c7d6"
+                "reference": "2a956cfe89f14d7e898ef90610290b7f4a3bc3a9"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3",
@@ -43,7 +43,7 @@
             "support": {
                 "email": "contact@helostore.com"
             },
-            "time": "2018-04-07T10:23:00+00:00"
+            "time": "2018-04-07T10:32:45+00:00"
         }
     ],
     "packages-dev": [],
