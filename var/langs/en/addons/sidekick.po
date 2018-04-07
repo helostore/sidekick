@@ -158,5 +158,18 @@ msgctxt "Languages::sidekick.code_notification_no_updates_available"
 msgid "code_notification_no_updates_available"
 msgstr "No updates found. You already have the latest updates."
 
+msgctxt "Languages::sidekick.info"
 msgid ""
-msgstr "END CODES SECTION"
+msgstr "Info"
+
+msgctxt "Languages::sidekick.error"
+msgid ""
+msgstr "Error"
+
+msgctxt "Languages::sidekick.warning"
+msgid ""
+msgstr "Warning"
+
+msgctxt "Languages::sidekick.success"
+msgid ""
+msgstr "Success"
