@@ -13,7 +13,6 @@
  */
 
 use HeloStore\ADLS\LicenseClient;
-use HeloStore\ADLS\UpdateManager;
 use Tygh\Addons\SchemesManager;
 use Tygh\Registry;
 use Tygh\Settings;
@@ -25,9 +24,10 @@ if (!defined('BOOTSTRAP')) { die('Access denied'); }
  */
 function fn_sidekick_secure_passwords()
 {
+    $client = \HeloStore\ADLS\LicenseClientFactory::build();
     list($addons, ) = fn_get_addons(array());
     foreach ($addons as $addonCode => $addon) {
-        if ( ! \HeloStore\ADLS\UpdateManager::isOwnProduct($addonCode)) {
+        if ( ! $client->getEnvironment()->isOwnProduct($addonCode)) {
             continue;
         }
         fn_sidekick_encrypt_password($addonCode);
@@ -125,8 +125,8 @@ function fn_sidekick_encrypt_password_in_settings()
     }
 
     $addon = $_REQUEST['addon'];
-
-    $ownProduct = \HeloStore\ADLS\UpdateManager::isOwnProduct($addon);
+    $client = \HeloStore\ADLS\LicenseClientFactory::build();
+    $ownProduct = $client->getEnvironment()->isOwnProduct($addon);
     if (!$ownProduct) {
         return array(CONTROLLER_STATUS_OK);
     }
@@ -142,7 +142,9 @@ function fn_sidekick_encrypt_password_in_settings()
  */
 function fn_sidekick_check($addon)
 {
-	if (!UpdateManager::isOwnProduct($addon)) {
+    $client = \HeloStore\ADLS\LicenseClientFactory::build();
+
+	if (!$client->getEnvironment()->isOwnProduct($addon)) {
 		return false;
 	}
 	if (LicenseClient::activate($addon)) {
@@ -153,8 +155,17 @@ function fn_sidekick_check($addon)
 
 function fn_sidekick_info($productCode)
 {
-	if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
-		return LicenseClient::helperInfo($productCode);
+    // Attempt to load new client implementation
+    if (class_exists('\HeloStore\ADLS\LicenseClientFactory', true)) {
+        $client = \HeloStore\ADLS\LicenseClientFactory::build();
+        return $client->getEnvironment()->helperInfo($productCode);
+    }
+
+    // Fallback on the old client implementation
+    if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
+        if (method_exists('\HeloStore\ADLS\LicenseClient', 'helperInfo')) {
+            return LicenseClient::helperInfo($productCode);
+        }
 	}
 
 	return '';

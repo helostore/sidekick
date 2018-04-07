@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($mode == 'activate') {
 		if (!empty($_REQUEST['addon'])) {
 			$addon = $_REQUEST['addon'];
-			$ownProduct = \HeloStore\ADLS\UpdateManager::isOwnProduct($addon);
+            $client = \HeloStore\ADLS\LicenseClientFactory::build();
+			$ownProduct = $client->getEnvironment()->isOwnProduct($addon);
 
 			if (isset($_REQUEST['addon_data'])) {
 				fn_update_addon($_REQUEST['addon_data']);
@@ -74,7 +75,9 @@ if ($mode == 'secure_passwords') {
 
 if ($mode == 'update_summary' && !empty($_REQUEST['product'])) {
     $productCode = $_REQUEST['product'];
-    \HeloStore\ADLS\UpdateManager::showUpdateSummary($productCode);
+    $client = \HeloStore\ADLS\LicenseClientFactory::build();
+    $updateManager = $client->getUpdateManager();
+    $updateManager->showUpdateSummary($productCode);
 
     return array(CONTROLLER_STATUS_REDIRECT, 'addons.manage');
 }
