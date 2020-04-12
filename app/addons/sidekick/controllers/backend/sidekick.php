@@ -42,10 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						Registry::clearCachedKeyValues();
 					}
 				}
+                $redirect_url = !empty($_REQUEST['return_url'])
+                    ? $_REQUEST['return_url']
+                    : 'addons.update?addon=' . $addon;
+                return [CONTROLLER_STATUS_REDIRECT, $redirect_url];
 
-				return array(CONTROLLER_STATUS_OK, 'addons.manage');
-			}
-		}
+            }
+            return array(CONTROLLER_STATUS_REDIRECT, 'addons.manage');
+        }
 	}
 
 	if ($mode == 'check') {

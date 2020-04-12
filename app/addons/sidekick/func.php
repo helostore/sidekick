@@ -155,6 +155,9 @@ function fn_sidekick_check($addon)
 
 function fn_sidekick_info($productCode, $showSecurePasswordsButton = false, $useAjax = true)
 {
+    $useAjax = filter_var($useAjax, FILTER_VALIDATE_BOOLEAN);
+    $showSecurePasswordsButton = filter_var($showSecurePasswordsButton, FILTER_VALIDATE_BOOLEAN);
+
     // Attempt to load new client implementation
     if (class_exists('\HeloStore\ADLS\LicenseClientFactory', true)) {
         $client = \HeloStore\ADLS\LicenseClientFactory::build();

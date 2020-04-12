@@ -62,7 +62,7 @@ msgstr "License is <b>active</b>."
 
 msgctxt "Languages::sidekick.contact_hint"
 msgid "contact_hint"
-msgstr "If you have lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."
+msgstr "If you have lost your email, password or license key, or you\'re having troubles activating this product, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a>."
 
 msgctxt "Languages::sidekick.update_successful"
 msgid "update_successful"
@@ -76,7 +76,7 @@ msgctxt "Languages::sidekick.update_summary_message"
 msgid "update_summary_message"
 msgstr "<p><b>[product]</b> has been successfully updated to v<b>[version]</b>, released on <b>[date]</b>.</p>"
     "<p>Here's what changed: <br> <pre style='max-height: 100px;overflow: auto;'>[commits]</pre></p>"
-    "<p>If you\'re having trouble with this update, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a> (opens new tab)."
+    "<p>If you\'re having trouble with this update, please contact us at <a target=\"_blank\" href=\"https://helostore.com/contact\">https://helostore.com/contact</a>."
     "<br>Thank you,<br>HELOstore.com team</p>"
 
 msgid ""

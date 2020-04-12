@@ -4,15 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "377fdbc89ad8cf6873205a78abfc9f5f",
+    "content-hash": "d0aadfd25415295132981e79112ad24f",
     "packages": [
         {
             "name": "helostore/adls-client",
             "version": "1.1.4",
-            "source": {
-                "type": "git",
-                "url": "git@git.helostore.com:helostore/adls-client.git",
-                "reference": "669334e2f02b76ad605929ad0327d4951a7c0049"
+            "dist": {
+                "type": "path",
+                "url": "/home/helostore/repository/helostore/common/adls-client",
+                "reference": "669334e2f02b76ad605929ad0327d4951a7c0049",
+                "shasum": null
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3",
@@ -42,8 +43,7 @@
             "description": "License client for ADLS module",
             "support": {
                 "email": "contact@helostore.com"
-            },
-            "time": "2020-04-12T09:07:18+00:00"
+            }
         }
     ],
     "packages-dev": [],
