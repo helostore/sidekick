@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.2.20",
+        "releaseDate": "2020-04-12 12:50:00",
+        "releaseTimestamp": "1586667000",
+        "hash": "40545f0167252be39581c59aaddb1b153a21d9f9",
+        "commits": [
+            "[2020-04-12] Bumped version to 0.2.20",
+            "[2020-04-12]\tAdd option to hide outdated \"Secure existing passwords\" button"
+        ]
+    },
+    {
         "version": "0.2.19",
         "releaseDate": "2018-04-07 10:33:24",
         "releaseTimestamp": "1523097204",
@@ -24,15 +34,6 @@
         "hash": "af6b2e428e97c61a966a82d1513a7e48118d65d0",
         "commits": [
             "[2018-04-07] Bumped version to 0.2.17"
-        ]
-    },
-    {
-        "version": "0.2.16",
-        "releaseDate": "2018-04-07 09:47:57",
-        "releaseTimestamp": "1523094477",
-        "hash": "5adf8ef4e2133022e32a5c117844151c8cd7f020",
-        "commits": [
-            "[2018-04-07] Bumped version to 0.2.16"
         ]
     }
 ]
