@@ -153,18 +153,18 @@ function fn_sidekick_check($addon)
 	return false;
 }
 
-function fn_sidekick_info($productCode, $showSecurePasswordsButton = false)
+function fn_sidekick_info($productCode, $showSecurePasswordsButton = false, $useAjax = true)
 {
     // Attempt to load new client implementation
     if (class_exists('\HeloStore\ADLS\LicenseClientFactory', true)) {
         $client = \HeloStore\ADLS\LicenseClientFactory::build();
-        return $client->getEnvironment()->helperInfo($productCode, $showSecurePasswordsButton);
+        return $client->getEnvironment()->helperInfo($productCode, $showSecurePasswordsButton, $useAjax);
     }
 
     // Fallback on the old client implementation
     if (class_exists('\HeloStore\ADLS\LicenseClient', true)) {
         if (method_exists('\HeloStore\ADLS\LicenseClient', 'helperInfo')) {
-            return LicenseClient::helperInfo($productCode, $showSecurePasswordsButton);
+            return LicenseClient::helperInfo($productCode, $showSecurePasswordsButton, $useAjax);
         }
 	}
 
