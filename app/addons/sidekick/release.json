@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.2.24",
+        "releaseDate": "2020-04-12 07:39:42",
+        "releaseTimestamp": "1586691582",
+        "hash": "8cbed1435058c362a6fc428589b10dd0ce20aa9e",
+        "commits": [
+            "[2020-04-12] Bumped version to 0.2.24",
+            "[2020-04-12]\tUpdate translation"
+        ]
+    },
+    {
         "version": "0.2.23",
         "releaseDate": "2020-04-12 07:38:42",
         "releaseTimestamp": "1586691522",
@@ -27,16 +37,6 @@
         "commits": [
             "[2020-04-12] Bumped version to 0.2.21",
             "[2020-04-12]\tAdd option to disable ajax settings update"
-        ]
-    },
-    {
-        "version": "0.2.20",
-        "releaseDate": "2020-04-12 12:50:00",
-        "releaseTimestamp": "1586667000",
-        "hash": "40545f0167252be39581c59aaddb1b153a21d9f9",
-        "commits": [
-            "[2020-04-12] Bumped version to 0.2.20",
-            "[2020-04-12]\tAdd option to hide outdated \"Secure existing passwords\" button"
         ]
     }
 ]
