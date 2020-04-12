@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.2.22",
+        "releaseDate": "2020-04-12 05:08:29",
+        "releaseTimestamp": "1586682509",
+        "hash": "cd5c4091da198bd8ab03ab3238c04765e235bca5",
+        "commits": [
+            "[2020-04-12] Bumped version to 0.2.22",
+            "[2020-04-12]\tAdd option to disable ajax settings update"
+        ]
+    },
+    {
         "version": "0.2.21",
         "releaseDate": "2020-04-12 05:01:36",
         "releaseTimestamp": "1586682096",
@@ -26,15 +36,6 @@
         "hash": "e6f099e709a1f42076b3ee290b25150385eeff1e",
         "commits": [
             "[2018-04-07] Bumped version to 0.2.19"
-        ]
-    },
-    {
-        "version": "0.2.18",
-        "releaseDate": "2018-04-07 10:24:29",
-        "releaseTimestamp": "1523096669",
-        "hash": "4313f91e4c8f34c577fb8fed69094892e2eea2fb",
-        "commits": [
-            "[2018-04-07] Bumped version to 0.2.18"
         ]
     }
 ]
