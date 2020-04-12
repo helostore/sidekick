@@ -17,7 +17,7 @@
         "psr-0": { "HeloStore": "src/" }
     },
     "require": {
-        "helostore/adls-client": "1.1.3"
+        "helostore/adls-client": "1.1.4"
     },
     "repositories": [
         {
