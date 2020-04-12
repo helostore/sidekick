@@ -38,6 +38,8 @@
             <min>4.2.1</min>
         </core_version>
     </compatibility>
+    <supplier>HELOstore</supplier>
+    <supplier_link>https://helostore.com/</supplier_link>
     <authors>
         <author>
             <name>HELOstore</name>
