@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.3.0",
+        "releaseDate": "2020-06-15 03:03:19",
+        "releaseTimestamp": "1592204599",
+        "hash": "15c38ba13837364e9abeb147b76c577d7908a3af",
+        "commits": [
+            "[2020-06-15] Bumped version to 0.3.0",
+            "[2020-06-15]\tAPI Connectivity: Add support for multiple hosts"
+        ]
+    },
+    {
         "version": "0.2.24",
         "releaseDate": "2020-04-12 07:39:42",
         "releaseTimestamp": "1586691582",
@@ -26,16 +36,6 @@
         "hash": "cd5c4091da198bd8ab03ab3238c04765e235bca5",
         "commits": [
             "[2020-04-12] Bumped version to 0.2.22",
-            "[2020-04-12]\tAdd option to disable ajax settings update"
-        ]
-    },
-    {
-        "version": "0.2.21",
-        "releaseDate": "2020-04-12 05:01:36",
-        "releaseTimestamp": "1586682096",
-        "hash": "12d7f2dd4050cbbe83852e221e81cb7879d1e636",
-        "commits": [
-            "[2020-04-12] Bumped version to 0.2.21",
             "[2020-04-12]\tAdd option to disable ajax settings update"
         ]
     }
