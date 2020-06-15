@@ -28,6 +28,14 @@
                         <type>info</type>
                         <handler>fn_sidekick_info,sidekick</handler>
                     </item>
+                    <item id="help">
+                        <type>header</type>
+                        <name>Known Issues</name>
+                    </item>
+                    <item id="faq_geo_connectivity_issues">
+                        <type>info</type>
+                        <handler>fn_sidekick_faq_geo_connectivity_issues</handler>
+                    </item>
                 </items>
             </section>
         </sections>

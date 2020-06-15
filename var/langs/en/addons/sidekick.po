@@ -173,3 +173,15 @@ msgstr "Warning"
 msgctxt "Languages::sidekick.success"
 msgid ""
 msgstr "Success"
+
+msgctxt "Languages::sidekick.auto_select_api_host.title"
+msgid ""
+msgstr "<h5>1. Having connectivity issues with HELOstore and your shop is hosted in Russia or China?</h5>"
+
+msgctxt "Languages::sidekick.auto_select_api_host.action"
+msgid ""
+msgstr "Auto-Select API Host"
+
+msgctxt "Languages::sidekick.auto_select_api_host.hint"
+msgid ""
+msgstr "<p>If you cannot activate or update your HELOstore add-ons due to a communication error with HELOstore, and if your shop is hosted in Russia or China, the connectivity issue could be because your Country or Web Host has banned the Cloud and Web Host where HELOstore is currently hosted (AWS and DigitalOcean).</p> <p>As a solution, Sidekick has the ability to test and find an alternative host for HELOstore API that is not banned by your country, and that your shop can communicate with. To do so, please click \"Auto-Select API Host\" below.</p>"

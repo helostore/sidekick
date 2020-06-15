@@ -107,3 +107,35 @@ if ($mode == 'update') {
 	}
 	return array(CONTROLLER_STATUS_OK);
 }
+
+if ($mode == 'auto_select_api_host') {
+    $licenseClient = \HeloStore\ADLS\LicenseClientFactory::build();
+    $prevHost = $licenseClient->getSelectedApiHost(false);
+    $result = $licenseClient->checkApiHosts();
+    $selectedHost = $licenseClient->selectApiHost($result);
+    if (defined('DEVELOPMENT')) {
+        $notificationHtml = '<br>Environment variables:';
+        $notificationHtml .= '<ul>';
+        $notificationHtml .= '<li><code>DEVELOPMENT: ' . (defined('DEVELOPMENT') ? DEVELOPMENT : 'undefined') . '</code></li>';
+        $notificationHtml .= '<li><code>WS_DEBUG: ' . (defined('WS_DEBUG') ? WS_DEBUG : 'undefined') . '</code></li>';
+        $notificationHtml .= '<li><code>SIDEKICK_NO_HTTPS: ' . (defined('SIDEKICK_NO_HTTPS') ? SIDEKICK_NO_HTTPS : 'undefined') . '</code></li>';
+        $notificationHtml .= '<li><code>SIDEKICK_API_HOST_AUTO_SELECT: ' . (defined('SIDEKICK_API_HOST_AUTO_SELECT') ? SIDEKICK_API_HOST_AUTO_SELECT : 'undefined') . '</code></li>';
+        $notificationHtml .= '</ul>';
+        $notificationHtml .= 'Hosts:';
+        $notificationHtml .= '<ul>';
+        foreach ($result as $host => $req) {
+            $notificationHtml .= '<li><code>' . ($req['connectivity'] ? 'PASS' : 'ERR') . ': ' . $req['host'] . '</code><br>  - url: '. $req['url'] . (!empty($req['error']) ? ' <br>  - error: <code>' . $req['error'] . '</code>' : '') . '</li>';
+        }
+        $notificationHtml .= '</ul>';
+        $notificationHtml .= '<p><strong>Selected host: ' . $selectedHost . '</strong></p>';
+        $notificationHtml .= '<p>Previous selected host: ' . $prevHost . '</p>';
+        fn_set_notification('N', 'HELOstore API Connectivity Results', $notificationHtml, 'K');
+    } else {
+        if (!empty($selectedHost)) {
+            fn_set_notification('N', __('notice'), 'Sidekick has successfully found and selected an alternative Host for HELOstore API.', 'K');
+        } else {
+            fn_set_notification('E', __('error'), 'Sidekick was unable to find an alternative Host for HELOstore API. Please contact us at <a href="mailto:contact@helostore.com">contact@helostore.com</a>', 'K');
+        }
+    }
+    return array(CONTROLLER_STATUS_OK, 'addons.manage');
+}

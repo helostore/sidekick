@@ -153,6 +153,13 @@ function fn_sidekick_check($addon)
 	return false;
 }
 
+function fn_sidekick_faq_geo_connectivity_issues()
+{
+    return __('sidekick.auto_select_api_host.title') . '
+        <p>' . __('sidekick.auto_select_api_host.hint') . '<input class="btn btn-tertiary cm-ajax cm-submit" type="submit" value="' . __('sidekick.auto_select_api_host.action') . '" name="dispatch[sidekick.auto_select_api_host]"></p>
+        ';
+}
+
 function fn_sidekick_info($productCode, $showSecurePasswordsButton = false, $useAjax = true)
 {
     $useAjax = filter_var($useAjax, FILTER_VALIDATE_BOOLEAN);
