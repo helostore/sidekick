@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.3.7",
+        "releaseDate": "2020-06-16 11:17:09",
+        "releaseTimestamp": "1592320629",
+        "hash": "7ef72050411b3d573cbc486b256e86c72ee2e350",
+        "commits": [
+            "[2020-06-16] Bumped version to 0.3.7",
+            "[2020-06-16]\tUpdate dependencies"
+        ]
+    },
+    {
         "version": "0.3.6",
         "releaseDate": "2020-06-16 10:41:26",
         "releaseTimestamp": "1592318486",
@@ -27,16 +37,6 @@
         "commits": [
             "[2020-06-16] Bumped version to 0.3.4",
             "[2020-06-16]\tSwitch to Private Packagist"
-        ]
-    },
-    {
-        "version": "0.3.3",
-        "releaseDate": "2020-06-16 04:01:40",
-        "releaseTimestamp": "1592294500",
-        "hash": "42c21e2e63d52f9388ed2665c19d501c1716098b",
-        "commits": [
-            "[2020-06-16] Bumped version to 0.3.3",
-            "[2020-06-16]\tReplace 'vcs' package type to 'composer' type connecting to on-premise Packagist instance"
         ]
     }
 ]
