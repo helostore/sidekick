@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "helostore/adls-client",
-            "version": "1.2.13",
+            "version": "1.2.14",
             "source": {
                 "type": "git",
                 "url": "git@github.com:helostore/adls-client.git",
-                "reference": "b369220b6c7db78acf86bc584866a0dae56ef6a5"
+                "reference": "9b7ae7dff1115dd802309a4b0a894e1269431bd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helostore/adls-client/zipball/b369220b6c7db78acf86bc584866a0dae56ef6a5",
-                "reference": "b369220b6c7db78acf86bc584866a0dae56ef6a5",
+                "url": "https://api.github.com/repos/helostore/adls-client/zipball/9b7ae7dff1115dd802309a4b0a894e1269431bd1",
+                "reference": "9b7ae7dff1115dd802309a4b0a894e1269431bd1",
                 "shasum": ""
             },
             "archive": {
@@ -53,10 +53,10 @@
             "description": "License client for ADLS module",
             "support": {
                 "email": "contact@helostore.com",
-                "source": "https://github.com/helostore/adls-client/tree/master",
+                "source": "https://github.com/helostore/adls-client/tree/v1.2.14",
                 "issues": "https://github.com/helostore/adls-client/issues"
             },
-            "time": "2020-06-16T14:39:24+00:00"
+            "time": "2020-06-16T15:11:42+00:00"
         }
     ],
     "packages-dev": [],
