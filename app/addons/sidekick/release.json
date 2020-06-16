@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.3.6",
+        "releaseDate": "2020-06-16 10:41:26",
+        "releaseTimestamp": "1592318486",
+        "hash": "33368ce46c4ea5389dc686593674e2d2de07cf56",
+        "commits": [
+            "[2020-06-16] Bumped version to 0.3.6",
+            "[2020-06-16]\tUpdate dependencies"
+        ]
+    },
+    {
         "version": "0.3.5",
         "releaseDate": "2020-06-16 08:25:19",
         "releaseTimestamp": "1592310319",
@@ -27,16 +37,6 @@
         "commits": [
             "[2020-06-16] Bumped version to 0.3.3",
             "[2020-06-16]\tReplace 'vcs' package type to 'composer' type connecting to on-premise Packagist instance"
-        ]
-    },
-    {
-        "version": "0.3.2",
-        "releaseDate": "2020-06-16 01:22:07",
-        "releaseTimestamp": "1592284927",
-        "hash": "5589c9386d60bbe36684d27ed08303b8fff67209",
-        "commits": [
-            "[2020-06-16] Bumped version to 0.3.2",
-            "[2020-06-16]\tUpdate adls-client package"
         ]
     }
 ]
