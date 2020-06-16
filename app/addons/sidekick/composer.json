@@ -20,10 +20,7 @@
         "helostore/adls-client": "1.2.*"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@git.helostore.com:helostore/adls-client.git"
-        }
+        { "type": "composer", "url": "https://packagist.helostore.com/" },
+        { "packagist.org": false }
     ]
-
 }
