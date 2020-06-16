@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.3.1",
+        "releaseDate": "2020-06-16 12:53:30",
+        "releaseTimestamp": "1592283210",
+        "hash": "f9a863c342b231c326440f963b423c117c2eda96",
+        "commits": [
+            "[2020-06-16] Bumped version to 0.3.1",
+            "[2020-06-16]\tUpdate adls-client package"
+        ]
+    },
+    {
         "version": "0.3.0",
         "releaseDate": "2020-06-15 03:03:19",
         "releaseTimestamp": "1592204599",
@@ -27,16 +37,6 @@
         "commits": [
             "[2020-04-12] Bumped version to 0.2.23",
             "[2020-04-12]\tUpdate translation"
-        ]
-    },
-    {
-        "version": "0.2.22",
-        "releaseDate": "2020-04-12 05:08:29",
-        "releaseTimestamp": "1586682509",
-        "hash": "cd5c4091da198bd8ab03ab3238c04765e235bca5",
-        "commits": [
-            "[2020-04-12] Bumped version to 0.2.22",
-            "[2020-04-12]\tAdd option to disable ajax settings update"
         ]
     }
 ]
