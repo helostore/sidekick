@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <addon scheme="3.0">
     <id>sidekick</id>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
     <priority>10101</priority>
     <position>0</position>
     <status>active</status>

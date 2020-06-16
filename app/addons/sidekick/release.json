@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.3.2",
+        "releaseDate": "2020-06-16 01:22:07",
+        "releaseTimestamp": "1592284927",
+        "hash": "5589c9386d60bbe36684d27ed08303b8fff67209",
+        "commits": [
+            "[2020-06-16] Bumped version to 0.3.2",
+            "[2020-06-16]\tUpdate adls-client package"
+        ]
+    },
+    {
         "version": "0.3.1",
         "releaseDate": "2020-06-16 12:53:30",
         "releaseTimestamp": "1592283210",
@@ -26,16 +36,6 @@
         "hash": "8cbed1435058c362a6fc428589b10dd0ce20aa9e",
         "commits": [
             "[2020-04-12] Bumped version to 0.2.24",
-            "[2020-04-12]\tUpdate translation"
-        ]
-    },
-    {
-        "version": "0.2.23",
-        "releaseDate": "2020-04-12 07:38:42",
-        "releaseTimestamp": "1586691522",
-        "hash": "60e7fb7bd75b99fc4d381010236a989cd5e244f4",
-        "commits": [
-            "[2020-04-12] Bumped version to 0.2.23",
             "[2020-04-12]\tUpdate translation"
         ]
     }
