@@ -20,7 +20,12 @@
         "helostore/adls-client": "1.2.*"
     },
     "repositories": [
-        { "type": "composer", "url": "https://packagist.helostore.com/" },
-        { "packagist.org": false }
-    ]
+        {"type": "composer", "url": "https://repo.packagist.com/helostore/"},
+        {"packagist.org": false}
+    ],
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        }
+    }
 }

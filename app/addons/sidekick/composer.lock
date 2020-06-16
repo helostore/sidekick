@@ -4,15 +4,32 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85abf21e7890db2af49b0cfb5dd5e214",
+    "content-hash": "c27942381026e10faed4ea036b4c1a9e",
     "packages": [
         {
             "name": "helostore/adls-client",
-            "version": "1.2.3",
+            "version": "1.2.11",
             "source": {
                 "type": "git",
                 "url": "git@git.helostore.com:helostore/adls-client.git",
-                "reference": "d6f44789ae0645af0a3afb0d47c64f05d0b57328"
+                "reference": "7ca9411201e303c54346dd17c2dcd3e06a821410"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.helostore.com/api/v4/projects/helostore%2Fadls-client/repository/archive.zip?sha=7ca9411201e303c54346dd17c2dcd3e06a821410",
+                "reference": "7ca9411201e303c54346dd17c2dcd3e06a821410",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/helostore/dists/%package%/%version%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "archive": {
+                "exclude": [
+                    "/tests"
+                ]
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3",
@@ -25,7 +42,13 @@
                     "HeloStore\\": "src/HeloStore/"
                 }
             },
-            "notification-url": "http://localhost/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "HeloStore\\": "src/HeloStore/",
+                    "HeloStore\\Test\\": "tests/unit-tests/"
+                }
+            },
+            "notification-url": "https://repo.packagist.com/helostore/downloads/",
             "authors": [
                 {
                     "name": "HELOstore",
@@ -35,7 +58,11 @@
                 }
             ],
             "description": "License client for ADLS module",
-            "time": "2020-06-16T05:20:42+00:00"
+            "support": {
+                "email": "contact@helostore.com",
+                "issues": "https://git.helostore.com/api/v4/projects/80/issues"
+            },
+            "time": "2020-06-16T19:15:54+08:00"
         }
     ],
     "packages-dev": [],
