@@ -10,8 +10,7 @@
         }
     ],
     "support": {
-        "email": "contact@helostore.com",
-        "irc": "irc://irc.freenode.org/helostore"
+        "email": "contact@helostore.com"
     },
     "autoload": {
         "psr-0": { "HeloStore": "src/" }
