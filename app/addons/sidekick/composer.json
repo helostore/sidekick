@@ -20,7 +20,7 @@
         "helostore/adls-client": "1.2.*"
     },
     "repositories": [
-        { "type": "vcs", "url":  "git@github.com:helostore/adls-client.git", "no-api": true }
+        { "type": "vcs", "url":  "github-hs:helostore/adls-client.git", "no-api": true }
     ],
     "config": {
         "preferred-install": {
