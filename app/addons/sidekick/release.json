@@ -1,5 +1,18 @@
 [
     {
+        "version": "0.3.8",
+        "releaseDate": "2023-08-24 11:45:05",
+        "releaseTimestamp": "1692913505",
+        "hash": "069659cd74d41e7d1c8d6ee2e27671a2f3303be1",
+        "commits": [
+            "[2023-08-24] Bumped version to 0.3.8",
+            "[2023-08-24]\tUpdate depedency version",
+            "[2023-04-30]\tUpdate composer lock",
+            "[2023-04-30]\tUpdate source",
+            "[2023-04-30]\tUpdate composer"
+        ]
+    },
+    {
         "version": "0.3.7",
         "releaseDate": "2020-06-16 11:17:09",
         "releaseTimestamp": "1592320629",
@@ -27,16 +40,6 @@
         "commits": [
             "[2020-06-16] Bumped version to 0.3.5",
             "[2020-06-16]\tSwitch to Private GitHub Repository"
-        ]
-    },
-    {
-        "version": "0.3.4",
-        "releaseDate": "2020-06-16 07:17:38",
-        "releaseTimestamp": "1592306258",
-        "hash": "4a2df767c88759c429b2c9b697ea8301742829dd",
-        "commits": [
-            "[2020-06-16] Bumped version to 0.3.4",
-            "[2020-06-16]\tSwitch to Private Packagist"
         ]
     }
 ]
