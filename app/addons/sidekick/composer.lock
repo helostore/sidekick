@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "894402a945381cc5693001458f3af1e5",
+    "content-hash": "9bfe42c6258bf7752b47cf34d1452756",
     "packages": [
         {
             "name": "helostore/adls-client",
