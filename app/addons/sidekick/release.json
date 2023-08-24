@@ -1,5 +1,15 @@
 [
     {
+        "version": "0.3.9",
+        "releaseDate": "2023-08-24 11:53:49",
+        "releaseTimestamp": "1692914029",
+        "hash": "a86e372228f9d690af036703de80daae986e2843",
+        "commits": [
+            "[2023-08-24] Bumped version to 0.3.9",
+            "[2023-08-24]\tUpdate depedency version"
+        ]
+    },
+    {
         "version": "0.3.8",
         "releaseDate": "2023-08-24 11:45:05",
         "releaseTimestamp": "1692913505",
@@ -30,16 +40,6 @@
         "commits": [
             "[2020-06-16] Bumped version to 0.3.6",
             "[2020-06-16]\tUpdate dependencies"
-        ]
-    },
-    {
-        "version": "0.3.5",
-        "releaseDate": "2020-06-16 08:25:19",
-        "releaseTimestamp": "1592310319",
-        "hash": "91c1ae506eebf692d03c1e29d442b89b0d5c3e59",
-        "commits": [
-            "[2020-06-16] Bumped version to 0.3.5",
-            "[2020-06-16]\tSwitch to Private GitHub Repository"
         ]
     }
 ]
