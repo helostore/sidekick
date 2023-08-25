@@ -16,7 +16,7 @@
         "psr-0": { "HeloStore": "src/" }
     },
     "require": {
-        "helostore/adls-client": "v1.2.14"
+        "helostore/adls-client": "v1.2.16"
     },
     "repositories": [
         { "type": "vcs", "url":  "github-hs:helostore/adls-client.git" }

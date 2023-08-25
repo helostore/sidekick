@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bfe42c6258bf7752b47cf34d1452756",
+    "content-hash": "8df068ce90d80fdd2eff68fea38a8250",
     "packages": [
         {
             "name": "helostore/adls-client",
-            "version": "1.2.14",
+            "version": "1.2.16",
             "source": {
                 "type": "git",
                 "url": "github-hs:helostore/adls-client.git",
-                "reference": "9b7ae7dff1115dd802309a4b0a894e1269431bd1"
+                "reference": "b168472118f4f28d577bd3e50afd357edc7953f1"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3",
@@ -48,7 +48,7 @@
             "support": {
                 "email": "contact@helostore.com"
             },
-            "time": "2020-06-16T15:11:42+00:00"
+            "time": "2023-08-25T10:58:23+00:00"
         }
     ],
     "packages-dev": [],
